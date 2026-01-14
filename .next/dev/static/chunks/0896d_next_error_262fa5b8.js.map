@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":["file:///E:/octo-fortnight-main/node_modules/.pnpm/next%4016.1.1_%40babel%2Bcore%407.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/error.js"],"sourcesContent":["module.exports = require('./dist/pages/_error')\n"],"names":[],"mappings":"AAAA,OAAO,OAAO","ignoreList":[0]}}]
+}

@@ -1,0 +1,11 @@
+var R=require("../../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/core/stats/route.js")
+R.c("server/chunks/0896d_next_0896880d._.js")
+R.c("server/chunks/557b4_mysql2_381024e7._.js")
+R.c("server/chunks/ac8c2_iconv-lite_91825155._.js")
+R.c("server/chunks/89097_aws-ssl-profiles_lib_2064fe54._.js")
+R.c("server/chunks/17462_zod_v4_c7b15953._.js")
+R.c("server/chunks/node_modules__pnpm_579d9331._.js")
+R.c("server/chunks/[root-of-the-server]__bc536c67._.js")
+R.c("server/chunks/_next-internal_server_app_api_v1_core_stats_route_actions_774f7261.js")
+R.m("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/v1/core/stats/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/v1/core/stats/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

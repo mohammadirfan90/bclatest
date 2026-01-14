@@ -1,0 +1,2053 @@
+module.exports = [
+"[externals]/next/dist/compiled/next-server/app-route-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-route-turbo.runtime.dev.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/compiled/next-server/app-route-turbo.runtime.dev.js", () => require("next/dist/compiled/next-server/app-route-turbo.runtime.dev.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/compiled/@opentelemetry/api [external] (next/dist/compiled/@opentelemetry/api, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/compiled/@opentelemetry/api", () => require("next/dist/compiled/@opentelemetry/api"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/compiled/next-server/app-page-turbo.runtime.dev.js [external] (next/dist/compiled/next-server/app-page-turbo.runtime.dev.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/compiled/next-server/app-page-turbo.runtime.dev.js", () => require("next/dist/compiled/next-server/app-page-turbo.runtime.dev.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/work-unit-async-storage.external.js [external] (next/dist/server/app-render/work-unit-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/server/app-render/work-unit-async-storage.external.js", () => require("next/dist/server/app-render/work-unit-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/work-async-storage.external.js [external] (next/dist/server/app-render/work-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/server/app-render/work-async-storage.external.js", () => require("next/dist/server/app-render/work-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/shared/lib/no-fallback-error.external.js [external] (next/dist/shared/lib/no-fallback-error.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/shared/lib/no-fallback-error.external.js", () => require("next/dist/shared/lib/no-fallback-error.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/next/dist/server/app-render/after-task-async-storage.external.js [external] (next/dist/server/app-render/after-task-async-storage.external.js, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("next/dist/server/app-render/after-task-async-storage.external.js", () => require("next/dist/server/app-render/after-task-async-storage.external.js"));
+
+module.exports = mod;
+}),
+"[externals]/crypto [external] (crypto, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("crypto", () => require("crypto"));
+
+module.exports = mod;
+}),
+"[externals]/buffer [external] (buffer, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("buffer", () => require("buffer"));
+
+module.exports = mod;
+}),
+"[externals]/stream [external] (stream, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("stream", () => require("stream"));
+
+module.exports = mod;
+}),
+"[externals]/util [external] (util, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("util", () => require("util"));
+
+module.exports = mod;
+}),
+"[externals]/events [external] (events, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("events", () => require("events"));
+
+module.exports = mod;
+}),
+"[externals]/process [external] (process, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("process", () => require("process"));
+
+module.exports = mod;
+}),
+"[externals]/net [external] (net, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("net", () => require("net"));
+
+module.exports = mod;
+}),
+"[externals]/tls [external] (tls, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("tls", () => require("tls"));
+
+module.exports = mod;
+}),
+"[externals]/timers [external] (timers, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("timers", () => require("timers"));
+
+module.exports = mod;
+}),
+"[externals]/string_decoder [external] (string_decoder, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("string_decoder", () => require("string_decoder"));
+
+module.exports = mod;
+}),
+"[externals]/zlib [external] (zlib, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("zlib", () => require("zlib"));
+
+module.exports = mod;
+}),
+"[externals]/url [external] (url, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("url", () => require("url"));
+
+module.exports = mod;
+}),
+"[externals]/fs [external] (fs, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("fs", () => require("fs"));
+
+module.exports = mod;
+}),
+"[externals]/path [external] (path, cjs)", ((__turbopack_context__, module, exports) => {
+
+const mod = __turbopack_context__.x("path", () => require("path"));
+
+module.exports = mod;
+}),
+"[project]/src/lib/db.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "callProcedure",
+    ()=>callProcedure,
+    "checkConnection",
+    ()=>checkConnection,
+    "closePool",
+    ()=>closePool,
+    "execute",
+    ()=>execute,
+    "getPool",
+    ()=>getPool,
+    "query",
+    ()=>query,
+    "queryOne",
+    ()=>queryOne,
+    "withTransaction",
+    ()=>withTransaction
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$mysql2$40$3$2e$16$2e$0$2f$node_modules$2f$mysql2$2f$promise$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/mysql2@3.16.0/node_modules/mysql2/promise.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/fs [external] (fs, cjs)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/path [external] (path, cjs)");
+;
+;
+;
+// =============================================================================
+// Database Configuration
+// =============================================================================
+// Load SSL certificate for Azure MySQL
+const getSSLConfig = ()=>{
+    if (process.env.DATABASE_SSL !== 'true') return undefined;
+    const certPath = __TURBOPACK__imported__module__$5b$externals$5d2f$path__$5b$external$5d$__$28$path$2c$__cjs$29$__["default"].join(process.cwd(), 'cert', 'DigiCertGlobalRootCA.crt');
+    try {
+        if (__TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].existsSync(certPath)) {
+            return {
+                ca: __TURBOPACK__imported__module__$5b$externals$5d2f$fs__$5b$external$5d$__$28$fs$2c$__cjs$29$__["default"].readFileSync(certPath),
+                rejectUnauthorized: false
+            };
+        }
+    } catch  {
+        console.warn('[DB] SSL certificate not found, using default SSL config');
+    }
+    return {
+        rejectUnauthorized: false
+    };
+};
+const poolConfig = {
+    host: process.env.DATABASE_HOST || 'localhost',
+    port: parseInt(process.env.DATABASE_PORT || '3306'),
+    user: process.env.DATABASE_USER || 'root',
+    password: process.env.DATABASE_PASSWORD || '',
+    database: process.env.DATABASE_NAME || 'bnkcore',
+    waitForConnections: true,
+    connectionLimit: parseInt(process.env.DATABASE_POOL_MAX || '10'),
+    queueLimit: 0,
+    enableKeepAlive: true,
+    keepAliveInitialDelay: 0,
+    ssl: getSSLConfig()
+};
+// =============================================================================
+// Connection Pool (Singleton)
+// =============================================================================
+let pool = null;
+function getPool() {
+    if (!pool) {
+        pool = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$mysql2$40$3$2e$16$2e$0$2f$node_modules$2f$mysql2$2f$promise$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].createPool(poolConfig);
+        // Log pool events in development
+        if (("TURBOPACK compile-time value", "development") === 'development' && process.env.ENABLE_QUERY_LOGGING === 'true') {
+            pool.on('connection', ()=>{
+                console.log('[DB] New connection established');
+            });
+            pool.on('release', ()=>{
+                console.log('[DB] Connection released');
+            });
+        }
+    }
+    return pool;
+}
+async function query(sql, params) {
+    const pool = getPool();
+    const [rows] = await pool.query(sql, params);
+    return rows;
+}
+async function queryOne(sql, params) {
+    const rows = await query(sql, params);
+    return rows[0] || null;
+}
+async function execute(sql, params) {
+    const pool = getPool();
+    const [result] = await pool.execute(sql, params);
+    return result;
+}
+async function withTransaction(callback) {
+    const pool = getPool();
+    const connection = await pool.getConnection();
+    try {
+        await connection.beginTransaction();
+        const result = await callback(connection);
+        await connection.commit();
+        return result;
+    } catch (error) {
+        await connection.rollback();
+        throw error;
+    } finally{
+        connection.release();
+    }
+}
+async function callProcedure(procedureName, inParams, outParamNames) {
+    const pool = getPool();
+    const connection = await pool.getConnection();
+    try {
+        // Build the CALL statement with parameter placeholders
+        const inPlaceholders = inParams.map(()=>'?').join(', ');
+        const outPlaceholders = outParamNames.map((name)=>`@${name}`).join(', ');
+        const allPlaceholders = [
+            inPlaceholders,
+            outPlaceholders
+        ].filter(Boolean).join(', ');
+        const callSql = `CALL ${procedureName}(${allPlaceholders})`;
+        // Execute the procedure
+        const [results] = await connection.query(callSql, inParams);
+        // Get output parameters
+        const outParams = {};
+        if (outParamNames.length > 0) {
+            const selectOutSql = `SELECT ${outParamNames.map((name)=>`@${name} AS ${name}`).join(', ')}`;
+            const [outRows] = await connection.query(selectOutSql);
+            if (outRows[0]) {
+                Object.assign(outParams, outRows[0]);
+            }
+        }
+        // Handle multiple result sets from stored procedure
+        const resultSets = Array.isArray(results) ? results : [
+            results
+        ];
+        const dataResults = resultSets.filter((r)=>Array.isArray(r) && r.length > 0 && !('affectedRows' in r[0]));
+        return {
+            results: dataResults,
+            outParams
+        };
+    } finally{
+        connection.release();
+    }
+}
+async function checkConnection() {
+    try {
+        const pool = getPool();
+        const connection = await pool.getConnection();
+        await connection.ping();
+        connection.release();
+        return true;
+    } catch  {
+        return false;
+    }
+}
+async function closePool() {
+    if (pool) {
+        await pool.end();
+        pool = null;
+    }
+}
+}),
+"[project]/src/lib/services/auth-service.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "authenticateCustomer",
+    ()=>authenticateCustomer,
+    "authenticateUser",
+    ()=>authenticateUser,
+    "completeSignup",
+    ()=>completeSignup,
+    "createCustomer",
+    ()=>createCustomer,
+    "createUser",
+    ()=>createUser,
+    "generateRefreshToken",
+    ()=>generateRefreshToken,
+    "generateSignupToken",
+    ()=>generateSignupToken,
+    "generateToken",
+    ()=>generateToken,
+    "getSession",
+    ()=>getSession,
+    "hasAllPermissions",
+    ()=>hasAllPermissions,
+    "hasAnyPermission",
+    ()=>hasAnyPermission,
+    "hasPermission",
+    ()=>hasPermission,
+    "hashPassword",
+    ()=>hashPassword,
+    "isAnyRole",
+    ()=>isAnyRole,
+    "isRole",
+    ()=>isRole,
+    "logout",
+    ()=>logout,
+    "refreshAccessToken",
+    ()=>refreshAccessToken,
+    "verifyPassword",
+    ()=>verifyPassword,
+    "verifySignupToken",
+    ()=>verifySignupToken,
+    "verifyToken",
+    ()=>verifyToken
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$bcryptjs$40$3$2e$0$2e$3$2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/jsonwebtoken@9.0.3/node_modules/jsonwebtoken/index.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
+// =============================================================================
+// Signup Token Management
+// =============================================================================
+var __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/crypto [external] (crypto, cjs)");
+// =============================================================================
+// Session Helper for Next.js App Router
+// =============================================================================
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/headers.js [app-route] (ecmascript)");
+;
+;
+;
+// =============================================================================
+// Configuration
+// =============================================================================
+const JWT_SECRET = process.env.JWT_SECRET || 'development-secret-change-in-production';
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '1h';
+const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
+const BCRYPT_ROUNDS = 12;
+const MAX_FAILED_ATTEMPTS = 5;
+async function hashPassword(password) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$bcryptjs$40$3$2e$0$2e$3$2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].hash(password, BCRYPT_ROUNDS);
+}
+async function verifyPassword(password, hash) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$bcryptjs$40$3$2e$0$2e$3$2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].compare(password, hash);
+}
+function generateToken(payload) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].sign(payload, JWT_SECRET, {
+        expiresIn: JWT_EXPIRES_IN
+    });
+}
+function generateRefreshToken(payload) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].sign({
+        ...payload,
+        refresh: true
+    }, JWT_SECRET, {
+        expiresIn: JWT_REFRESH_EXPIRES_IN
+    });
+}
+function verifyToken(token) {
+    try {
+        return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"].verify(token, JWT_SECRET);
+    } catch  {
+        return null;
+    }
+}
+async function authenticateUser(email, password) {
+    const userRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT u.id, u.email, u.password_hash, u.first_name, u.last_name,
+            u.role_id, r.code as role_code, r.name as role_name, r.permissions,
+            u.status
+     FROM users u
+     INNER JOIN roles r ON r.id = u.role_id
+     WHERE u.email = ?`, [
+        email
+    ]);
+    if (!userRow) {
+        return {
+            success: false,
+            error: 'Invalid email or password'
+        };
+    }
+    if (userRow.status !== 'ACTIVE') {
+        return {
+            success: false,
+            error: 'Account is not active'
+        };
+    }
+    // Verify password
+    const passwordValid = await verifyPassword(password, userRow.password_hash);
+    if (!passwordValid) {
+        return {
+            success: false,
+            error: 'Invalid email or password'
+        };
+    }
+    // Update last login
+    await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])('UPDATE users SET last_login_at = NOW() WHERE id = ?', [
+        userRow.id
+    ]);
+    // Parse permissions (MySQL may return JSON as already-parsed array)
+    const permissions = Array.isArray(userRow.permissions) ? userRow.permissions : JSON.parse(userRow.permissions || '[]');
+    const user = {
+        id: userRow.id,
+        email: userRow.email,
+        firstName: userRow.first_name,
+        lastName: userRow.last_name,
+        roleId: userRow.role_id,
+        roleCode: userRow.role_code,
+        roleName: userRow.role_name,
+        permissions,
+        status: userRow.status,
+        mfaEnabled: false
+    };
+    // Generate tokens
+    const token = generateToken({
+        sub: userRow.id.toString(),
+        type: 'user',
+        email: userRow.email,
+        role: userRow.role_code,
+        permissions,
+        tokenVersion: 1
+    });
+    const refreshToken = generateRefreshToken({
+        sub: userRow.id.toString(),
+        type: 'user',
+        email: userRow.email,
+        role: userRow.role_code,
+        tokenVersion: 1
+    });
+    return {
+        success: true,
+        user,
+        token,
+        refreshToken
+    };
+}
+async function authenticateCustomer(email, password) {
+    const customerRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT id, customer_number, email, password_hash, first_name, last_name,
+            status, kyc_status
+     FROM customers
+     WHERE email = ?`, [
+        email
+    ]);
+    if (!customerRow) {
+        console.log(`[Auth] Customer not found: ${email}`);
+        return {
+            success: false,
+            error: 'Invalid email or password'
+        };
+    }
+    console.log(`[Auth] Customer found: ${customerRow.id}, Status: ${customerRow.status}`);
+    if (customerRow.status === 'SUSPENDED') {
+        return {
+            success: false,
+            error: 'Account is suspended. Please contact support.'
+        };
+    }
+    if (customerRow.status !== 'ACTIVE' && customerRow.status !== 'PENDING') {
+        return {
+            success: false,
+            error: 'Account is not active'
+        };
+    }
+    // Verify password
+    const passwordValid = await verifyPassword(password, customerRow.password_hash);
+    console.log(`[Auth] Password valid: ${passwordValid}`);
+    if (!passwordValid) {
+        return {
+            success: false,
+            error: 'Invalid email or password'
+        };
+    }
+    const customer = {
+        id: customerRow.id,
+        customerNumber: customerRow.customer_number,
+        email: customerRow.email,
+        firstName: customerRow.first_name,
+        lastName: customerRow.last_name,
+        status: customerRow.status,
+        kycStatus: customerRow.kyc_status
+    };
+    const token = generateToken({
+        sub: customerRow.id.toString(),
+        type: 'customer',
+        email: customerRow.email,
+        tokenVersion: 1
+    });
+    const refreshToken = generateRefreshToken({
+        sub: customerRow.id.toString(),
+        type: 'customer',
+        email: customerRow.email,
+        tokenVersion: 1
+    });
+    return {
+        success: true,
+        user: customer,
+        token,
+        refreshToken
+    };
+}
+async function refreshAccessToken(refreshToken) {
+    const payload = verifyToken(refreshToken);
+    if (!payload) {
+        return {
+            success: false,
+            error: 'Invalid refresh token'
+        };
+    }
+    if (payload.type === 'user') {
+        const userRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT u.id, u.email, r.code as role_code, r.permissions
+       FROM users u
+       INNER JOIN roles r ON r.id = u.role_id
+       WHERE u.id = ? AND u.status = 'ACTIVE'`, [
+            payload.sub
+        ]);
+        if (!userRow) {
+            return {
+                success: false,
+                error: 'User not found or inactive'
+            };
+        }
+        const permissions = Array.isArray(userRow.permissions) ? userRow.permissions : JSON.parse(userRow.permissions || '[]');
+        const newToken = generateToken({
+            sub: userRow.id.toString(),
+            type: 'user',
+            email: userRow.email,
+            role: userRow.role_code,
+            permissions,
+            tokenVersion: 1
+        });
+        return {
+            success: true,
+            token: newToken
+        };
+    }
+    if (payload.type === 'customer') {
+        const customerRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT id, email FROM customers WHERE id = ? AND status = 'ACTIVE'`, [
+            payload.sub
+        ]);
+        if (!customerRow) {
+            return {
+                success: false,
+                error: 'Customer not found or inactive'
+            };
+        }
+        const newToken = generateToken({
+            sub: customerRow.id.toString(),
+            type: 'customer',
+            email: customerRow.email,
+            tokenVersion: 1
+        });
+        return {
+            success: true,
+            token: newToken
+        };
+    }
+    return {
+        success: false,
+        error: 'Invalid token type'
+    };
+}
+async function createUser(email, password, firstName, lastName, roleId, createdBy) {
+    const passwordHash = await hashPassword(password);
+    try {
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO users (email, password_hash, first_name, last_name, role_id, status, created_by, password_changed_at)
+       VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?, NOW())`, [
+            email,
+            passwordHash,
+            firstName,
+            lastName,
+            roleId,
+            createdBy ?? null
+        ]);
+        return {
+            success: true,
+            userId: result.insertId
+        };
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return {
+                success: false,
+                error: 'Email already exists'
+            };
+        }
+        throw error;
+    }
+}
+async function createCustomer(email, password, firstName, lastName, createdBy) {
+    const passwordHash = await hashPassword(password);
+    // Generate customer number
+    const customerNumber = `C${Date.now().toString().slice(-10)}`;
+    try {
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customers (customer_number, email, password_hash, first_name, last_name, status, created_by)
+       VALUES (?, ?, ?, ?, ?, 'PENDING', ?)`, [
+            customerNumber,
+            email,
+            passwordHash,
+            firstName,
+            lastName,
+            createdBy ?? null
+        ]);
+        return {
+            success: true,
+            customerId: result.insertId,
+            customerNumber
+        };
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return {
+                success: false,
+                error: 'Email already exists'
+            };
+        }
+        throw error;
+    }
+}
+function hasPermission(user, permission) {
+    return user.permissions.includes(permission);
+}
+function hasAnyPermission(user, permissions) {
+    return permissions.some((p)=>user.permissions.includes(p));
+}
+function hasAllPermissions(user, permissions) {
+    return permissions.every((p)=>user.permissions.includes(p));
+}
+function isRole(user, role) {
+    return user.roleCode === role;
+}
+function isAnyRole(user, roles) {
+    return roles.includes(user.roleCode);
+}
+async function logout(userId, type) {
+    const table = type === 'user' ? 'users' : 'customers';
+    // Increment token version to invalidate all existing tokens
+    await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE ${table} SET token_version = token_version + 1 WHERE id = ?`, [
+        userId
+    ]);
+    // Also remove any active sessions
+    if (type === 'user') {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])('DELETE FROM user_sessions WHERE user_id = ?', [
+            userId
+        ]);
+    }
+}
+;
+async function generateSignupToken(customerId, accountId, createdBy) {
+    const validation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT c.id as customer_id, c.status, c.kyc_status, c.onboarding_status, c.password_hash,
+                a.customer_id as account_customer_id
+         FROM customers c
+         LEFT JOIN accounts a ON a.id = ?
+         WHERE c.id = ?`, [
+        accountId,
+        customerId
+    ]);
+    if (!validation) {
+        return {
+            success: false,
+            error: 'Customer not found'
+        };
+    }
+    // Check Account Ownership
+    if (validation.account_customer_id !== validation.customer_id) {
+        return {
+            success: false,
+            error: 'Account does not belong to this customer'
+        };
+    }
+    // Check Customer Status
+    if (validation.status !== 'PENDING' && validation.status !== 'ACTIVE') {
+        return {
+            success: false,
+            error: 'Customer status invalid for onboarding'
+        };
+    }
+    // Check KYC Status (Must be VERIFIED or PENDING, usually VERIFIED is preferred but strict mode might allow PENDING if reviewing)
+    // Requirement said: VERIFIED or PENDING
+    if (validation.kyc_status !== 'VERIFIED' && validation.kyc_status !== 'PENDING') {
+        return {
+            success: false,
+            error: 'Customer KYC must be Verified or Pending'
+        };
+    }
+    // Check Onboarding Status (Must be PENDING_SIGNUP)
+    if (validation.onboarding_status !== 'PENDING_SIGNUP') {
+        return {
+            success: false,
+            error: 'Customer has already signed up or is not in signup phase'
+        };
+    }
+    // Check for existing password (redundant but safe)
+    if (validation.password_hash) {
+        return {
+            success: false,
+            error: 'Customer already has credentials'
+        };
+    }
+    // 2. Generate random token
+    const token = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].randomBytes(32).toString('hex');
+    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
+    // 3. Set expiry (e.g., 48 hours)
+    const expiresAt = new Date();
+    expiresAt.setHours(expiresAt.getHours() + 48);
+    try {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customer_signup_tokens (token_hash, customer_id, account_id, created_by, expires_at)
+             VALUES (?, ?, ?, ?, ?)`, [
+            tokenHash,
+            customerId,
+            accountId,
+            createdBy,
+            expiresAt
+        ]);
+        return {
+            success: true,
+            token
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: 'Failed to generate signup token'
+        };
+    }
+}
+async function verifySignupToken(token) {
+    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
+    const tokenRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT customer_id, account_id, expires_at, used_at 
+         FROM customer_signup_tokens 
+         WHERE token_hash = ?`, [
+        tokenHash
+    ]);
+    if (!tokenRow) {
+        return {
+            success: false,
+            error: 'Invalid signup link'
+        };
+    }
+    if (tokenRow.used_at) {
+        return {
+            success: false,
+            error: 'This link has already been used'
+        };
+    }
+    if (new Date() > tokenRow.expires_at) {
+        return {
+            success: false,
+            error: 'Signup link has expired'
+        };
+    }
+    return {
+        success: true,
+        data: {
+            customerId: tokenRow.customer_id,
+            accountId: tokenRow.account_id
+        }
+    };
+}
+async function completeSignup(token, password) {
+    const verifyResult = await verifySignupToken(token);
+    if (!verifyResult.success || !verifyResult.data) {
+        return {
+            success: false,
+            error: verifyResult.error
+        };
+    }
+    const { customerId } = verifyResult.data;
+    const passwordHash = await hashPassword(password);
+    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
+    try {
+        // 1. Update customer password and status
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customers 
+             SET password_hash = ?, 
+                 onboarding_status = 'PENDING_APPROVAL',
+                 updated_at = NOW() 
+             WHERE id = ?`, [
+            passwordHash,
+            customerId
+        ]);
+        // 2. Mark token as used
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customer_signup_tokens 
+             SET used_at = NOW() 
+             WHERE token_hash = ?`, [
+            tokenHash
+        ]);
+        return {
+            success: true
+        };
+    } catch (error) {
+        return {
+            success: false,
+            error: 'Failed to complete signup'
+        };
+    }
+}
+;
+async function getSession() {
+    try {
+        const cookieStore = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["cookies"])();
+        const headerList = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$headers$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["headers"])();
+        let token = cookieStore.get('token')?.value;
+        if (!token) {
+            const authHeader = headerList.get('Authorization');
+            if (authHeader?.startsWith('Bearer ')) {
+                token = authHeader.substring(7);
+            }
+        }
+        if (!token) return null;
+        const payload = verifyToken(token);
+        if (!payload) return null;
+        if (payload.type === 'user') {
+            const userRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT u.id, u.email, u.first_name, u.last_name, u.role_id, r.code as role_code, r.name as role_name, r.permissions, u.status
+             FROM users u
+             JOIN roles r ON r.id = u.role_id
+             WHERE u.id = ?`, [
+                payload.sub
+            ]);
+            if (!userRow) return null;
+            const permissions = Array.isArray(userRow.permissions) ? userRow.permissions : JSON.parse(userRow.permissions || '[]');
+            return {
+                user: {
+                    ...userRow,
+                    firstName: userRow.first_name,
+                    lastName: userRow.last_name,
+                    roleId: userRow.role_id,
+                    roleCode: userRow.role_code,
+                    roleName: userRow.role_name,
+                    permissions,
+                    mfaEnabled: false
+                },
+                role: userRow.role_code
+            };
+        }
+        if (payload.type === 'customer') {
+            const customerRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT id, customer_number, email, first_name, last_name, status, kyc_status
+             FROM customers WHERE id = ?`, [
+                payload.sub
+            ]);
+            if (!customerRow) return null;
+            return {
+                user: {
+                    ...customerRow,
+                    customerNumber: customerRow.customer_number,
+                    firstName: customerRow.first_name,
+                    lastName: customerRow.last_name,
+                    kycStatus: customerRow.kyc_status
+                },
+                role: 'CUSTOMER'
+            };
+        }
+        return null;
+    } catch (e) {
+        return null;
+    }
+}
+}),
+"[project]/src/lib/api-utils.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "checkIdempotency",
+    ()=>checkIdempotency,
+    "createdResponse",
+    ()=>createdResponse,
+    "errorResponse",
+    ()=>errorResponse,
+    "forbiddenResponse",
+    ()=>forbiddenResponse,
+    "getIdempotencyKey",
+    ()=>getIdempotencyKey,
+    "getOffset",
+    ()=>getOffset,
+    "getPaginationMeta",
+    ()=>getPaginationMeta,
+    "notFoundResponse",
+    ()=>notFoundResponse,
+    "requireIdempotencyKey",
+    ()=>requireIdempotencyKey,
+    "serverErrorResponse",
+    ()=>serverErrorResponse,
+    "successResponse",
+    ()=>successResponse,
+    "unauthorizedResponse",
+    ()=>unauthorizedResponse,
+    "validateBody",
+    ()=>validateBody,
+    "validateQuery",
+    ()=>validateQuery,
+    "validationErrorResponse",
+    ()=>validationErrorResponse,
+    "withAuth",
+    ()=>withAuth,
+    "withErrorHandler",
+    ()=>withErrorHandler
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/server.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$auth$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/services/auth-service.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$errors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/errors.js [app-route] (ecmascript)");
+;
+;
+;
+;
+function successResponse(data, meta) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: true,
+        data,
+        meta
+    }, {
+        status: 200
+    });
+}
+function createdResponse(data) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: true,
+        data
+    }, {
+        status: 201
+    });
+}
+function errorResponse(error, status = 400) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error
+    }, {
+        status
+    });
+}
+function validationErrorResponse(errors) {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error: 'Validation failed',
+        errors
+    }, {
+        status: 400
+    });
+}
+function unauthorizedResponse(error = 'Unauthorized') {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error
+    }, {
+        status: 401
+    });
+}
+function forbiddenResponse(error = 'Forbidden') {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error
+    }, {
+        status: 403
+    });
+}
+function notFoundResponse(error = 'Not found') {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error
+    }, {
+        status: 404
+    });
+}
+function serverErrorResponse(error = 'Internal server error') {
+    return __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json({
+        success: false,
+        error
+    }, {
+        status: 500
+    });
+}
+async function withAuth(request, handler, options = {}) {
+    const { requiredType = 'any', requiredRoles, requiredPermissions, hideFailure = false } = options;
+    // Helper to return 404 if hideFailure is on, otherwise the actual error
+    const getErrorResponse = (actualResponse)=>{
+        return hideFailure ? notFoundResponse() : actualResponse;
+    };
+    // Get token from header
+    const authHeader = request.headers.get('authorization');
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return getErrorResponse(unauthorizedResponse('No token provided'));
+    }
+    const token = authHeader.substring(7);
+    const payload = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$auth$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["verifyToken"])(token);
+    if (!payload) {
+        return getErrorResponse(unauthorizedResponse('Invalid or expired token'));
+    }
+    // Check required type
+    if (requiredType !== 'any' && payload.type !== requiredType) {
+        return getErrorResponse(forbiddenResponse(`Access restricted to ${requiredType}s`));
+    }
+    const authenticatedRequest = request;
+    authenticatedRequest.tokenPayload = payload;
+    // For user tokens, load full user info
+    if (payload.type === 'user') {
+        const [userRow] = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT u.id, u.email, u.first_name, u.last_name, u.role_id,
+              r.code as role_code, r.name as role_name, r.permissions,
+              u.status
+       FROM users u
+       INNER JOIN roles r ON r.id = u.role_id
+       WHERE u.id = ? AND u.status = 'ACTIVE'`, [
+            payload.sub
+        ]);
+        if (!userRow) {
+            return getErrorResponse(unauthorizedResponse('User not found or inactive'));
+        }
+        // Safely parse permissions - handle invalid JSON gracefully
+        let permissions = [];
+        try {
+            const rawPerms = userRow.permissions;
+            if (rawPerms && typeof rawPerms === 'string' && rawPerms.startsWith('[')) {
+                permissions = JSON.parse(rawPerms);
+            } else if (Array.isArray(rawPerms)) {
+                permissions = rawPerms;
+            }
+        } catch (e) {
+            console.warn('Invalid permissions JSON, defaulting to empty array');
+            permissions = [];
+        }
+        authenticatedRequest.user = {
+            id: userRow.id,
+            email: userRow.email,
+            firstName: userRow.first_name,
+            lastName: userRow.last_name,
+            roleId: userRow.role_id,
+            roleCode: userRow.role_code,
+            roleName: userRow.role_name,
+            permissions,
+            status: userRow.status,
+            mfaEnabled: false
+        };
+        // Check required roles
+        if (requiredRoles && requiredRoles.length > 0) {
+            if (!requiredRoles.includes(userRow.role_code)) {
+                return getErrorResponse(forbiddenResponse('Insufficient role privileges'));
+            }
+        }
+        // Check required permissions
+        if (requiredPermissions && requiredPermissions.length > 0) {
+            const hasPermission = requiredPermissions.some((p)=>permissions.includes(p));
+            if (!hasPermission) {
+                return getErrorResponse(forbiddenResponse('Insufficient permissions'));
+            }
+        }
+    }
+    // For customer tokens
+    if (payload.type === 'customer') {
+        const [customerRow] = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT id, customer_number, email, status
+       FROM customers
+       WHERE id = ? AND status = 'ACTIVE'`, [
+            payload.sub
+        ]);
+        if (!customerRow) {
+            return unauthorizedResponse('Customer not found or inactive');
+        }
+        authenticatedRequest.customer = {
+            id: customerRow.id,
+            customerNumber: customerRow.customer_number,
+            email: customerRow.email
+        };
+    }
+    return handler(authenticatedRequest);
+}
+async function validateBody(request, schema) {
+    try {
+        const body = await request.json();
+        const data = schema.parse(body);
+        return {
+            success: true,
+            data
+        };
+    } catch (error) {
+        if (error instanceof __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$errors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["ZodError"]) {
+            const errors = error.issues.map((e)=>({
+                    field: e.path.join('.'),
+                    message: e.message
+                }));
+            return {
+                success: false,
+                response: validationErrorResponse(errors)
+            };
+        }
+        return {
+            success: false,
+            response: errorResponse('Invalid request body')
+        };
+    }
+}
+function validateQuery(request, schema) {
+    try {
+        const searchParams = Object.fromEntries(request.nextUrl.searchParams.entries());
+        const data = schema.parse(searchParams);
+        return {
+            success: true,
+            data
+        };
+    } catch (error) {
+        if (error instanceof __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$errors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["ZodError"]) {
+            const errors = error.issues.map((e)=>({
+                    field: e.path.join('.'),
+                    message: e.message
+                }));
+            return {
+                success: false,
+                response: validationErrorResponse(errors)
+            };
+        }
+        return {
+            success: false,
+            response: errorResponse('Invalid query parameters')
+        };
+    }
+}
+function getIdempotencyKey(request) {
+    return request.headers.get('Idempotency-Key') || request.headers.get('idempotency-key') || null;
+}
+function requireIdempotencyKey(request) {
+    const key = getIdempotencyKey(request);
+    if (!key) {
+        return {
+            success: false,
+            response: errorResponse('Idempotency-Key header is required for this operation', 400)
+        };
+    }
+    // Validate UUID format
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (!uuidRegex.test(key)) {
+        return {
+            success: false,
+            response: errorResponse('Invalid Idempotency-Key format. Must be a valid UUID.', 400)
+        };
+    }
+    return {
+        success: true,
+        key
+    };
+}
+async function checkIdempotency(idempotencyKey) {
+    if (!idempotencyKey) {
+        return {
+            cached: false
+        };
+    }
+    const [cached] = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT response_status, response_body
+     FROM idempotency_keys
+     WHERE idempotency_key = ? AND expires_at > NOW()`, [
+        idempotencyKey
+    ]);
+    if (cached) {
+        const body = JSON.parse(cached.response_body);
+        return {
+            cached: true,
+            response: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$server$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["NextResponse"].json(body, {
+                status: cached.response_status
+            })
+        };
+    }
+    return {
+        cached: false
+    };
+}
+function withErrorHandler(handler) {
+    return async (request, context)=>{
+        try {
+            // Context is optional - routes without dynamic params won't have it
+            return await handler(request, context);
+        } catch (error) {
+            console.error('API Error:', error);
+            if (error instanceof Error) {
+                // Don't expose internal error messages in production
+                const message = ("TURBOPACK compile-time truthy", 1) ? error.message : "TURBOPACK unreachable";
+                return serverErrorResponse(message);
+            }
+            return serverErrorResponse();
+        }
+    };
+}
+function getPaginationMeta(page, limit, total) {
+    return {
+        page,
+        limit,
+        total,
+        totalPages: Math.ceil(total / limit)
+    };
+}
+function getOffset(page, limit) {
+    return (page - 1) * limit;
+}
+}),
+"[project]/src/lib/services/statement-service.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "generateCsvFromResults",
+    ()=>generateCsvFromResults,
+    "generateStatementPdf",
+    ()=>generateStatementPdf,
+    "getAccountStatement",
+    ()=>getAccountStatement,
+    "searchTransactions",
+    ()=>searchTransactions
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdfkit$40$0$2e$17$2e$2$2f$node_modules$2f$pdfkit$2f$js$2f$pdfkit$2e$es$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdfkit@0.17.2/node_modules/pdfkit/js/pdfkit.es.js [app-route] (ecmascript)");
+;
+;
+async function getAccountStatement(accountId, options) {
+    const { from, to, page = 1, size = 50 } = options;
+    const offset = (page - 1) * size;
+    // Get account info
+    const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT a.id, a.account_number, at.name as account_type_name,
+                CONCAT(c.first_name, ' ', c.last_name) as customer_name
+         FROM accounts a
+         JOIN customers c ON a.customer_id = c.id
+         JOIN account_types at ON at.id = a.account_type_id
+         WHERE a.id = ?`, [
+        accountId
+    ]);
+    if (!account) {
+        throw new Error('Account not found');
+    }
+    // Calculate opening balance (sum of all entries before the period start)
+    const openingBalanceRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT 
+            COALESCE(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END), 0) as total_credits,
+            COALESCE(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END), 0) as total_debits
+         FROM ledger_entries
+         WHERE account_id = ? AND entry_date < ?`, [
+        accountId,
+        from
+    ]);
+    const openingBalance = parseFloat(openingBalanceRow?.total_credits || '0') - parseFloat(openingBalanceRow?.total_debits || '0');
+    const countRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count
+         FROM ledger_entries le
+         WHERE le.account_id = ? AND le.entry_date >= ? AND le.entry_date <= ?`, [
+        accountId,
+        from,
+        to
+    ]);
+    const total = countRow?.count || 0;
+    // Get period totals for closing balance calculation
+    const periodTotals = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT 
+            COALESCE(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END), 0) as total_credits,
+            COALESCE(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END), 0) as total_debits
+         FROM ledger_entries
+         WHERE account_id = ? AND entry_date >= ? AND entry_date <= ?`, [
+        accountId,
+        from,
+        to
+    ]);
+    const totalCredits = parseFloat(periodTotals?.total_credits || '0');
+    const totalDebits = parseFloat(periodTotals?.total_debits || '0');
+    const closingBalance = openingBalance + totalCredits - totalDebits;
+    // Get ledger entries for period (ordered by created_at ASC for running balance)
+    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT le.id, le.transaction_id, le.account_id, le.entry_type, 
+                le.amount, le.currency, le.balance_after, le.description,
+                le.entry_date, le.created_at, t.transaction_reference,
+                tt.code as transaction_type
+         FROM ledger_entries le
+         JOIN transactions t ON le.transaction_id = t.id
+         JOIN transaction_types tt ON t.transaction_type_id = tt.id
+         WHERE le.account_id = ? AND le.entry_date >= ? AND le.entry_date <= ?
+         ORDER BY le.created_at ASC, le.id ASC
+         LIMIT ? OFFSET ?`, [
+        accountId,
+        from,
+        to,
+        size,
+        offset
+    ]);
+    // Compute running balance for paginated entries
+    // For running balance, we need to know the balance at the start of this page
+    let runningBalance = openingBalance;
+    // If we're not on page 1, calculate the balance up to this page
+    if (page > 1) {
+        const previousTotals = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT 
+                COALESCE(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END), 0) as total_credits,
+                COALESCE(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END), 0) as total_debits
+             FROM (
+                SELECT entry_type, amount
+                FROM ledger_entries
+                WHERE account_id = ? AND entry_date >= ? AND entry_date <= ?
+                ORDER BY created_at ASC, id ASC
+                LIMIT ?
+             ) as previous_entries`, [
+            accountId,
+            from,
+            to,
+            offset
+        ]);
+        runningBalance = openingBalance + parseFloat(previousTotals?.total_credits || '0') - parseFloat(previousTotals?.total_debits || '0');
+    }
+    const entries = rows.map((row)=>{
+        const amount = parseFloat(row.amount);
+        if (row.entry_type === 'CREDIT') {
+            runningBalance += amount;
+        } else {
+            runningBalance -= amount;
+        }
+        return {
+            id: row.id,
+            date: row.entry_date,
+            description: row.description,
+            debit: row.entry_type === 'DEBIT' ? amount : null,
+            credit: row.entry_type === 'CREDIT' ? amount : null,
+            runningBalance: Math.round(runningBalance * 100) / 100,
+            transactionReference: row.transaction_reference,
+            transactionType: row.transaction_type
+        };
+    });
+    return {
+        statement: {
+            account: {
+                id: account.id,
+                accountNumber: account.account_number,
+                accountType: account.account_type_name,
+                customerName: account.customer_name
+            },
+            period: {
+                from,
+                to
+            },
+            openingBalance: Math.round(openingBalance * 100) / 100,
+            closingBalance: Math.round(closingBalance * 100) / 100,
+            totalDebits: Math.round(totalDebits * 100) / 100,
+            totalCredits: Math.round(totalCredits * 100) / 100,
+            entries
+        },
+        total
+    };
+}
+// =============================================================================
+// PDF Generation
+// =============================================================================
+function maskAccountNumber(accountNumber) {
+    if (accountNumber.length <= 4) return accountNumber;
+    return '****' + accountNumber.slice(-4);
+}
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('en-BD', {
+        style: 'currency',
+        currency: 'BDT',
+        minimumFractionDigits: 2
+    }).format(amount);
+}
+function formatDate(date) {
+    return new Intl.DateTimeFormat('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    }).format(new Date(date));
+}
+async function generateStatementPdf(accountId, month// YYYY-MM format
+) {
+    // Parse month to get first and last day
+    const [year, monthNum] = month.split('-').map(Number);
+    const from = `${year}-${String(monthNum).padStart(2, '0')}-01`;
+    const lastDay = new Date(year, monthNum, 0).getDate();
+    const to = `${year}-${String(monthNum).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+    // Get all entries for the month (no pagination for PDF)
+    const { statement } = await getAccountStatement(accountId, {
+        from,
+        to,
+        page: 1,
+        size: 10000
+    });
+    return new Promise((resolve, reject)=>{
+        const chunks = [];
+        const doc = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdfkit$40$0$2e$17$2e$2$2f$node_modules$2f$pdfkit$2f$js$2f$pdfkit$2e$es$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"]({
+            size: 'A4',
+            margin: 50,
+            bufferPages: true
+        });
+        doc.on('data', (chunk)=>chunks.push(chunk));
+        doc.on('end', ()=>resolve(Buffer.concat(chunks)));
+        doc.on('error', reject);
+        // Header
+        doc.fontSize(20).font('Helvetica-Bold').text('BNKCORE', {
+            align: 'center'
+        });
+        doc.fontSize(10).font('Helvetica').text('Core Banking System', {
+            align: 'center'
+        });
+        doc.moveDown(0.5);
+        doc.fontSize(14).font('Helvetica-Bold').text('Account Statement', {
+            align: 'center'
+        });
+        doc.moveDown();
+        // Account Information
+        doc.fontSize(10).font('Helvetica');
+        const infoY = doc.y;
+        doc.text(`Account Holder: ${statement.account.customerName}`, 50, infoY);
+        doc.text(`Account Number: ${maskAccountNumber(statement.account.accountNumber)}`, 50);
+        doc.text(`Account Type: ${statement.account.accountType}`, 50);
+        doc.text(`Statement Period: ${formatDate(new Date(from))} - ${formatDate(new Date(to))}`, 300, infoY);
+        doc.text(`Generated: ${formatDate(new Date())}`, 300);
+        doc.moveDown(2);
+        // Summary Box
+        const summaryY = doc.y;
+        doc.rect(50, summaryY, 495, 60).stroke();
+        doc.font('Helvetica-Bold').text('Opening Balance:', 60, summaryY + 10);
+        doc.font('Helvetica').text(formatCurrency(statement.openingBalance), 180, summaryY + 10);
+        doc.font('Helvetica-Bold').text('Total Credits:', 300, summaryY + 10);
+        doc.font('Helvetica').text(formatCurrency(statement.totalCredits), 400, summaryY + 10);
+        doc.font('Helvetica-Bold').text('Closing Balance:', 60, summaryY + 35);
+        doc.font('Helvetica').text(formatCurrency(statement.closingBalance), 180, summaryY + 35);
+        doc.font('Helvetica-Bold').text('Total Debits:', 300, summaryY + 35);
+        doc.font('Helvetica').text(formatCurrency(statement.totalDebits), 400, summaryY + 35);
+        doc.y = summaryY + 80;
+        // Table Header
+        const tableTop = doc.y;
+        const colDate = 50;
+        const colDesc = 120;
+        const colDebit = 300;
+        const colCredit = 380;
+        const colBalance = 460;
+        doc.font('Helvetica-Bold').fontSize(9);
+        doc.rect(50, tableTop, 495, 20).fill('#f0f0f0');
+        doc.fillColor('#000000');
+        doc.text('Date', colDate, tableTop + 6);
+        doc.text('Description', colDesc, tableTop + 6);
+        doc.text('Debit', colDebit, tableTop + 6, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text('Credit', colCredit, tableTop + 6, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text('Balance', colBalance, tableTop + 6, {
+            width: 80,
+            align: 'right'
+        });
+        let y = tableTop + 25;
+        doc.font('Helvetica').fontSize(8);
+        // Opening balance row
+        doc.text(formatDate(new Date(from)), colDate, y);
+        doc.text('Opening Balance', colDesc, y);
+        doc.text('', colDebit, y, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text('', colCredit, y, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text(formatCurrency(statement.openingBalance), colBalance, y, {
+            width: 80,
+            align: 'right'
+        });
+        y += 15;
+        // Transaction rows
+        for (const entry of statement.entries){
+            // Check if we need a new page
+            if (y > 750) {
+                doc.addPage();
+                y = 50;
+                // Repeat header on new page
+                doc.font('Helvetica-Bold').fontSize(9);
+                doc.rect(50, y, 495, 20).fill('#f0f0f0');
+                doc.fillColor('#000000');
+                doc.text('Date', colDate, y + 6);
+                doc.text('Description', colDesc, y + 6);
+                doc.text('Debit', colDebit, y + 6, {
+                    width: 70,
+                    align: 'right'
+                });
+                doc.text('Credit', colCredit, y + 6, {
+                    width: 70,
+                    align: 'right'
+                });
+                doc.text('Balance', colBalance, y + 6, {
+                    width: 80,
+                    align: 'right'
+                });
+                y += 25;
+                doc.font('Helvetica').fontSize(8);
+            }
+            // Alternate row background
+            if (statement.entries.indexOf(entry) % 2 === 1) {
+                doc.rect(50, y - 3, 495, 15).fill('#fafafa');
+                doc.fillColor('#000000');
+            }
+            doc.text(formatDate(entry.date), colDate, y);
+            const desc = entry.description || entry.transactionType;
+            doc.text(desc.length > 30 ? desc.substring(0, 27) + '...' : desc, colDesc, y);
+            doc.text(entry.debit ? formatCurrency(entry.debit) : '', colDebit, y, {
+                width: 70,
+                align: 'right'
+            });
+            doc.text(entry.credit ? formatCurrency(entry.credit) : '', colCredit, y, {
+                width: 70,
+                align: 'right'
+            });
+            doc.text(formatCurrency(entry.runningBalance), colBalance, y, {
+                width: 80,
+                align: 'right'
+            });
+            y += 15;
+        }
+        // Closing balance row
+        doc.font('Helvetica-Bold');
+        doc.text(formatDate(new Date(to)), colDate, y + 5);
+        doc.text('Closing Balance', colDesc, y + 5);
+        doc.text('', colDebit, y + 5, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text('', colCredit, y + 5, {
+            width: 70,
+            align: 'right'
+        });
+        doc.text(formatCurrency(statement.closingBalance), colBalance, y + 5, {
+            width: 80,
+            align: 'right'
+        });
+        // Footer
+        const pageCount = doc.bufferedPageRange().count;
+        for(let i = 0; i < pageCount; i++){
+            doc.switchToPage(i);
+            doc.fontSize(8).font('Helvetica');
+            doc.text(`Page ${i + 1} of ${pageCount} | This is a computer-generated document and does not require signature.`, 50, doc.page.height - 50, {
+                align: 'center',
+                width: 495
+            });
+        }
+        doc.end();
+    });
+}
+async function searchTransactions(filters) {
+    const { from, to, amountMin, amountMax, entryType, transactionType, reference, accountId, includeReversals = true, page = 1, size = 50 } = filters;
+    const offset = (page - 1) * size;
+    const conditions = [
+        '1=1'
+    ];
+    const params = [];
+    if (from) {
+        conditions.push('le.entry_date >= ?');
+        params.push(from);
+    }
+    if (to) {
+        conditions.push('le.entry_date <= ?');
+        params.push(to);
+    }
+    if (amountMin !== undefined) {
+        conditions.push('le.amount >= ?');
+        params.push(amountMin);
+    }
+    if (amountMax !== undefined) {
+        conditions.push('le.amount <= ?');
+        params.push(amountMax);
+    }
+    if (entryType) {
+        conditions.push('le.entry_type = ?');
+        params.push(entryType);
+    }
+    if (transactionType) {
+        conditions.push('tt.code = ?');
+        params.push(transactionType);
+    }
+    if (reference) {
+        conditions.push('(t.transaction_reference LIKE ? OR le.description LIKE ?)');
+        params.push(`%${reference}%`, `%${reference}%`);
+    }
+    if (accountId) {
+        conditions.push('le.account_id = ?');
+        params.push(accountId);
+    }
+    if (!includeReversals) {
+        conditions.push("t.status != 'REVERSED'");
+    }
+    const whereClause = conditions.join(' AND ');
+    const countRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count
+         FROM ledger_entries le
+         JOIN transactions t ON le.transaction_id = t.id
+         JOIN transaction_types tt ON t.transaction_type_id = tt.id
+         JOIN accounts a ON le.account_id = a.id
+         WHERE ${whereClause}`, params);
+    // Get results
+    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT le.id, t.transaction_reference, tt.code as transaction_type,
+                le.account_id, a.account_number, le.entry_type, le.amount,
+                le.balance_after, le.description, le.entry_date, le.created_at,
+                (t.status = 'REVERSED') as is_reversal
+         FROM ledger_entries le
+         JOIN transactions t ON le.transaction_id = t.id
+         JOIN transaction_types tt ON t.transaction_type_id = tt.id
+         JOIN accounts a ON le.account_id = a.id
+         WHERE ${whereClause}
+         ORDER BY le.created_at DESC, le.id DESC
+         LIMIT ? OFFSET ?`, [
+        ...params,
+        size,
+        offset
+    ]);
+    const results = rows.map((row)=>({
+            id: row.id,
+            transactionReference: row.transaction_reference,
+            transactionType: row.transaction_type,
+            accountId: row.account_id,
+            accountNumber: row.account_number,
+            entryType: row.entry_type,
+            amount: parseFloat(row.amount),
+            balanceAfter: parseFloat(row.balance_after),
+            description: row.description,
+            entryDate: row.entry_date,
+            createdAt: row.created_at,
+            isReversal: Boolean(row.is_reversal)
+        }));
+    return {
+        results,
+        total: countRow?.count || 0
+    };
+}
+function generateCsvFromResults(results) {
+    const headers = [
+        'ID',
+        'Date',
+        'Transaction Ref',
+        'Type',
+        'Account Number',
+        'Entry Type',
+        'Amount',
+        'Balance After',
+        'Description',
+        'Is Reversal'
+    ];
+    const rows = results.map((r)=>[
+            r.id,
+            formatDate(r.entryDate),
+            r.transactionReference,
+            r.transactionType,
+            r.accountNumber,
+            r.entryType,
+            r.amount.toFixed(2),
+            r.balanceAfter.toFixed(2),
+            `"${(r.description || '').replace(/"/g, '""')}"`,
+            r.isReversal ? 'Yes' : 'No'
+        ]);
+    return [
+        headers.join(','),
+        ...rows.map((r)=>r.join(','))
+    ].join('\n');
+}
+}),
+"[project]/src/lib/services/account-service.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "applyForAccount",
+    ()=>applyForAccount,
+    "approveAccount",
+    ()=>approveAccount,
+    "closeAccount",
+    ()=>closeAccount,
+    "freezeAccount",
+    ()=>freezeAccount,
+    "getAccountById",
+    ()=>getAccountById,
+    "getAccountsForCustomer",
+    ()=>getAccountsForCustomer,
+    "getPendingApplications",
+    ()=>getPendingApplications,
+    "refreshAccountBalance",
+    ()=>refreshAccountBalance,
+    "rejectAccount",
+    ()=>rejectAccount,
+    "unfreezeAccount",
+    ()=>unfreezeAccount
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
+;
+async function getAccountById(accountId) {
+    const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.id = ?`, [
+        accountId
+    ]);
+    if (!account) return null;
+    return {
+        id: account.id,
+        accountNumber: account.account_number,
+        customerId: account.customer_id,
+        accountType: account.account_type,
+        currency: account.currency,
+        status: account.status,
+        balanceLocked: false,
+        rowVersion: 1,
+        openedAt: account.created_at,
+        closedAt: null,
+        createdAt: account.created_at
+    };
+}
+async function getAccountsForCustomer(customerId) {
+    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                c.first_name, c.last_name,
+                COALESCE(ab.available_balance, 0) as available_balance,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN customers c ON c.id = a.customer_id
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.customer_id = ?
+         ORDER BY a.created_at DESC`, [
+        customerId
+    ]);
+    return rows.map((row)=>({
+            id: row.id,
+            accountNumber: row.account_number,
+            customerId: row.customer_id,
+            accountType: row.account_type,
+            accountTypeName: row.account_type_name,
+            currency: row.currency,
+            status: row.status,
+            balanceLocked: false,
+            rowVersion: 1,
+            openedAt: row.created_at,
+            closedAt: null,
+            createdAt: row.created_at,
+            customerName: `${row.first_name} ${row.last_name}`,
+            balance: {
+                availableBalance: parseFloat(row.available_balance || '0'),
+                pendingBalance: 0,
+                holdBalance: 0
+            }
+        }));
+}
+async function applyForAccount(customerId, accountType) {
+    // 1. Verify KYC Status (Must be VERIFIED)
+    const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT kyc_status FROM customers WHERE id = ?', [
+        customerId
+    ]);
+    if (!customer) return {
+        success: false,
+        error: 'Customer not found'
+    };
+    if (customer.kyc_status !== 'VERIFIED') {
+        return {
+            success: false,
+            error: `KYC verification required (Status: ${customer.kyc_status})`
+        };
+    }
+    // 2. Create Application
+    try {
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO account_applications (customer_id, account_type, status)
+             VALUES (?, ?, 'PENDING')`, [
+            customerId,
+            accountType
+        ]);
+        return {
+            success: true,
+            applicationId: result.insertId
+        };
+    } catch (error) {
+        console.error('Error applying for account:', error);
+        return {
+            success: false,
+            error: 'Failed to submit application'
+        };
+    }
+}
+async function getPendingApplications() {
+    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT aa.*, 
+                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
+                c.email as customer_email,
+                c.kyc_status
+         FROM account_applications aa
+         JOIN customers c ON aa.customer_id = c.id
+         WHERE aa.status = 'PENDING'
+         ORDER BY aa.created_at ASC`);
+    return rows.map((row)=>({
+            id: row.id,
+            customerId: row.customer_id,
+            accountType: row.account_type,
+            status: row.status,
+            createdAt: row.created_at,
+            customerName: row.customer_name,
+            customerEmail: row.customer_email,
+            kycStatus: row.kyc_status
+        }));
+}
+async function approveAccount(applicationId, bankerId) {
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
+        // 1. Get Application
+        const [apps] = await connection.query('SELECT * FROM account_applications WHERE id = ? FOR UPDATE', [
+            applicationId
+        ]);
+        const app = apps[0];
+        if (!app) throw new Error('Application not found');
+        if (app.status !== 'PENDING') throw new Error(`Application is ${app.status}`);
+        // 2. Generate Account Number (Strictly unique)
+        // Format: [TYPE_PREFIX][YEAR][RANDOM] -> e.g. SAV202512345678
+        const prefix = app.account_type.substring(0, 3).toUpperCase();
+        const year = new Date().getFullYear();
+        const random = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
+        const accountNumber = `${prefix}${year}${random}`;
+        // 3. Create Account
+        const [accResult] = await connection.execute(`INSERT INTO accounts (
+                account_number, customer_id, account_type, currency, 
+                status, balance_locked, row_version, opened_at, created_by
+             ) VALUES (?, ?, ?, 'BDT', 'ACTIVE', FALSE, 1, NOW(), ?)`, [
+            accountNumber,
+            app.customer_id,
+            app.account_type,
+            bankerId
+        ]);
+        const accountId = accResult.insertId;
+        // 4. Create Initial History Snapshot
+        await connection.execute(`INSERT INTO accounts_history (
+                account_id, valid_from, status, balance_locked, 
+                snapshot_payload, changed_by
+             ) VALUES (?, NOW(), 'ACTIVE', FALSE, ?, ?)`, [
+            accountId,
+            JSON.stringify({
+                action: 'OPEN_ACCOUNT',
+                applicationId
+            }),
+            bankerId
+        ]);
+        // 5. Initialize Balance (Zero)
+        await connection.execute(`INSERT INTO account_balances (account_id, available_balance, currency)
+             VALUES (?, 0, 'BDT')`, [
+            accountId
+        ]);
+        // 6. Update Application Status
+        await connection.execute(`UPDATE account_applications 
+             SET status = 'APPROVED', reviewed_by = ?, reviewed_at = NOW() 
+             WHERE id = ?`, [
+            bankerId,
+            applicationId
+        ]);
+        return {
+            success: true,
+            accountId,
+            accountNumber
+        };
+    });
+}
+async function rejectAccount(applicationId, bankerId, reason) {
+    try {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE account_applications 
+             SET status = 'REJECTED', reviewed_by = ?, reviewed_at = NOW(), review_reason = ? 
+             WHERE id = ? AND status = 'PENDING'`, [
+            bankerId,
+            reason,
+            applicationId
+        ]);
+        return {
+            success: true
+        };
+    } catch (error) {
+        console.error('Error rejecting account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
+}
+async function freezeAccount(accountId, bankerId, reason) {
+    return changeAccountStatus(accountId, 'SUSPENDED', true, bankerId, reason);
+}
+async function unfreezeAccount(accountId, bankerId, reason) {
+    return changeAccountStatus(accountId, 'ACTIVE', false, bankerId, reason);
+}
+async function closeAccount(accountId, bankerId, reason) {
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
+        // 1. Get Account & Validation
+        const [accRows] = await connection.query('SELECT status, balance_locked FROM accounts WHERE id = ? FOR UPDATE', [
+            accountId
+        ]);
+        if (!accRows.length) throw new Error('Account not found');
+        const account = accRows[0];
+        if (account.status === 'CLOSED') throw new Error('Account is already CLOSED');
+        // 2. Check Balance (Must be 0)
+        const [balRows] = await connection.query('SELECT available_balance, pending_balance, hold_balance FROM account_balances WHERE account_id = ? FOR UPDATE', [
+            accountId
+        ]);
+        const balance = balRows[0];
+        const totalBalance = parseFloat(balance.available_balance) + parseFloat(balance.pending_balance) + parseFloat(balance.hold_balance);
+        if (totalBalance !== 0) {
+            throw new Error(`Cannot close account. Non-zero balance: ${totalBalance}`);
+        }
+        // 3. Check Pending Disputes (Optional: Add if table exists and logic required)
+        const [disputes] = await connection.query('SELECT COUNT(*) as count FROM disputes WHERE customer_id = (SELECT customer_id FROM accounts WHERE id = ?) AND status NOT IN ("RESOLVED", "REJECTED")', [
+            accountId
+        ]);
+        if (disputes[0].count > 0) {
+            throw new Error('Cannot close account. Pending disputes exist.');
+        }
+        // 4. Archive History
+        await connection.execute(`UPDATE accounts_history SET valid_to = NOW() WHERE account_id = ? AND valid_to IS NULL`, [
+            accountId
+        ]);
+        // 5. Insert Closing History
+        await connection.execute(`INSERT INTO accounts_history (
+                account_id, valid_from, status, balance_locked, 
+                snapshot_payload, changed_by
+             ) VALUES (?, NOW(), 'CLOSED', TRUE, ?, ?)`, [
+            accountId,
+            JSON.stringify({
+                reason
+            }),
+            bankerId
+        ]);
+        // 6. Update Account Status
+        await connection.execute(`UPDATE accounts 
+             SET status = 'CLOSED', balance_locked = TRUE, closed_at = NOW(), 
+                 row_version = row_version + 1, updated_at = NOW() 
+             WHERE id = ?`, [
+            accountId
+        ]);
+        return {
+            success: true
+        };
+    });
+}
+async function changeAccountStatus(accountId, newStatus, balanceLocked, changedBy, reason) {
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
+        // 1. Get current state and lock
+        const [rows] = await connection.query('SELECT * FROM accounts WHERE id = ? FOR UPDATE', [
+            accountId
+        ]);
+        const current = rows[0];
+        if (!current) throw new Error('Account not found');
+        // 2. Archive current state to history (Close the previous validity period)
+        // We update the 'valid_to' of the most recent history record?
+        // Actually, strictly temporal usually means inserting a NEW record with new valid_from.
+        // And optionally updating the previous one's valid_to.
+        await connection.execute(`UPDATE accounts_history 
+             SET valid_to = NOW() 
+             WHERE account_id = ? AND valid_to IS NULL`, [
+            accountId
+        ]);
+        // 3. Insert new history record
+        await connection.execute(`INSERT INTO accounts_history (
+                account_id, valid_from, status, balance_locked, 
+                snapshot_payload, changed_by
+             ) VALUES (?, NOW(), ?, ?, ?, ?)`, [
+            accountId,
+            newStatus,
+            balanceLocked,
+            JSON.stringify({
+                reason,
+                previousStatus: current.status
+            }),
+            changedBy
+        ]);
+        // 4. Update core account
+        await connection.execute(`UPDATE accounts 
+             SET status = ?, balance_locked = ?, row_version = row_version + 1, updated_at = NOW() 
+             WHERE id = ?`, [
+            newStatus,
+            balanceLocked,
+            accountId
+        ]);
+        return {
+            success: true
+        };
+    });
+}
+async function refreshAccountBalance(accountId) {
+    // Placeholder for balance recalculation from ledger
+    // For now, we assume account_balances is consistent.
+    // Future implementation: Sum all ledger entries and update account_balances.
+    return;
+}
+}),
+"[project]/src/app/api/v1/accounts/[id]/statement/route.ts [app-route] (ecmascript)", ((__turbopack_context__) => {
+"use strict";
+
+__turbopack_context__.s([
+    "GET",
+    ()=>GET
+]);
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api-utils.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$statement$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/services/statement-service.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$account$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/services/account-service.ts [app-route] (ecmascript)");
+;
+;
+;
+const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withErrorHandler"])(async (request, context)=>{
+    const params = await context?.params;
+    const accountId = parseInt(params?.id || '0');
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withAuth"])(request, async (req)=>{
+        // Validate account exists
+        const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$account$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getAccountById"])(accountId);
+        if (!account) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["notFoundResponse"])('Account not found');
+        }
+        // Customers can only view their own accounts
+        if (req.tokenPayload?.type === 'customer') {
+            if (account.customerId !== req.customer?.id) {
+                return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["notFoundResponse"])('Account not found');
+            }
+        }
+        // Get query parameters
+        const { searchParams } = new URL(request.url);
+        const from = searchParams.get('from');
+        const to = searchParams.get('to');
+        const page = parseInt(searchParams.get('page') || '1');
+        const size = parseInt(searchParams.get('size') || '50');
+        // Validate required parameters
+        if (!from || !to) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Missing required parameters: from and to dates are required');
+        }
+        // Validate date format
+        const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+        if (!dateRegex.test(from) || !dateRegex.test(to)) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Invalid date format. Use YYYY-MM-DD');
+        }
+        // Validate date range
+        if (new Date(from) > new Date(to)) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Invalid date range: from date must be before to date');
+        }
+        try {
+            const { statement, total } = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$statement$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getAccountStatement"])(accountId, {
+                from,
+                to,
+                page,
+                size
+            });
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["successResponse"])(statement, (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getPaginationMeta"])(page, size, total));
+        } catch (error) {
+            console.error('Statement generation error:', error);
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Failed to generate statement');
+        }
+    }, {
+        requiredType: 'any'
+    });
+});
+}),
+];
+
+//# sourceMappingURL=%5Broot-of-the-server%5D__f2ec915c._.js.map

@@ -1,0 +1,27 @@
+[
+  {
+    "name": "Deposit Double-Entry",
+    "passed": true,
+    "message": "2 entries created, customer +1000, cash -1000"
+  },
+  {
+    "name": "Withdraw Double-Entry",
+    "passed": true,
+    "message": "2 entries created, customer -500, cash +500"
+  },
+  {
+    "name": "Insufficient Balance",
+    "passed": true,
+    "message": "Correctly rejected"
+  },
+  {
+    "name": "Ledger Integrity",
+    "passed": true,
+    "message": "All transactions balanced"
+  },
+  {
+    "name": "Zero/Negative Amount",
+    "passed": true,
+    "message": "Correctly rejected"
+  }
+]

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///E:/octo-fortnight-main/src/app/ping/page.tsx"],"sourcesContent":["export default function Ping() { return <div>Pong</div> }\r\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IAAS,qBAAO,6VAAC;kBAAI;;;;;;AAAW"}}]
+}
