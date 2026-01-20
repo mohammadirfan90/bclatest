@@ -865,11 +865,11 @@ var _s = __turbopack_context__.k.signature();
 function LoginPage() {
     _s();
     const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(37);
-    if ($[0] !== "3eb4c7b489e2390c0863375339d730baa08538f6159af6333adb6b6a005dbd01") {
+    if ($[0] !== "9391c02dea761dfde072c5aecadd5ac9f5491cf6b80fbdf4591e854e3aaa1f33") {
         for(let $i = 0; $i < 37; $i += 1){
             $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
-        $[0] = "3eb4c7b489e2390c0863375339d730baa08538f6159af6333adb6b6a005dbd01";
+        $[0] = "9391c02dea761dfde072c5aecadd5ac9f5491cf6b80fbdf4591e854e3aaa1f33";
     }
     const [email, setEmail] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
     const [password, setPassword] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])("");
@@ -904,26 +904,15 @@ function LoginPage() {
             className: "text-center mb-8",
             children: [
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "inline-flex items-center justify-center w-16 h-16 bg-slate-900 rounded-xl mb-4",
-                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                        className: "w-8 h-8 text-white",
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            strokeWidth: 2,
-                            d: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/(auth)/login/page.tsx",
-                            lineNumber: 51,
-                            columnNumber: 230
-                        }, this)
+                    className: "inline-flex items-center justify-center w-20 h-20 bg-white rounded-xl mb-4 shadow-sm p-2",
+                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                        src: "/bank.png",
+                        alt: "Logo",
+                        className: "w-full h-full object-contain"
                     }, void 0, false, {
                         fileName: "[project]/src/app/(auth)/login/page.tsx",
                         lineNumber: 51,
-                        columnNumber: 140
+                        columnNumber: 150
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/login/page.tsx",
@@ -936,7 +925,7 @@ function LoginPage() {
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/login/page.tsx",
                     lineNumber: 51,
-                    columnNumber: 487
+                    columnNumber: 231
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
                     className: "text-slate-600 mt-1",
@@ -944,7 +933,7 @@ function LoginPage() {
                 }, void 0, false, {
                     fileName: "[project]/src/app/(auth)/login/page.tsx",
                     lineNumber: 51,
-                    columnNumber: 554
+                    columnNumber: 298
                 }, this)
             ]
         }, void 0, true, {

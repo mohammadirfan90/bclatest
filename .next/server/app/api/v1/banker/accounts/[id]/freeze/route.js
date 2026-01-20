@@ -1,0 +1,11 @@
+var R=require("../../../../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/banker/accounts/[id]/freeze/route.js")
+R.c("server/chunks/[root-of-the-server]__1b66aa25._.js")
+R.c("server/chunks/17462_zod_v4_classic_external_4ae691a3.js")
+R.c("server/chunks/0896d_next_dist_317c677d._.js")
+R.c("server/chunks/17462_zod_v4_classic_errors_0d608418.js")
+R.c("server/chunks/[root-of-the-server]__bc8b99aa._.js")
+R.c("server/chunks/[root-of-the-server]__c5a7aeec._.js")
+R.c("server/chunks/_b9375315._.js")
+R.c("server/chunks/ce889_server_app_api_v1_banker_accounts_[id]_freeze_route_actions_3870081a.js")
+R.m(30810)
+module.exports=R.m(30810).exports

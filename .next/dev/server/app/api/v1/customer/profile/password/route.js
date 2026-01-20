@@ -1,0 +1,12 @@
+var R=require("../../../../../../chunks/[turbopack]_runtime.js")("server/app/api/v1/customer/profile/password/route.js")
+R.c("server/chunks/src_lib_services_auth-service_ts_1c115c00._.js")
+R.c("server/chunks/0896d_next_d83e234c._.js")
+R.c("server/chunks/557b4_mysql2_381024e7._.js")
+R.c("server/chunks/ac8c2_iconv-lite_91825155._.js")
+R.c("server/chunks/89097_aws-ssl-profiles_lib_2064fe54._.js")
+R.c("server/chunks/17462_zod_v4_ebd59f5a._.js")
+R.c("server/chunks/node_modules__pnpm_579d9331._.js")
+R.c("server/chunks/[root-of-the-server]__cad58bbd._.js")
+R.c("server/chunks/ce889_server_app_api_v1_customer_profile_password_route_actions_9ea9fd38.js")
+R.m("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/v1/customer/profile/password/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)")
+module.exports=R.m("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/esm/build/templates/app-route.js { INNER_APP_ROUTE => \"[project]/src/app/api/v1/customer/profile/password/route.ts [app-route] (ecmascript)\" } [app-route] (ecmascript)").exports

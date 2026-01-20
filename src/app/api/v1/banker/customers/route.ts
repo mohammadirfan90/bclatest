@@ -61,14 +61,7 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
             [...params, limit, offset]
         );
 
-        // Map for legacy UI compatibility if needed, but we'll update the UI too
-        const enrichedRows = rows.map(row => ({
-            ...row,
-            onboarding_status: row.account_existence_status, // Map to existing UI field for minimal disruption
-            kyc_status: row.kyc_status || 'N/A'
-        }));
-
-        return successResponse(enrichedRows, getPaginationMeta(page, limit, total));
+        return successResponse(rows, getPaginationMeta(page, limit, total));
     }, { requiredRoles: ['BANKER', 'ADMIN'], hideFailure: true });
 });
 

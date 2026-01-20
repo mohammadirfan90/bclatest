@@ -296,16 +296,12 @@ __turbopack_context__.s([
     ()=>authenticateCustomer,
     "authenticateUser",
     ()=>authenticateUser,
-    "completeSignup",
-    ()=>completeSignup,
     "createCustomer",
     ()=>createCustomer,
     "createUser",
     ()=>createUser,
     "generateRefreshToken",
     ()=>generateRefreshToken,
-    "generateSignupToken",
-    ()=>generateSignupToken,
     "generateToken",
     ()=>generateToken,
     "getSession",
@@ -328,18 +324,12 @@ __turbopack_context__.s([
     ()=>refreshAccessToken,
     "verifyPassword",
     ()=>verifyPassword,
-    "verifySignupToken",
-    ()=>verifySignupToken,
     "verifyToken",
     ()=>verifyToken
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$bcryptjs$40$3$2e$0$2e$3$2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/jsonwebtoken@9.0.3/node_modules/jsonwebtoken/index.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
-// =============================================================================
-// Signup Token Management
-// =============================================================================
-var __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/crypto [external] (crypto, cjs)");
 // =============================================================================
 // Session Helper for Next.js App Router
 // =============================================================================
@@ -610,7 +600,7 @@ async function createCustomer(email, password, firstName, lastName, createdBy) {
     const customerNumber = `C${Date.now().toString().slice(-10)}`;
     try {
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customers (customer_number, email, password_hash, first_name, last_name, status, created_by)
-       VALUES (?, ?, ?, ?, ?, 'PENDING', ?)`, [
+       VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?)`, [
             customerNumber,
             email,
             passwordHash,
@@ -659,154 +649,6 @@ async function logout(userId, type) {
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])('DELETE FROM user_sessions WHERE user_id = ?', [
             userId
         ]);
-    }
-}
-;
-async function generateSignupToken(customerId, accountId, createdBy) {
-    const validation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT c.id as customer_id, c.status, c.kyc_status, c.onboarding_status, c.password_hash,
-                a.customer_id as account_customer_id
-         FROM customers c
-         LEFT JOIN accounts a ON a.id = ?
-         WHERE c.id = ?`, [
-        accountId,
-        customerId
-    ]);
-    if (!validation) {
-        return {
-            success: false,
-            error: 'Customer not found'
-        };
-    }
-    // Check Account Ownership
-    if (validation.account_customer_id !== validation.customer_id) {
-        return {
-            success: false,
-            error: 'Account does not belong to this customer'
-        };
-    }
-    // Check Customer Status
-    if (validation.status !== 'PENDING' && validation.status !== 'ACTIVE') {
-        return {
-            success: false,
-            error: 'Customer status invalid for onboarding'
-        };
-    }
-    // Check KYC Status (Must be VERIFIED or PENDING, usually VERIFIED is preferred but strict mode might allow PENDING if reviewing)
-    // Requirement said: VERIFIED or PENDING
-    if (validation.kyc_status !== 'VERIFIED' && validation.kyc_status !== 'PENDING') {
-        return {
-            success: false,
-            error: 'Customer KYC must be Verified or Pending'
-        };
-    }
-    // Check Onboarding Status (Must be PENDING_SIGNUP)
-    if (validation.onboarding_status !== 'PENDING_SIGNUP') {
-        return {
-            success: false,
-            error: 'Customer has already signed up or is not in signup phase'
-        };
-    }
-    // Check for existing password (redundant but safe)
-    if (validation.password_hash) {
-        return {
-            success: false,
-            error: 'Customer already has credentials'
-        };
-    }
-    // 2. Generate random token
-    const token = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].randomBytes(32).toString('hex');
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    // 3. Set expiry (e.g., 48 hours)
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 48);
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customer_signup_tokens (token_hash, customer_id, account_id, created_by, expires_at)
-             VALUES (?, ?, ?, ?, ?)`, [
-            tokenHash,
-            customerId,
-            accountId,
-            createdBy,
-            expiresAt
-        ]);
-        return {
-            success: true,
-            token
-        };
-    } catch (error) {
-        return {
-            success: false,
-            error: 'Failed to generate signup token'
-        };
-    }
-}
-async function verifySignupToken(token) {
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    const tokenRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT customer_id, account_id, expires_at, used_at 
-         FROM customer_signup_tokens 
-         WHERE token_hash = ?`, [
-        tokenHash
-    ]);
-    if (!tokenRow) {
-        return {
-            success: false,
-            error: 'Invalid signup link'
-        };
-    }
-    if (tokenRow.used_at) {
-        return {
-            success: false,
-            error: 'This link has already been used'
-        };
-    }
-    if (new Date() > tokenRow.expires_at) {
-        return {
-            success: false,
-            error: 'Signup link has expired'
-        };
-    }
-    return {
-        success: true,
-        data: {
-            customerId: tokenRow.customer_id,
-            accountId: tokenRow.account_id
-        }
-    };
-}
-async function completeSignup(token, password) {
-    const verifyResult = await verifySignupToken(token);
-    if (!verifyResult.success || !verifyResult.data) {
-        return {
-            success: false,
-            error: verifyResult.error
-        };
-    }
-    const { customerId } = verifyResult.data;
-    const passwordHash = await hashPassword(password);
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    try {
-        // 1. Update customer password and status
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customers 
-             SET password_hash = ?, 
-                 onboarding_status = 'PENDING_APPROVAL',
-                 updated_at = NOW() 
-             WHERE id = ?`, [
-            passwordHash,
-            customerId
-        ]);
-        // 2. Mark token as used
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customer_signup_tokens 
-             SET used_at = NOW() 
-             WHERE token_hash = ?`, [
-            tokenHash
-        ]);
-        return {
-            success: true
-        };
-    } catch (error) {
-        return {
-            success: false,
-            error: 'Failed to complete signup'
-        };
     }
 }
 ;
@@ -1651,8 +1493,11 @@ async function createAccount(customerId, accountTypeId, createdBy) {
                 error: 'Customer not found'
             };
         }
-        // 2. Generate Account Number (10 + 8 random digits)
-        const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+        // 2. Generate Account Number (matches existing 1001-XXXX-XXXX format)
+        const segment1 = '1001';
+        const segment2 = String(customerId).padStart(4, '0');
+        const segment3 = String(Math.floor(1000 + Math.random() * 9000));
+        const accountNumber = `${segment1}-${segment2}-${segment3}`;
         return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
             // 3. Insert Account record
             const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
@@ -1711,54 +1556,27 @@ async function getPendingApplications() {
 }
 async function onboardNewCustomer(data) {
     try {
-        // 1. Generate a temporary password (they should change it later)
-        // Since we don't have an email system yet, we'll use a predictable but "safe-ish" default or random string.
+        // Generate a temporary password (they should change it later)
         const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
         const { hashPassword } = await __turbopack_context__.A("[project]/src/lib/services/auth-service.ts [app-route] (ecmascript, async loader)");
         const passwordHash = await hashPassword(tempPassword);
-        // 2. Lookup SAVINGS account type ID
-        const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])("SELECT id FROM account_types WHERE code = 'SAVINGS'");
-        if (!typeRow) {
-            return {
-                success: false,
-                error: 'Default account type (SAVINGS) not found'
-            };
-        }
-        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
-            // 3. Create Customer
-            const [customerResult] = await conn.execute(`INSERT INTO customers 
-                 (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
-                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`, [
-                data.customerNumber,
-                data.email,
-                data.firstName,
-                data.lastName,
-                data.dateOfBirth,
-                data.createdBy,
-                passwordHash
-            ]);
-            const customerId = customerResult.insertId;
-            // 4. Create Account
-            const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
-            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
-                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
-                accountNumber,
-                customerId,
-                typeRow.id,
-                data.createdBy
-            ]);
-            const accountId = accountResult.insertId;
-            // 5. Initialize Balance
-            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
-                 VALUES (?, 0.0000, 'BDT', 1)`, [
-                accountId
-            ]);
-            return {
-                success: true,
-                customerId,
-                accountId
-            };
-        });
+        // Create Customer (no automatic account)
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customers 
+             (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+             VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`, [
+            data.customerNumber,
+            data.email,
+            data.firstName,
+            data.lastName,
+            data.dateOfBirth,
+            data.createdBy,
+            passwordHash
+        ]);
+        return {
+            success: true,
+            customerId: result.insertId,
+            tempPassword
+        };
     } catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
             return {
@@ -1766,10 +1584,10 @@ async function onboardNewCustomer(data) {
                 error: 'Email or Customer Number already exists'
             };
         }
-        console.error('Error during onboarding:', error);
+        console.error('Error during customer creation:', error);
         return {
             success: false,
-            error: 'Database error during customer onboarding'
+            error: 'Database error during customer creation'
         };
     }
 }

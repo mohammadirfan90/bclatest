@@ -23,7 +23,7 @@ interface Customer {
     email: string;
     status: string;
     kyc_status: string;
-    onboarding_status: string;
+    account_existence_status: string;
     primary_account_id: number;
     created_at: string;
 }
@@ -64,6 +64,9 @@ export default function BankerCustomersPage() {
                     <h1 className="text-2xl font-bold text-slate-900">Customer Management</h1>
                     <p className="text-slate-600">Overview of bank customers and their account status.</p>
                 </div>
+                <Button asChild>
+                    <Link href="/banker/customers/new">+ New Customer</Link>
+                </Button>
             </div>
 
             {error && (
@@ -91,9 +94,9 @@ export default function BankerCustomersPage() {
                                 <TableCell>{c.email}</TableCell>
                                 <TableCell>
                                     <Badge variant={
-                                        c.onboarding_status === 'HAS_ACCOUNT' ? 'default' : 'outline'
+                                        c.account_existence_status === 'HAS_ACCOUNT' ? 'default' : 'outline'
                                     }>
-                                        {c.onboarding_status?.replace('_', ' ') || 'NO ACCOUNT'}
+                                        {c.account_existence_status?.replace('_', ' ') || 'NO ACCOUNT'}
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="text-right space-x-2">

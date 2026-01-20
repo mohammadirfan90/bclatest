@@ -1,0 +1,3 @@
+module.exports=[49846,a=>{"use strict";var b=a.i(69426),c=a.i(35843),d=a.i(79515),e=a.i(60721);function f(){let{user:a,userType:f,isLoading:g,isAuthenticated:h}=(0,e.useAuth)(),i=(0,d.useRouter)();return(0,c.useEffect)(()=>{if(!g){if(!h)return void i.push("/login");"customer"===f?i.push("/customer/dashboard"):a?.roleCode==="ADMIN"?i.push("/admin/dashboard"):i.push("/banker/dashboard")}},[a,f,g,h,i]),(0,b.jsx)("div",{className:"flex h-screen items-center justify-center",children:(0,b.jsx)("div",{className:"animate-spin h-8 w-8 border-4 border-slate-900 border-t-transparent rounded-full"})})}a.s(["default",()=>f])}];
+
+//# sourceMappingURL=src_app_dashboard_page_tsx_196c74b5._.js.map

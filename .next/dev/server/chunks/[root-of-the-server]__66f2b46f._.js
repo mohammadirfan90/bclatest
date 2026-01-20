@@ -1221,6 +1221,8 @@ __turbopack_context__.s([
     ()=>getTransactionsForAccount,
     "rebuildBalance",
     ()=>rebuildBalance,
+    "searchTransactions",
+    ()=>searchTransactions,
     "transfer",
     ()=>transfer,
     "verifyBalanceIntegrity",
@@ -1409,6 +1411,96 @@ async function getAllTransactions(options = {}) {
     return {
         transactions: rows.map(mapTransactionRow),
         total: countRow?.count || 0
+    };
+}
+async function searchTransactions(options = {}) {
+    const { limit = 50, offset = 0, accountId, accountNumber, transactionReference, entryType, startDate, endDate, status, type } = options;
+    const conditions = [
+        '1=1'
+    ];
+    const params = [];
+    if (accountId) {
+        conditions.push('(t.source_account_id = ? OR t.destination_account_id = ?)');
+        params.push(accountId, accountId);
+    }
+    if (accountNumber) {
+        conditions.push('(sa.account_number = ? OR da.account_number = ?)');
+        params.push(accountNumber, accountNumber);
+    }
+    if (transactionReference) {
+        conditions.push('t.transaction_reference = ?');
+        params.push(transactionReference);
+    }
+    if (entryType) {
+        conditions.push('le.entry_type = ?');
+        params.push(entryType);
+    }
+    if (startDate) {
+        conditions.push('t.created_at >= ?');
+        params.push(startDate);
+    }
+    if (endDate) {
+        conditions.push('t.created_at <= ?');
+        params.push(endDate + ' 23:59:59');
+    }
+    if (status) {
+        conditions.push('t.status = ?');
+        params.push(status);
+    }
+    if (type) {
+        conditions.push('tt.code = ?');
+        params.push(type);
+    }
+    const whereClause = conditions.join(' AND ');
+    let joinClause = `
+        INNER JOIN transaction_types tt ON t.transaction_type_id = tt.id
+        LEFT JOIN accounts sa ON t.source_account_id = sa.id
+        LEFT JOIN accounts da ON t.destination_account_id = da.id
+        LEFT JOIN customers c_source ON sa.customer_id = c_source.id
+        LEFT JOIN customers c_dest ON da.customer_id = c_dest.id
+    `;
+    if (entryType) {
+        joinClause += ` INNER JOIN ledger_entries le ON le.transaction_id = t.id `;
+    } else {
+        joinClause += ` LEFT JOIN ledger_entries le ON le.transaction_id = t.id `;
+    }
+    const countRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(DISTINCT t.id) as total 
+         FROM transactions t
+         ${joinClause}
+         WHERE ${whereClause}`, params);
+    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT DISTINCT t.id, t.transaction_reference, t.amount, t.currency, t.status, t.description, t.created_at,
+                tt.code as type, tt.name as type_name,
+                sa.account_number as source_account,
+                da.account_number as dest_account,
+                CONCAT(c_source.first_name, ' ', c_source.last_name) as source_owner,
+                CONCAT(c_dest.first_name, ' ', c_dest.last_name) as dest_owner
+         FROM transactions t
+         ${joinClause}
+         WHERE ${whereClause}
+         ORDER BY t.created_at DESC
+         LIMIT ? OFFSET ?`, [
+        ...params,
+        limit,
+        offset
+    ]);
+    return {
+        transactions: rows.map((row)=>({
+                id: row.id,
+                transactionReference: row.transaction_reference,
+                amount: parseFloat(row.amount),
+                currency: row.currency,
+                status: row.status,
+                description: row.description,
+                createdAt: row.created_at,
+                type: row.type,
+                typeName: row.type_name,
+                sourceAccount: row.source_account,
+                destAccount: row.dest_account,
+                sourceOwner: row.source_owner,
+                destOwner: row.dest_owner,
+                entryType: entryType || null
+            })),
+        total: countRow?.total || 0
     };
 }
 async function getLedgerEntriesForAccount(accountId, options = {}) {

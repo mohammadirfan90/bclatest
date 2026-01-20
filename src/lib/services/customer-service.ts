@@ -18,10 +18,8 @@ export interface Customer {
     addressLine2: string | null;
     city: string | null;
     postalCode: string | null;
-    country: string;
     status: string;
     kycStatus: string;
-    riskScore: number;
     createdAt: Date;
 }
 
@@ -72,10 +70,8 @@ interface CustomerRow extends RowDataPacket {
     address_line2: string | null;
     city: string | null;
     postal_code: string | null;
-    country: string;
     status: string;
     kyc_status: string;
-    risk_score: number;
     created_at: Date;
     account_count?: number;
     total_balance?: string;
@@ -95,10 +91,8 @@ function mapCustomerRow(row: CustomerRow): Customer {
         addressLine2: row.address_line2,
         city: row.city,
         postalCode: row.postal_code,
-        country: row.country,
         status: row.status,
         kycStatus: row.kyc_status,
-        riskScore: row.risk_score,
         createdAt: row.created_at,
     };
 }
@@ -107,7 +101,7 @@ export async function getCustomerById(customerId: number): Promise<Customer | nu
     const row = await queryOne<CustomerRow>(
         `SELECT id, customer_number, email, first_name, last_name, phone,
             date_of_birth, national_id, address_line1, address_line2,
-            city, postal_code, country, status, kyc_status, risk_score, created_at
+            city, postal_code, status, kyc_status, created_at
      FROM customers
      WHERE id = ?`,
         [customerId]
@@ -121,7 +115,7 @@ export async function getCustomerByNumber(customerNumber: string): Promise<Custo
     const row = await queryOne<CustomerRow>(
         `SELECT id, customer_number, email, first_name, last_name, phone,
             date_of_birth, national_id, address_line1, address_line2,
-            city, postal_code, country, status, kyc_status, risk_score, created_at
+            city, postal_code, status, kyc_status, created_at
      FROM customers
      WHERE customer_number = ?`,
         [customerNumber]

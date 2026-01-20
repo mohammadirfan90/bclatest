@@ -777,31 +777,48 @@ function BankerCustomersPage() {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 className: "flex items-center justify-between",
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    children: [
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
-                            className: "text-2xl font-bold text-slate-900",
-                            children: "Customer Management"
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                className: "text-2xl font-bold text-slate-900",
+                                children: "Customer Management"
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/banker/customers/page.tsx",
+                                lineNumber: 52,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-slate-600",
+                                children: "Overview of bank customers and their account status."
+                            }, void 0, false, {
+                                fileName: "[project]/src/app/banker/customers/page.tsx",
+                                lineNumber: 53,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/app/banker/customers/page.tsx",
+                        lineNumber: 51,
+                        columnNumber: 17
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
+                        asChild: true,
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                            href: "/banker/customers/new",
+                            children: "+ New Customer"
                         }, void 0, false, {
                             fileName: "[project]/src/app/banker/customers/page.tsx",
-                            lineNumber: 52,
-                            columnNumber: 21
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                            className: "text-slate-600",
-                            children: "Overview of bank customers and their account status."
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/banker/customers/page.tsx",
-                            lineNumber: 53,
+                            lineNumber: 56,
                             columnNumber: 21
                         }, this)
-                    ]
-                }, void 0, true, {
-                    fileName: "[project]/src/app/banker/customers/page.tsx",
-                    lineNumber: 51,
-                    columnNumber: 17
-                }, this)
-            }, void 0, false, {
+                    }, void 0, false, {
+                        fileName: "[project]/src/app/banker/customers/page.tsx",
+                        lineNumber: 55,
+                        columnNumber: 17
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/src/app/banker/customers/page.tsx",
                 lineNumber: 50,
                 columnNumber: 13
@@ -812,12 +829,12 @@ function BankerCustomersPage() {
                     children: error
                 }, void 0, false, {
                     fileName: "[project]/src/app/banker/customers/page.tsx",
-                    lineNumber: 58,
+                    lineNumber: 61,
                     columnNumber: 21
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                lineNumber: 57,
+                lineNumber: 60,
                 columnNumber: 23
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -831,28 +848,28 @@ function BankerCustomersPage() {
                                         children: "Customer #"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 65,
+                                        lineNumber: 68,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
                                         children: "Name"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 66,
+                                        lineNumber: 69,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
                                         children: "Email"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 67,
+                                        lineNumber: 70,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
                                         children: "Account Status"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 68,
+                                        lineNumber: 71,
                                         columnNumber: 29
                                     }, this),
                                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableHead"], {
@@ -860,18 +877,18 @@ function BankerCustomersPage() {
                                         children: "Actions"
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 69,
+                                        lineNumber: 72,
                                         columnNumber: 29
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                lineNumber: 64,
+                                lineNumber: 67,
                                 columnNumber: 25
                             }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/app/banker/customers/page.tsx",
-                            lineNumber: 63,
+                            lineNumber: 66,
                             columnNumber: 21
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableBody"], {
@@ -883,7 +900,7 @@ function BankerCustomersPage() {
                                                 children: c.customer_number
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                lineNumber: 74,
+                                                lineNumber: 77,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -895,14 +912,14 @@ function BankerCustomersPage() {
                                                 ]
                                             }, void 0, true, {
                                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                lineNumber: 75,
+                                                lineNumber: 78,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
                                                 children: c.email
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                lineNumber: 76,
+                                                lineNumber: 79,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -911,12 +928,12 @@ function BankerCustomersPage() {
                                                     children: c.onboarding_status?.replace('_', ' ') || 'NO ACCOUNT'
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                    lineNumber: 78,
+                                                    lineNumber: 81,
                                                     columnNumber: 37
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                lineNumber: 77,
+                                                lineNumber: 80,
                                                 columnNumber: 33
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableCell"], {
@@ -930,23 +947,23 @@ function BankerCustomersPage() {
                                                         children: "View Details"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                        lineNumber: 84,
+                                                        lineNumber: 87,
                                                         columnNumber: 41
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                    lineNumber: 83,
+                                                    lineNumber: 86,
                                                     columnNumber: 37
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                                                lineNumber: 82,
+                                                lineNumber: 85,
                                                 columnNumber: 33
                                             }, this)
                                         ]
                                     }, c.id, true, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 73,
+                                        lineNumber: 76,
                                         columnNumber: 45
                                     }, this)),
                                 customers.length === 0 && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$table$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["TableRow"], {
@@ -956,29 +973,29 @@ function BankerCustomersPage() {
                                         children: "No customers found."
                                     }, void 0, false, {
                                         fileName: "[project]/src/app/banker/customers/page.tsx",
-                                        lineNumber: 89,
+                                        lineNumber: 92,
                                         columnNumber: 33
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/banker/customers/page.tsx",
-                                    lineNumber: 88,
+                                    lineNumber: 91,
                                     columnNumber: 52
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/banker/customers/page.tsx",
-                            lineNumber: 72,
+                            lineNumber: 75,
                             columnNumber: 21
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/banker/customers/page.tsx",
-                    lineNumber: 62,
+                    lineNumber: 65,
                     columnNumber: 17
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/banker/customers/page.tsx",
-                lineNumber: 61,
+                lineNumber: 64,
                 columnNumber: 13
             }, this)
         ]

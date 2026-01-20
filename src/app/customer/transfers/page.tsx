@@ -9,6 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { CheckCircle } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface Account {
@@ -28,6 +29,7 @@ export default function TransfersPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState(false);
 
     // Form state
     const [fromAccountId, setFromAccountId] = useState('');
@@ -51,6 +53,7 @@ export default function TransfersPage() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setSuccess(false);
         setIsSubmitting(true);
 
         const result = await apiClient('/transactions/transfer', {
@@ -65,6 +68,7 @@ export default function TransfersPage() {
         });
 
         if (result.success) {
+            setSuccess(true);
             toast.success('Transfer completed successfully!');
             setAmount('');
             setToAccountNumber('');
@@ -104,6 +108,15 @@ export default function TransfersPage() {
                         {error && (
                             <Alert variant="destructive">
                                 <AlertDescription>{error}</AlertDescription>
+                            </Alert>
+                        )}
+
+                        {success && (
+                            <Alert className="bg-green-50 border-green-200">
+                                <CheckCircle className="h-4 w-4 text-green-600" />
+                                <AlertDescription className="text-green-800 ml-2">
+                                    Transfer completed successfully!
+                                </AlertDescription>
                             </Alert>
                         )}
 

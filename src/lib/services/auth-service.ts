@@ -374,7 +374,7 @@ export async function createCustomer(
     try {
         const result = await execute(
             `INSERT INTO customers (customer_number, email, password_hash, first_name, last_name, status, created_by)
-       VALUES (?, ?, ?, ?, ?, 'PENDING', ?)`,
+       VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?)`,
             [customerNumber, email, passwordHash, firstName, lastName, createdBy ?? null]
         );
 
@@ -417,7 +417,6 @@ export function isAnyRole(user: User, roles: string[]): boolean {
 
 export async function logout(userId: number, type: 'user' | 'customer'): Promise<void> {
     const table = type === 'user' ? 'users' : 'customers';
-
     // Increment token version to invalidate all existing tokens
     await execute(
         `UPDATE ${table} SET token_version = token_version + 1 WHERE id = ?`,
@@ -427,169 +426,6 @@ export async function logout(userId: number, type: 'user' | 'customer'): Promise
     // Also remove any active sessions
     if (type === 'user') {
         await execute('DELETE FROM user_sessions WHERE user_id = ?', [userId]);
-    }
-}
-
-// =============================================================================
-// Signup Token Management
-// =============================================================================
-
-import crypto from 'crypto';
-
-interface SignupTokenResult {
-    success: boolean;
-    token?: string;
-    error?: string;
-}
-
-export async function generateSignupToken(
-    customerId: number,
-    accountId: number,
-    createdBy: number
-): Promise<SignupTokenResult> {
-    // 1. Strict Validation
-    // Verify Customer exists AND Account belongs to them AND they are eligible for signup
-    interface ValidationRow extends RowDataPacket {
-        customer_id: number;
-        status: string;
-        kyc_status: string;
-        onboarding_status: string;
-        account_customer_id: number;
-        password_hash: string;
-    }
-
-    const validation = await queryOne<ValidationRow>(
-        `SELECT c.id as customer_id, c.status, c.kyc_status, c.onboarding_status, c.password_hash,
-                a.customer_id as account_customer_id
-         FROM customers c
-         LEFT JOIN accounts a ON a.id = ?
-         WHERE c.id = ?`,
-        [accountId, customerId]
-    );
-
-    if (!validation) {
-        return { success: false, error: 'Customer not found' };
-    }
-
-    // Check Account Ownership
-    if (validation.account_customer_id !== validation.customer_id) {
-        return { success: false, error: 'Account does not belong to this customer' };
-    }
-
-    // Check Customer Status
-    if (validation.status !== 'PENDING' && validation.status !== 'ACTIVE') {
-        return { success: false, error: 'Customer status invalid for onboarding' };
-    }
-
-    // Check KYC Status (Must be VERIFIED or PENDING, usually VERIFIED is preferred but strict mode might allow PENDING if reviewing)
-    // Requirement said: VERIFIED or PENDING
-    if (validation.kyc_status !== 'VERIFIED' && validation.kyc_status !== 'PENDING') {
-        return { success: false, error: 'Customer KYC must be Verified or Pending' };
-    }
-
-    // Check Onboarding Status (Must be PENDING_SIGNUP)
-    if (validation.onboarding_status !== 'PENDING_SIGNUP') {
-        return { success: false, error: 'Customer has already signed up or is not in signup phase' };
-    }
-
-    // Check for existing password (redundant but safe)
-    if (validation.password_hash) {
-        return { success: false, error: 'Customer already has credentials' };
-    }
-
-    // 2. Generate random token
-    const token = crypto.randomBytes(32).toString('hex');
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-
-    // 3. Set expiry (e.g., 48 hours)
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 48);
-
-    try {
-        await execute(
-            `INSERT INTO customer_signup_tokens (token_hash, customer_id, account_id, created_by, expires_at)
-             VALUES (?, ?, ?, ?, ?)`,
-            [tokenHash, customerId, accountId, createdBy, expiresAt]
-        );
-
-        return { success: true, token };
-    } catch (error) {
-        return { success: false, error: 'Failed to generate signup token' };
-    }
-}
-
-export async function verifySignupToken(token: string): Promise<{ success: boolean; data?: any; error?: string }> {
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-
-    const tokenRow = await queryOne<RowDataPacket & {
-        customer_id: number;
-        account_id: number;
-        expires_at: Date;
-        used_at: Date | null
-    }>(
-        `SELECT customer_id, account_id, expires_at, used_at 
-         FROM customer_signup_tokens 
-         WHERE token_hash = ?`,
-        [tokenHash]
-    );
-
-    if (!tokenRow) {
-        return { success: false, error: 'Invalid signup link' };
-    }
-
-    if (tokenRow.used_at) {
-        return { success: false, error: 'This link has already been used' };
-    }
-
-    if (new Date() > tokenRow.expires_at) {
-        return { success: false, error: 'Signup link has expired' };
-    }
-
-    return {
-        success: true,
-        data: {
-            customerId: tokenRow.customer_id,
-            accountId: tokenRow.account_id
-        }
-    };
-}
-
-export async function completeSignup(
-    token: string,
-    password: string
-): Promise<{ success: boolean; error?: string }> {
-    const verifyResult = await verifySignupToken(token);
-
-    if (!verifyResult.success || !verifyResult.data) {
-        return { success: false, error: verifyResult.error };
-    }
-
-    const { customerId } = verifyResult.data;
-    const passwordHash = await hashPassword(password);
-    const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-
-    try {
-        // 1. Update customer password and status
-        await execute(
-            `UPDATE customers 
-             SET password_hash = ?, 
-                 onboarding_status = 'PENDING_APPROVAL',
-                 updated_at = NOW() 
-             WHERE id = ?`,
-            [passwordHash, customerId]
-        );
-
-        // 2. Mark token as used
-        await execute(
-            `UPDATE customer_signup_tokens 
-             SET used_at = NOW() 
-             WHERE token_hash = ?`,
-            [tokenHash]
-        );
-
-        return { success: true };
-    } catch (error) {
-        return { success: false, error: 'Failed to complete signup' };
     }
 }
 

@@ -16,7 +16,6 @@ const createCustomerSchema = z.object({
     lastName: z.string().min(1),
     email: z.string().email(),
     dateOfBirth: z.string(),
-    customerNumber: z.string().min(1),
 });
 
 export const POST = withErrorHandler(async (request: NextRequest) => {
@@ -35,9 +34,12 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
             return validationErrorResponse(result.error.issues.map((e: z.ZodIssue) => ({ field: e.path.join('.'), message: e.message })));
         }
 
-        const { firstName, lastName, email, dateOfBirth, customerNumber } = result.data;
+        const { firstName, lastName, email, dateOfBirth } = result.data;
 
-        // 3. Onboard Customer and Default Account
+        // 3. Auto-generate Customer Number (matches existing CUS-XXXX format)
+        const customerNumber = `CUS-${Date.now().toString().slice(-6).padStart(4, '0')}`;
+
+        // 4. Onboard Customer and Default Account
         const onboardResult = await onboardNewCustomer({
             firstName,
             lastName,
@@ -52,9 +54,11 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
         }
 
         return successResponse({
-            message: 'Customer record and default account created successfully',
+            message: 'Customer created successfully',
             customerId: onboardResult.customerId,
-            accountId: onboardResult.accountId
+            customerNumber: customerNumber,
+            email: email,
+            tempPassword: onboardResult.tempPassword, // Show to banker
         });
 
     }, { requiredRoles: ['BANKER', 'ADMIN'], hideFailure: true });

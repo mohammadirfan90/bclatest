@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/banker/layout,_N_T_/banker/withdrawals/layout,_N_T_/banker/withdrawals/page,_N_T_/banker/withdrawals"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/banker/withdrawals/__PAGE__",
+    "/banker/withdrawals",
+    "/banker",
+    "/_index",
+    "/_head"
+  ]
+}

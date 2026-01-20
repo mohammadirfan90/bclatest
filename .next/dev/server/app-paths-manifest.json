@@ -1,13 +1,4 @@
 {
   "/(auth)/login/page": "app/(auth)/login/page.js",
-  "/api/v1/accounts/[id]/statement/route": "app/api/v1/accounts/[id]/statement/route.js",
-  "/api/v1/accounts/route": "app/api/v1/accounts/route.js",
-  "/api/v1/auth/login/route": "app/api/v1/auth/login/route.js",
-  "/api/v1/customer/profile/route": "app/api/v1/customer/profile/route.js",
-  "/customer/accounts/page": "app/customer/accounts/page.js",
-  "/customer/dashboard/page": "app/customer/dashboard/page.js",
-  "/customer/profile/page": "app/customer/profile/page.js",
-  "/customer/statements/page": "app/customer/statements/page.js",
-  "/customer/transfers/page": "app/customer/transfers/page.js",
   "/page": "app/page.js"
 }

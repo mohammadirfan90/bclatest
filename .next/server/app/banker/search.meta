@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/banker/layout,_N_T_/banker/search/layout,_N_T_/banker/search/page,_N_T_/banker/search"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/banker/search/__PAGE__",
+    "/banker/search",
+    "/banker",
+    "/_index",
+    "/_head"
+  ]
+}

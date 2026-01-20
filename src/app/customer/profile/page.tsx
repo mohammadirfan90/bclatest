@@ -5,9 +5,10 @@ import { apiClient } from '@/lib/auth-context';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription, CardFooter } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
+import { CheckCircle, Lock } from 'lucide-react';
 
 export default function CustomerProfilePage() {
     const [profile, setProfile] = useState<any>(null);
@@ -20,13 +21,22 @@ export default function CustomerProfilePage() {
     const [formData, setFormData] = useState<any>({});
     const [submitting, setSubmitting] = useState(false);
 
+    // Password Change State
+    const [passwordData, setPasswordData] = useState({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+    });
+    const [passwordSubmitting, setPasswordSubmitting] = useState(false);
+    const [passwordError, setPasswordError] = useState<string | null>(null);
+    const [passwordSuccess, setPasswordSuccess] = useState(false);
+
     const fetchProfile = async () => {
         try {
             const result = await apiClient<{ profile: any; pendingRequest: any }>('/customer/profile');
             if (result.success && result.data) {
                 setProfile(result.data.profile);
                 setPendingRequest(result.data.pendingRequest);
-                // Initialize form data with current profile
                 setFormData({
                     firstName: result.data.profile.first_name,
                     lastName: result.data.profile.last_name,
@@ -64,7 +74,7 @@ export default function CustomerProfilePage() {
             });
             if (result.success) {
                 setIsEditing(false);
-                fetchProfile(); // Refresh to see pending status
+                fetchProfile();
             } else {
                 alert(result.error || 'Update failed');
             }
@@ -72,6 +82,48 @@ export default function CustomerProfilePage() {
             alert('Update failed');
         } finally {
             setSubmitting(false);
+        }
+    };
+
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPasswordData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setPasswordError(null);
+        setPasswordSuccess(false);
+    };
+
+    const handlePasswordSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setPasswordSubmitting(true);
+        setPasswordError(null);
+        setPasswordSuccess(false);
+
+        if (passwordData.newPassword !== passwordData.confirmPassword) {
+            setPasswordError("Passwords don't match");
+            setPasswordSubmitting(false);
+            return;
+        }
+
+        if (passwordData.newPassword.length < 8) {
+            setPasswordError("New password must be at least 8 characters");
+            setPasswordSubmitting(false);
+            return;
+        }
+
+        try {
+            const result = await apiClient('/customer/profile/password', {
+                method: 'POST',
+                body: JSON.stringify(passwordData)
+            });
+            if (result.success) {
+                setPasswordSuccess(true);
+                setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
+            } else {
+                setPasswordError(result.error || 'Failed to change password');
+            }
+        } catch (e) {
+            setPasswordError('Failed to change password');
+        } finally {
+            setPasswordSubmitting(false);
         }
     };
 
@@ -97,8 +149,6 @@ export default function CustomerProfilePage() {
                         <CardTitle>Personal Information</CardTitle>
                         <CardDescription>Manage your identity details</CardDescription>
                     </div>
-                    {/* Only allow edit if no pending request and strictly active/verified? */}
-                    {/* Actually, user might want to correct a mistake, but let's block for simplicity if pending exists */}
                     {!isEditing && !pendingRequest && (
                         <Button variant="outline" onClick={() => setIsEditing(true)}>Edit Profile</Button>
                     )}
@@ -200,6 +250,77 @@ export default function CustomerProfilePage() {
                     </form>
                 </CardContent>
             </Card>
+
+            {/* Password Change Section */}
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                        <Lock className="h-5 w-5" />
+                        Change Password
+                    </CardTitle>
+                    <CardDescription>Update your login password</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <form onSubmit={handlePasswordSubmit} className="space-y-4 max-w-md">
+                        {passwordError && (
+                            <Alert variant="destructive">
+                                <AlertDescription>{passwordError}</AlertDescription>
+                            </Alert>
+                        )}
+                        {passwordSuccess && (
+                            <Alert className="bg-green-50 border-green-200">
+                                <CheckCircle className="h-4 w-4 text-green-600" />
+                                <AlertDescription className="text-green-800 ml-2">
+                                    Password changed successfully!
+                                </AlertDescription>
+                            </Alert>
+                        )}
+
+                        <div className="space-y-2">
+                            <Label htmlFor="currentPassword">Current Password</Label>
+                            <Input
+                                id="currentPassword"
+                                name="currentPassword"
+                                type="password"
+                                value={passwordData.currentPassword}
+                                onChange={handlePasswordChange}
+                                required
+                            />
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="newPassword">New Password</Label>
+                            <Input
+                                id="newPassword"
+                                name="newPassword"
+                                type="password"
+                                value={passwordData.newPassword}
+                                onChange={handlePasswordChange}
+                                required
+                                minLength={8}
+                            />
+                            <p className="text-xs text-slate-500">Must be at least 8 characters</p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="confirmPassword">Confirm New Password</Label>
+                            <Input
+                                id="confirmPassword"
+                                name="confirmPassword"
+                                type="password"
+                                value={passwordData.confirmPassword}
+                                onChange={handlePasswordChange}
+                                required
+                            />
+                        </div>
+
+                        <Button type="submit" disabled={passwordSubmitting}>
+                            {passwordSubmitting ? 'Changing...' : 'Change Password'}
+                        </Button>
+                    </form>
+                </CardContent>
+            </Card>
         </div>
     );
 }
+

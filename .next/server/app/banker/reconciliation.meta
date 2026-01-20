@@ -1,0 +1,16 @@
+{
+  "headers": {
+    "x-nextjs-stale-time": "300",
+    "x-nextjs-prerender": "1",
+    "x-next-cache-tags": "_N_T_/layout,_N_T_/banker/layout,_N_T_/banker/reconciliation/layout,_N_T_/banker/reconciliation/page,_N_T_/banker/reconciliation"
+  },
+  "segmentPaths": [
+    "/_tree",
+    "/_full",
+    "/banker/reconciliation/__PAGE__",
+    "/banker/reconciliation",
+    "/banker",
+    "/_index",
+    "/_head"
+  ]
+}

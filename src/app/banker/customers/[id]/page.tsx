@@ -34,7 +34,6 @@ interface Customer {
     phone?: string;
     status: string;
     kyc_status: string;
-    onboarding_status: string;
     accounts: Account[];
 }
 
@@ -65,7 +64,7 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
     const loadCustomer = async () => {
         setIsLoading(true);
         try {
-            const result = await apiClient<Customer>(`/customers/${id}`);
+            const result = await apiClient<Customer>(`/banker/customers/${id}`);
             if (result.success && result.data) {
                 setCustomer(result.data);
             } else {
@@ -122,11 +121,11 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
         setError(null);
 
         try {
-            const result = await apiClient('/accounts', {
+            const result = await apiClient('/banker/accounts', {
                 method: 'POST',
                 body: JSON.stringify({
                     customerId,
-                    accountType: newAccountType
+                    accountTypeCode: newAccountType
                 })
             });
 
@@ -316,7 +315,7 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
                                 <SelectContent>
                                     <SelectItem value="SAVINGS">Savings Account</SelectItem>
                                     <SelectItem value="CHECKING">Checking Account</SelectItem>
-                                    <SelectItem value="FIXED">Fixed Deposit</SelectItem>
+                                    <SelectItem value="BUSINESS">Business Account</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>

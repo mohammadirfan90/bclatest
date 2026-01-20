@@ -203,8 +203,11 @@ export async function createAccount(
             return { success: false, error: 'Customer not found' };
         }
 
-        // 2. Generate Account Number (10 + 8 random digits)
-        const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+        // 2. Generate Account Number (matches existing 1001-XXXX-XXXX format)
+        const segment1 = '1001';
+        const segment2 = String(customerId).padStart(4, '0');
+        const segment3 = String(Math.floor(1000 + Math.random() * 9000));
+        const accountNumber = `${segment1}-${segment2}-${segment3}`;
 
         return await withTransaction(async (conn) => {
             // 3. Insert Account record
@@ -262,14 +265,11 @@ export async function applyForAccount(
     return { success: false, error: result.error };
 }
 
-export async function getPendingApplications(): Promise<any[]> {
-    // No longer applicable, returning empty array
-    return [];
-}
+
 
 /**
- * Onboards a new customer and creates their first account.
- * Designed to replace legacy onboarding flows.
+ * Creates a new customer record (without any accounts).
+ * Banker will create accounts separately via the accounts endpoint.
  */
 export async function onboardNewCustomer(
     data: {
@@ -280,65 +280,32 @@ export async function onboardNewCustomer(
         customerNumber: string;
         createdBy: number;
     }
-): Promise<{ success: boolean; customerId?: number; accountId?: number; error?: string }> {
+): Promise<{ success: boolean; customerId?: number; tempPassword?: string; error?: string }> {
     try {
-        // 1. Generate a temporary password (they should change it later)
-        // Since we don't have an email system yet, we'll use a predictable but "safe-ish" default or random string.
+        // Generate a temporary password (they should change it later)
         const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
         const { hashPassword } = await import('./auth-service');
         const passwordHash = await hashPassword(tempPassword);
 
-        // 2. Lookup SAVINGS account type ID
-        const typeRow = await queryOne<RowDataPacket>(
-            "SELECT id FROM account_types WHERE code = 'SAVINGS'"
+        // Create Customer (no automatic account)
+        const result = await execute(
+            `INSERT INTO customers 
+             (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+             VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`,
+            [data.customerNumber, data.email, data.firstName, data.lastName, data.dateOfBirth, data.createdBy, passwordHash]
         );
 
-        if (!typeRow) {
-            return { success: false, error: 'Default account type (SAVINGS) not found' };
-        }
-
-        return await withTransaction(async (conn) => {
-            // 3. Create Customer
-            const [customerResult] = await conn.execute<ResultSetHeader>(
-                `INSERT INTO customers 
-                 (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
-                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`,
-                [data.customerNumber, data.email, data.firstName, data.lastName, data.dateOfBirth, data.createdBy, passwordHash]
-            );
-
-            const customerId = customerResult.insertId;
-
-            // 4. Create Account
-            const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
-            const [accountResult] = await conn.execute<ResultSetHeader>(
-                `INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
-                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`,
-                [accountNumber, customerId, typeRow.id, data.createdBy]
-            );
-
-            const accountId = accountResult.insertId;
-
-            // 5. Initialize Balance
-            await conn.execute(
-                `INSERT INTO account_balances (account_id, available_balance, currency, version)
-                 VALUES (?, 0.0000, 'BDT', 1)`,
-                [accountId]
-            );
-
-            return {
-                success: true,
-                customerId,
-                accountId,
-                // We'll trust the caller to handle the temp password display if needed
-                // but for now we just return success
-            };
-        });
+        return {
+            success: true,
+            customerId: result.insertId,
+            tempPassword, // Return temp password for banker to share
+        };
     } catch (error) {
         if ((error as any).code === 'ER_DUP_ENTRY') {
             return { success: false, error: 'Email or Customer Number already exists' };
         }
-        console.error('Error during onboarding:', error);
-        return { success: false, error: 'Database error during customer onboarding' };
+        console.error('Error during customer creation:', error);
+        return { success: false, error: 'Database error during customer creation' };
     }
 }
 

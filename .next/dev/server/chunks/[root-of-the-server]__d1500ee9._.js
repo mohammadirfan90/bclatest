@@ -296,16 +296,12 @@ __turbopack_context__.s([
     ()=>authenticateCustomer,
     "authenticateUser",
     ()=>authenticateUser,
-    "completeSignup",
-    ()=>completeSignup,
     "createCustomer",
     ()=>createCustomer,
     "createUser",
     ()=>createUser,
     "generateRefreshToken",
     ()=>generateRefreshToken,
-    "generateSignupToken",
-    ()=>generateSignupToken,
     "generateToken",
     ()=>generateToken,
     "getSession",
@@ -328,18 +324,12 @@ __turbopack_context__.s([
     ()=>refreshAccessToken,
     "verifyPassword",
     ()=>verifyPassword,
-    "verifySignupToken",
-    ()=>verifySignupToken,
     "verifyToken",
     ()=>verifyToken
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$bcryptjs$40$3$2e$0$2e$3$2f$node_modules$2f$bcryptjs$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/bcryptjs@3.0.3/node_modules/bcryptjs/index.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$jsonwebtoken$40$9$2e$0$2e$3$2f$node_modules$2f$jsonwebtoken$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/jsonwebtoken@9.0.3/node_modules/jsonwebtoken/index.js [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
-// =============================================================================
-// Signup Token Management
-// =============================================================================
-var __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/crypto [external] (crypto, cjs)");
 // =============================================================================
 // Session Helper for Next.js App Router
 // =============================================================================
@@ -610,7 +600,7 @@ async function createCustomer(email, password, firstName, lastName, createdBy) {
     const customerNumber = `C${Date.now().toString().slice(-10)}`;
     try {
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customers (customer_number, email, password_hash, first_name, last_name, status, created_by)
-       VALUES (?, ?, ?, ?, ?, 'PENDING', ?)`, [
+       VALUES (?, ?, ?, ?, ?, 'ACTIVE', ?)`, [
             customerNumber,
             email,
             passwordHash,
@@ -659,154 +649,6 @@ async function logout(userId, type) {
         await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])('DELETE FROM user_sessions WHERE user_id = ?', [
             userId
         ]);
-    }
-}
-;
-async function generateSignupToken(customerId, accountId, createdBy) {
-    const validation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT c.id as customer_id, c.status, c.kyc_status, c.onboarding_status, c.password_hash,
-                a.customer_id as account_customer_id
-         FROM customers c
-         LEFT JOIN accounts a ON a.id = ?
-         WHERE c.id = ?`, [
-        accountId,
-        customerId
-    ]);
-    if (!validation) {
-        return {
-            success: false,
-            error: 'Customer not found'
-        };
-    }
-    // Check Account Ownership
-    if (validation.account_customer_id !== validation.customer_id) {
-        return {
-            success: false,
-            error: 'Account does not belong to this customer'
-        };
-    }
-    // Check Customer Status
-    if (validation.status !== 'PENDING' && validation.status !== 'ACTIVE') {
-        return {
-            success: false,
-            error: 'Customer status invalid for onboarding'
-        };
-    }
-    // Check KYC Status (Must be VERIFIED or PENDING, usually VERIFIED is preferred but strict mode might allow PENDING if reviewing)
-    // Requirement said: VERIFIED or PENDING
-    if (validation.kyc_status !== 'VERIFIED' && validation.kyc_status !== 'PENDING') {
-        return {
-            success: false,
-            error: 'Customer KYC must be Verified or Pending'
-        };
-    }
-    // Check Onboarding Status (Must be PENDING_SIGNUP)
-    if (validation.onboarding_status !== 'PENDING_SIGNUP') {
-        return {
-            success: false,
-            error: 'Customer has already signed up or is not in signup phase'
-        };
-    }
-    // Check for existing password (redundant but safe)
-    if (validation.password_hash) {
-        return {
-            success: false,
-            error: 'Customer already has credentials'
-        };
-    }
-    // 2. Generate random token
-    const token = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].randomBytes(32).toString('hex');
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    // 3. Set expiry (e.g., 48 hours)
-    const expiresAt = new Date();
-    expiresAt.setHours(expiresAt.getHours() + 48);
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customer_signup_tokens (token_hash, customer_id, account_id, created_by, expires_at)
-             VALUES (?, ?, ?, ?, ?)`, [
-            tokenHash,
-            customerId,
-            accountId,
-            createdBy,
-            expiresAt
-        ]);
-        return {
-            success: true,
-            token
-        };
-    } catch (error) {
-        return {
-            success: false,
-            error: 'Failed to generate signup token'
-        };
-    }
-}
-async function verifySignupToken(token) {
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    const tokenRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT customer_id, account_id, expires_at, used_at 
-         FROM customer_signup_tokens 
-         WHERE token_hash = ?`, [
-        tokenHash
-    ]);
-    if (!tokenRow) {
-        return {
-            success: false,
-            error: 'Invalid signup link'
-        };
-    }
-    if (tokenRow.used_at) {
-        return {
-            success: false,
-            error: 'This link has already been used'
-        };
-    }
-    if (new Date() > tokenRow.expires_at) {
-        return {
-            success: false,
-            error: 'Signup link has expired'
-        };
-    }
-    return {
-        success: true,
-        data: {
-            customerId: tokenRow.customer_id,
-            accountId: tokenRow.account_id
-        }
-    };
-}
-async function completeSignup(token, password) {
-    const verifyResult = await verifySignupToken(token);
-    if (!verifyResult.success || !verifyResult.data) {
-        return {
-            success: false,
-            error: verifyResult.error
-        };
-    }
-    const { customerId } = verifyResult.data;
-    const passwordHash = await hashPassword(password);
-    const tokenHash = __TURBOPACK__imported__module__$5b$externals$5d2f$crypto__$5b$external$5d$__$28$crypto$2c$__cjs$29$__["default"].createHash('sha256').update(token).digest('hex');
-    try {
-        // 1. Update customer password and status
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customers 
-             SET password_hash = ?, 
-                 onboarding_status = 'PENDING_APPROVAL',
-                 updated_at = NOW() 
-             WHERE id = ?`, [
-            passwordHash,
-            customerId
-        ]);
-        // 2. Mark token as used
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customer_signup_tokens 
-             SET used_at = NOW() 
-             WHERE token_hash = ?`, [
-            tokenHash
-        ]);
-        return {
-            success: true
-        };
-    } catch (error) {
-        return {
-            success: false,
-            error: 'Failed to complete signup'
-        };
     }
 }
 ;
@@ -1675,10 +1517,10 @@ function generateCsvFromResults(results) {
 __turbopack_context__.s([
     "applyForAccount",
     ()=>applyForAccount,
-    "approveAccount",
-    ()=>approveAccount,
     "closeAccount",
     ()=>closeAccount,
+    "createAccount",
+    ()=>createAccount,
     "freezeAccount",
     ()=>freezeAccount,
     "getAccountById",
@@ -1689,10 +1531,10 @@ __turbopack_context__.s([
     ()=>getAccountsForCustomer,
     "getPendingApplications",
     ()=>getPendingApplications,
+    "onboardNewCustomer",
+    ()=>onboardNewCustomer,
     "refreshAccountBalance",
     ()=>refreshAccountBalance,
-    "rejectAccount",
-    ()=>rejectAccount,
     "unfreezeAccount",
     ()=>unfreezeAccount
 ]);
@@ -1717,10 +1559,7 @@ async function getAccountById(accountId) {
         accountType: account.account_type,
         currency: account.currency,
         status: account.status,
-        balanceLocked: false,
-        rowVersion: 1,
         openedAt: account.created_at,
-        closedAt: null,
         createdAt: account.created_at
     };
 }
@@ -1743,10 +1582,7 @@ async function getAccountByNumber(accountNumber) {
         accountType: account.account_type,
         currency: account.currency,
         status: account.status,
-        balanceLocked: false,
-        rowVersion: 1,
         openedAt: account.created_at,
-        closedAt: null,
         createdAt: account.created_at
     };
 }
@@ -1773,256 +1609,186 @@ async function getAccountsForCustomer(customerId) {
             accountTypeName: row.account_type_name,
             currency: row.currency,
             status: row.status,
-            balanceLocked: false,
-            rowVersion: 1,
             openedAt: row.created_at,
-            closedAt: null,
             createdAt: row.created_at,
             customerName: `${row.first_name} ${row.last_name}`,
             balance: {
-                availableBalance: parseFloat(row.available_balance || '0'),
-                pendingBalance: 0,
-                holdBalance: 0
+                availableBalance: parseFloat(row.available_balance || '0')
             }
         }));
 }
-async function applyForAccount(customerId, accountType) {
-    // 1. Verify KYC Status (Must be VERIFIED)
-    const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT kyc_status FROM customers WHERE id = ?', [
-        customerId
-    ]);
-    if (!customer) return {
-        success: false,
-        error: 'Customer not found'
-    };
-    if (customer.kyc_status !== 'VERIFIED') {
-        return {
-            success: false,
-            error: `KYC verification required (Status: ${customer.kyc_status})`
-        };
-    }
-    // 2. Create Application
+async function freezeAccount(accountId, bankerId, reason) {
     try {
-        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO account_applications (customer_id, account_type, status)
-             VALUES (?, ?, 'PENDING')`, [
-            customerId,
-            accountType
-        ]);
-        return {
-            success: true,
-            applicationId: result.insertId
-        };
-    } catch (error) {
-        console.error('Error applying for account:', error);
-        return {
-            success: false,
-            error: 'Failed to submit application'
-        };
-    }
-}
-async function getPendingApplications() {
-    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT aa.*, 
-                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
-                c.email as customer_email,
-                c.kyc_status
-         FROM account_applications aa
-         JOIN customers c ON aa.customer_id = c.id
-         WHERE aa.status = 'PENDING'
-         ORDER BY aa.created_at ASC`);
-    return rows.map((row)=>({
-            id: row.id,
-            customerId: row.customer_id,
-            accountType: row.account_type,
-            status: row.status,
-            createdAt: row.created_at,
-            customerName: row.customer_name,
-            customerEmail: row.customer_email,
-            kycStatus: row.kyc_status
-        }));
-}
-async function approveAccount(applicationId, bankerId) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Application
-        const [apps] = await connection.query('SELECT * FROM account_applications WHERE id = ? FOR UPDATE', [
-            applicationId
-        ]);
-        const app = apps[0];
-        if (!app) throw new Error('Application not found');
-        if (app.status !== 'PENDING') throw new Error(`Application is ${app.status}`);
-        // 2. Generate Account Number (Strictly unique)
-        // Format: [TYPE_PREFIX][YEAR][RANDOM] -> e.g. SAV202512345678
-        const prefix = app.account_type.substring(0, 3).toUpperCase();
-        const year = new Date().getFullYear();
-        const random = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
-        const accountNumber = `${prefix}${year}${random}`;
-        // 3. Create Account
-        const [accResult] = await connection.execute(`INSERT INTO accounts (
-                account_number, customer_id, account_type, currency, 
-                status, balance_locked, row_version, opened_at, created_by
-             ) VALUES (?, ?, ?, 'BDT', 'ACTIVE', FALSE, 1, NOW(), ?)`, [
-            accountNumber,
-            app.customer_id,
-            app.account_type,
-            bankerId
-        ]);
-        const accountId = accResult.insertId;
-        // 4. Create Initial History Snapshot
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'ACTIVE', FALSE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                action: 'OPEN_ACCOUNT',
-                applicationId
-            }),
-            bankerId
-        ]);
-        // 5. Initialize Balance (Zero)
-        await connection.execute(`INSERT INTO account_balances (account_id, available_balance, currency)
-             VALUES (?, 0, 'BDT')`, [
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "SUSPENDED", updated_at = NOW() WHERE id = ?', [
             accountId
-        ]);
-        // 6. Update Application Status
-        await connection.execute(`UPDATE account_applications 
-             SET status = 'APPROVED', reviewed_by = ?, reviewed_at = NOW() 
-             WHERE id = ?`, [
-            bankerId,
-            applicationId
-        ]);
-        return {
-            success: true,
-            accountId,
-            accountNumber
-        };
-    });
-}
-async function rejectAccount(applicationId, bankerId, reason) {
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE account_applications 
-             SET status = 'REJECTED', reviewed_by = ?, reviewed_at = NOW(), review_reason = ? 
-             WHERE id = ? AND status = 'PENDING'`, [
-            bankerId,
-            reason,
-            applicationId
         ]);
         return {
             success: true
         };
     } catch (error) {
-        console.error('Error rejecting account:', error);
+        console.error('Error freezing account:', error);
         return {
             success: false,
             error: 'Failed'
         };
     }
 }
-async function freezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'SUSPENDED', true, bankerId, reason);
-}
 async function unfreezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'ACTIVE', false, bankerId, reason);
+    try {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "ACTIVE", updated_at = NOW() WHERE id = ?', [
+            accountId
+        ]);
+        return {
+            success: true
+        };
+    } catch (error) {
+        console.error('Error unfreezing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
 async function closeAccount(accountId, bankerId, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Account & Validation
-        const [accRows] = await connection.query('SELECT status, balance_locked FROM accounts WHERE id = ? FOR UPDATE', [
+    try {
+        // 1. Check Balance (Must be 0)
+        const balanceRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT available_balance FROM account_balances WHERE account_id = ?', [
             accountId
         ]);
-        if (!accRows.length) throw new Error('Account not found');
-        const account = accRows[0];
-        if (account.status === 'CLOSED') throw new Error('Account is already CLOSED');
-        // 2. Check Balance (Must be 0)
-        const [balRows] = await connection.query('SELECT available_balance, pending_balance, hold_balance FROM account_balances WHERE account_id = ? FOR UPDATE', [
-            accountId
-        ]);
-        const balance = balRows[0];
-        const totalBalance = parseFloat(balance.available_balance) + parseFloat(balance.pending_balance) + parseFloat(balance.hold_balance);
-        if (totalBalance !== 0) {
-            throw new Error(`Cannot close account. Non-zero balance: ${totalBalance}`);
+        const balance = parseFloat(balanceRow?.available_balance || '0');
+        if (balance !== 0) {
+            return {
+                success: false,
+                error: `Cannot close account. Non-zero balance: ${balance}`
+            };
         }
-        // 3. Check Pending Disputes (Optional: Add if table exists and logic required)
-        const [disputes] = await connection.query('SELECT COUNT(*) as count FROM disputes WHERE customer_id = (SELECT customer_id FROM accounts WHERE id = ?) AND status NOT IN ("RESOLVED", "REJECTED")', [
-            accountId
-        ]);
-        if (disputes[0].count > 0) {
-            throw new Error('Cannot close account. Pending disputes exist.');
-        }
-        // 4. Archive History
-        await connection.execute(`UPDATE accounts_history SET valid_to = NOW() WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 5. Insert Closing History
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'CLOSED', TRUE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                reason
-            }),
-            bankerId
-        ]);
-        // 6. Update Account Status
-        await connection.execute(`UPDATE accounts 
-             SET status = 'CLOSED', balance_locked = TRUE, closed_at = NOW(), 
-                 row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
+        // 2. Update Account Status
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "CLOSED", updated_at = NOW() WHERE id = ?', [
             accountId
         ]);
         return {
             success: true
         };
-    });
+    } catch (error) {
+        console.error('Error closing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
-async function changeAccountStatus(accountId, newStatus, balanceLocked, changedBy, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get current state and lock
-        const [rows] = await connection.query('SELECT * FROM accounts WHERE id = ? FOR UPDATE', [
-            accountId
+async function createAccount(customerId, accountTypeId, createdBy) {
+    try {
+        // 1. Verify Customer exists
+        const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM customers WHERE id = ?', [
+            customerId
         ]);
-        const current = rows[0];
-        if (!current) throw new Error('Account not found');
-        // 2. Archive current state to history (Close the previous validity period)
-        // We update the 'valid_to' of the most recent history record?
-        // Actually, strictly temporal usually means inserting a NEW record with new valid_from.
-        // And optionally updating the previous one's valid_to.
-        await connection.execute(`UPDATE accounts_history 
-             SET valid_to = NOW() 
-             WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 3. Insert new history record
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), ?, ?, ?, ?)`, [
-            accountId,
-            newStatus,
-            balanceLocked,
-            JSON.stringify({
-                reason,
-                previousStatus: current.status
-            }),
-            changedBy
-        ]);
-        // 4. Update core account
-        await connection.execute(`UPDATE accounts 
-             SET status = ?, balance_locked = ?, row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
-            newStatus,
-            balanceLocked,
-            accountId
+        if (!customer) {
+            return {
+                success: false,
+                error: 'Customer not found'
+            };
+        }
+        // 2. Generate Account Number (matches existing 1001-XXXX-XXXX format)
+        const segment1 = '1001';
+        const segment2 = String(customerId).padStart(4, '0');
+        const segment3 = String(Math.floor(1000 + Math.random() * 9000));
+        const accountNumber = `${segment1}-${segment2}-${segment3}`;
+        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
+            // 3. Insert Account record
+            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
+                accountNumber,
+                customerId,
+                accountTypeId,
+                createdBy || null
+            ]);
+            const accountId = accountResult.insertId;
+            // 4. Initialize Balance record
+            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`, [
+                accountId
+            ]);
+            return {
+                success: true,
+                accountId,
+                accountNumber
+            };
+        });
+    } catch (error) {
+        console.error('Error creating account:', error);
+        return {
+            success: false,
+            error: 'Database error during account creation'
+        };
+    }
+}
+async function applyForAccount(customerId, accountTypeCode) {
+    // Lookup Account Type ID
+    const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM account_types WHERE code = ?', [
+        accountTypeCode
+    ]);
+    if (!typeRow) {
+        return {
+            success: false,
+            error: 'Invalid account type'
+        };
+    }
+    const result = await createAccount(customerId, typeRow.id);
+    if (result.success) {
+        return {
+            success: true,
+            applicationId: result.accountId
+        };
+    }
+    return {
+        success: false,
+        error: result.error
+    };
+}
+async function getPendingApplications() {
+    // No longer applicable, returning empty array
+    return [];
+}
+async function onboardNewCustomer(data) {
+    try {
+        // Generate a temporary password (they should change it later)
+        const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
+        const { hashPassword } = await __turbopack_context__.A("[project]/src/lib/services/auth-service.ts [app-route] (ecmascript, async loader)");
+        const passwordHash = await hashPassword(tempPassword);
+        // Create Customer (no automatic account)
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO customers 
+             (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+             VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`, [
+            data.customerNumber,
+            data.email,
+            data.firstName,
+            data.lastName,
+            data.dateOfBirth,
+            data.createdBy,
+            passwordHash
         ]);
         return {
-            success: true
+            success: true,
+            customerId: result.insertId,
+            tempPassword
         };
-    });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return {
+                success: false,
+                error: 'Email or Customer Number already exists'
+            };
+        }
+        console.error('Error during customer creation:', error);
+        return {
+            success: false,
+            error: 'Database error during customer creation'
+        };
+    }
 }
 async function refreshAccountBalance(accountId) {
-    // Placeholder for balance recalculation from ledger
-    // For now, we assume account_balances is consistent.
-    // Future implementation: Sum all ledger entries and update account_balances.
+    // Placeholder - in real system would trigger reconciliation
     return;
 }
 }),
