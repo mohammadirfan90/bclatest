@@ -65,6 +65,7 @@ export default function BankerReportsPage() {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalItems, setTotalItems] = useState(0);
+    const [liveSummary, setLiveSummary] = useState<{ totalDeposits: number; totalWithdrawals: number; transactionCount: number } | null>(null);
 
     const formatCurrency = (amount: number) => {
         return new Intl.NumberFormat('en-BD', {
@@ -78,17 +79,17 @@ export default function BankerReportsPage() {
     const loadDailyReport = async () => {
         setIsLoading(true);
         try {
-            const result = await apiClient<{
-                data: DailyTotal[];
-                summary: SystemTotals;
-                meta: { totalItems: number; totalPages: number };
-            }>(`/reports/daily-totals?date=${selectedDate}&page=${page}&size=25`);
+            const result = await apiClient<any>(`/reports/daily-totals?date=${selectedDate}&page=${page}&size=25`);
 
-            if (result.success && result.data) {
-                setDailyTotals(result.data.data || []);
-                setSystemTotals(result.data.summary || null);
-                // Ensure meta exists before accessing props
-                const meta = result.data.meta || { totalPages: 1, totalItems: 0 };
+            if (result.success) {
+                // The API returns: { success: true, data: DailyTotal[], summary: SystemTotals, liveSummary: DailyTransactionSummary, meta: { ... } }
+                const rawData = result as any;
+
+                setDailyTotals(rawData.data || []);
+                setSystemTotals(rawData.summary || null);
+                setLiveSummary(rawData.liveSummary || null);
+
+                const meta = rawData.meta || { totalPages: 1, totalItems: 0 };
                 setTotalPages(meta.totalPages || 1);
                 setTotalItems(meta.totalItems || 0);
             }
@@ -128,6 +129,27 @@ export default function BankerReportsPage() {
         window.URL.revokeObjectURL(url);
     };
 
+    const exportToPdf = async () => {
+        try {
+            const response = await fetch(`/api/v1/reports/export-pdf?date=${selectedDate}`, {
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` // assuming token is in localStorage based on apiClient implementation
+                }
+            });
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `daily-report-${selectedDate}.pdf`;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            }
+        } catch (error) {
+            console.error('Failed to export PDF:', error);
+        }
+    };
+
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
@@ -145,10 +167,16 @@ export default function BankerReportsPage() {
                             className="w-44"
                         />
                     </div>
-                    <Button variant="outline" onClick={exportToCsv} disabled={!dailyTotals || dailyTotals.length === 0}>
-                        <Download className="mr-2 h-4 w-4" />
-                        Export CSV
-                    </Button>
+                    <div className="flex items-center gap-2">
+                        <Button variant="outline" onClick={exportToCsv} disabled={!dailyTotals || dailyTotals.length === 0}>
+                            <Download className="mr-2 h-4 w-4" />
+                            CSV
+                        </Button>
+                        <Button variant="default" onClick={exportToPdf} disabled={!dailyTotals || dailyTotals.length === 0} className="bg-slate-900">
+                            <Download className="mr-2 h-4 w-4" />
+                            PDF
+                        </Button>
+                    </div>
                 </div>
             </div>
 
@@ -206,6 +234,31 @@ export default function BankerReportsPage() {
                         </div>
                     </CardContent>
                 </Card>
+            </div>
+
+            {/* LIVE Summary (Ledger-backed) */}
+            <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-bold text-amber-800 flex items-center gap-2">
+                        <Badge variant="outline" className="bg-amber-100 text-amber-800 border-amber-300">LIVE</Badge>
+                        Ledger-Backed Accuracy Check
+                    </h3>
+                    <p className="text-xs text-amber-700 italic">Computed on-the-fly from ledger_entries</p>
+                </div>
+                <div className="grid grid-cols-3 gap-6">
+                    <div>
+                        <p className="text-xs text-amber-600 uppercase font-semibold">Total Deposits</p>
+                        <p className="text-lg font-bold text-amber-900">{isLoading ? '...' : formatCurrency(liveSummary?.totalDeposits || 0)}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-amber-600 uppercase font-semibold">Total Withdrawals</p>
+                        <p className="text-lg font-bold text-amber-900">{isLoading ? '...' : formatCurrency(liveSummary?.totalWithdrawals || 0)}</p>
+                    </div>
+                    <div>
+                        <p className="text-xs text-amber-600 uppercase font-semibold">Txns Count</p>
+                        <p className="text-lg font-bold text-amber-900">{isLoading ? '...' : liveSummary?.transactionCount || 0}</p>
+                    </div>
+                </div>
             </div>
 
             {/* Daily Totals Table */}

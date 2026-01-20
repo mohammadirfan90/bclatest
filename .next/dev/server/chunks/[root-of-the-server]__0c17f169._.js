@@ -1212,15 +1212,27 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api-utils.ts [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/zod@4.3.5/node_modules/zod/v4/classic/external.js [app-route] (ecmascript) <export * as z>");
 ;
 ;
+;
+// Validation schema for profile updates
+const updateProfileSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
+    firstName: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1).max(100).optional(),
+    lastName: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1).max(100).optional(),
+    phone: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(20).optional(),
+    nationalId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(50).optional(),
+    dateOfBirth: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().optional().transform((val)=>val || null),
+    address: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(255).optional(),
+    postalCode: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(20).optional()
+});
 const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withErrorHandler"])(async (request)=>{
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withAuth"])(request, async (req)=>{
         // Only for type 'customer'
         const { customer } = req;
         if (!customer) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Unauthorized', 401);
         // Fetch full details
-        const [rows] = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT first_name, last_name, email, phone, 
+        const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT first_name, last_name, email, phone, 
                     national_id, date_of_birth, address_line1, address_line2, 
                     city, postal_code, kyc_status, status
              FROM customers 
@@ -1231,7 +1243,7 @@ const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$ap
         const profile = rows[0];
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["successResponse"])({
             profile,
-            pendingRequest: null // No online KYC requests in simplified version
+            pendingRequest: null
         });
     }, {
         requiredType: 'customer'
@@ -1239,9 +1251,55 @@ const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$ap
 });
 const PUT = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withErrorHandler"])(async (request)=>{
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withAuth"])(request, async (req)=>{
-        // In the simplifed version, we do not allow online profile updates to avoid complexity 
-        // of audit trails and approvals without the extended schema.
-        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Online profile updates are currently disabled. Please visit a branch to update your information.', 403);
+        const { customer } = req;
+        if (!customer) return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Unauthorized', 401);
+        // Validate request body
+        const validation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["validateBody"])(request, updateProfileSchema);
+        if (!validation.success) {
+            return validation.response;
+        }
+        const { firstName, lastName, phone, nationalId, dateOfBirth, address, postalCode } = validation.data;
+        // Build dynamic update query
+        const updates = [];
+        const params = [];
+        if (firstName !== undefined) {
+            updates.push('first_name = ?');
+            params.push(firstName);
+        }
+        if (lastName !== undefined) {
+            updates.push('last_name = ?');
+            params.push(lastName);
+        }
+        if (phone !== undefined) {
+            updates.push('phone = ?');
+            params.push(phone);
+        }
+        if (nationalId !== undefined) {
+            updates.push('national_id = ?');
+            params.push(nationalId);
+        }
+        if (dateOfBirth !== undefined) {
+            updates.push('date_of_birth = ?');
+            params.push(dateOfBirth || null);
+        }
+        if (address !== undefined) {
+            updates.push('address_line1 = ?');
+            params.push(address);
+        }
+        if (postalCode !== undefined) {
+            updates.push('postal_code = ?');
+            params.push(postalCode);
+        }
+        if (updates.length === 0) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('No fields to update', 400);
+        }
+        // Add updated_at timestamp and customer id
+        updates.push('updated_at = NOW()');
+        params.push(customer.id);
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE customers SET ${updates.join(', ')} WHERE id = ?`, params);
+        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["successResponse"])({
+            message: 'Profile updated successfully'
+        });
     }, {
         requiredType: 'customer'
     });

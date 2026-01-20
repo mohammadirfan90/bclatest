@@ -108,9 +108,6 @@ export default function AccountsPage() {
                     <h1 className="text-2xl font-bold text-slate-900">Accounts</h1>
                     <p className="text-slate-600">Overview of all customer accounts.</p>
                 </div>
-                <Button onClick={() => router.push('/banker/accounts/pending')}>
-                    Review Pending Applications
-                </Button>
             </div>
 
             {error && (
@@ -165,11 +162,6 @@ export default function AccountsPage() {
                                                 >
                                                     {acc.status}
                                                 </Badge>
-                                                {acc.balanceLocked && (
-                                                    <Badge variant="destructive" className="text-[10px] h-5 px-1">
-                                                        LOCKED
-                                                    </Badge>
-                                                )}
                                             </div>
                                         </TableCell>
                                         <TableCell className="text-right font-mono">

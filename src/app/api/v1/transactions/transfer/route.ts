@@ -10,7 +10,7 @@ import {
 } from '@/lib/api-utils';
 import { transferSchema } from '@/lib/validations/schemas';
 import { transfer } from '@/lib/services/transaction-service';
-import { getAccountById } from '@/lib/services/account-service';
+import { getAccountById, getAccountByNumber } from '@/lib/services/account-service';
 
 // =============================================================================
 // POST /api/v1/transactions/transfer - Transfer money
@@ -25,7 +25,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 return validation.response;
             }
 
-            const { fromAccountId, toAccountId, amount, description, idempotencyKey } = validation.data;
+            const { fromAccountId, toAccountNumber, amount, description, idempotencyKey } = validation.data;
 
             // Check idempotency
             if (idempotencyKey) {
@@ -33,6 +33,17 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 if (cached.cached) {
                     return cached.response;
                 }
+            }
+
+            // Look up destination account by account number
+            const destAccount = await getAccountByNumber(toAccountNumber);
+            if (!destAccount) {
+                return errorResponse('Destination account not found');
+            }
+
+            // Prevent self-transfer
+            if (fromAccountId === destAccount.id) {
+                return errorResponse('Cannot transfer to the same account');
             }
 
             // For customers, verify they own the source account
@@ -43,20 +54,13 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 }
             }
 
-            // Verify destination account exists
-            const destAccount = await getAccountById(toAccountId);
-            if (!destAccount) {
-                return errorResponse('Destination account not found');
-            }
-
             // Execute transfer via stored procedure
             const result = await transfer({
                 fromAccountId,
-                toAccountId,
+                toAccountId: destAccount.id,
                 amount,
                 description,
-                idempotencyKey,
-                userId: req.user?.id || req.customer?.id,
+                performedBy: (req.user?.id || req.customer?.id) as number,
             });
 
             if (!result.success) {
@@ -64,7 +68,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
             }
 
             return successResponse({
-                transactionId: result.transactionReference,
+                transactionId: result.transactionId,
                 status: result.status,
                 message: result.message,
             });

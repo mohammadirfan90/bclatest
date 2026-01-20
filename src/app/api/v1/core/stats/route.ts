@@ -40,9 +40,12 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
                 `SELECT COUNT(*) as count FROM customers WHERE status = 'ACTIVE'`
             );
 
-            // Get active accounts
+            // Get active accounts (Customers only)
             const accountCount = await queryOne<StatsRow>(
-                `SELECT COUNT(*) as count FROM accounts WHERE status = 'ACTIVE'`
+                `SELECT COUNT(*) as count 
+                 FROM accounts a
+                 INNER JOIN account_types at ON a.account_type_id = at.id
+                 WHERE a.status = 'ACTIVE' AND at.code != 'INTERNAL'`
             );
 
             // Get today's transactions
@@ -51,9 +54,13 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
                  WHERE DATE(created_at) = CURDATE() AND status = 'COMPLETED'`
             );
 
-            // Get total balance across all accounts
+            // Get total balance across all customer accounts
             const totalBalance = await queryOne<RowDataPacket & { total: string }>(
-                `SELECT COALESCE(SUM(available_balance), 0) as total FROM account_balances`
+                `SELECT COALESCE(SUM(ab.available_balance), 0) as total 
+                 FROM account_balances ab
+                 INNER JOIN accounts a ON ab.account_id = a.id
+                 INNER JOIN account_types at ON a.account_type_id = at.id
+                 WHERE at.code != 'INTERNAL'`
             );
 
             // Get transaction volume by day (last 7 days)

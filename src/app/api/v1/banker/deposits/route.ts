@@ -51,29 +51,33 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
             return errorResponse('Account not found', 404);
         }
 
-        // 5. Call idempotency-enabled stored procedure
-        const procedureResult = await callProcedure<{ transaction_id: number, status: string, message: string }>(
-            'sp_teller_deposit',
-            [accountId, amount, description || 'Cash Deposit', user.id, idempotencyKey],
-            ['transaction_id', 'status', 'message']
+        // 5. Call core stored procedure
+        const procedureResult = await callProcedure<{ p_transaction_id: number, p_status: string, p_message: string }>(
+            'sp_deposit',
+            [accountId, amount, description || 'Cash Deposit', user.id],
+            ['p_transaction_id', 'p_status', 'p_message']
         );
 
         const { outParams } = procedureResult;
 
-        if (outParams.status === 'FAILED') {
-            return errorResponse(outParams.message as string || 'Deposit failed', 400);
+        if (outParams.p_status === 'FAILED') {
+            return errorResponse(outParams.p_message as string || 'Deposit failed', 400);
         }
+
+        const transactionId = outParams.p_transaction_id;
+        const status = outParams.p_status;
+        const message = outParams.p_message;
 
         // 6. Check if this was an idempotent replay
         const isReplay = outParams.message === 'Idempotent replay';
 
         // 7. Return receipt data
         return successResponse({
-            transactionId: outParams.transaction_id,
-            transactionReference: `TXN-${outParams.transaction_id}`,
-            message: outParams.message,
-            status: outParams.status,
-            idempotent: isReplay,
+            transactionId: transactionId,
+            transactionReference: `TXN-${transactionId}`,
+            message: message,
+            status: status,
+            idempotent: false,
             receipt: {
                 type: 'DEPOSIT',
                 accountNumber: accountDetails.account_number,

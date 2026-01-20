@@ -59,7 +59,6 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
                     offset,
                     startDate: startDate ? new Date(startDate) : undefined,
                     endDate: endDate ? new Date(endDate) : undefined,
-                    status,
                 });
 
                 return successResponse(
@@ -75,7 +74,6 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
                     offset,
                     startDate: startDate ? new Date(startDate) : undefined,
                     endDate: endDate ? new Date(endDate) : undefined,
-                    status,
                 });
 
                 return successResponse(

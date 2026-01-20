@@ -133,23 +133,40 @@ export default function StatementsPage() {
 
         setIsDownloading(true);
         try {
-            const month = format(fromDate, 'yyyy-MM');
-            const response = await fetch(`/api/v1/accounts/${selectedAccountId}/statement/pdf?month=${month}`, {
+            const params = new URLSearchParams({
+                from: format(fromDate, 'yyyy-MM-dd'),
+                to: format(toDate, 'yyyy-MM-dd'),
+            });
+            const response = await fetch(`/api/v1/accounts/${selectedAccountId}/statement/pdf?${params.toString()}`, {
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
             });
 
             if (response.ok) {
-                const blob = await response.blob();
+                const buffer = await response.arrayBuffer();
+                const blob = new Blob([buffer], { type: 'application/pdf' });
                 const url = window.URL.createObjectURL(blob);
+
+                const filename = `statement_${format(fromDate, 'yyyy-MM-dd')}_to_${format(toDate, 'yyyy-MM-dd')}.pdf`;
                 const a = document.createElement('a');
+                a.style.display = 'none';
                 a.href = url;
-                a.download = `statement_${month}.pdf`;
+                a.download = filename;
                 document.body.appendChild(a);
+
+                // Trigger download
                 a.click();
-                window.URL.revokeObjectURL(url);
-                document.body.removeChild(a);
+
+                // Cleanup much later to ensure browser captures the filename
+                setTimeout(() => {
+                    window.URL.revokeObjectURL(url);
+                    if (document.body.contains(a)) {
+                        document.body.removeChild(a);
+                    }
+                }, 60000); // 60 seconds
+            } else {
+                console.error('Failed to download PDF:', response.statusText);
             }
         } catch (error) {
             console.error('Failed to download PDF:', error);

@@ -1,8 +1,6 @@
 import { query, queryOne } from '../db';
 import { RowDataPacket } from 'mysql2/promise';
-import PDFDocument from 'pdfkit';
-import { Readable } from 'stream';
-
+import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 // =============================================================================
 // Types
 // =============================================================================
@@ -244,7 +242,7 @@ export async function getAccountStatement(
 }
 
 // =============================================================================
-// PDF Generation
+// Helpers
 // =============================================================================
 
 function maskAccountNumber(accountNumber: string): string {
@@ -268,161 +266,225 @@ function formatDate(date: Date): string {
     }).format(new Date(date));
 }
 
+// =============================================================================
+// PDF Generation
+// =============================================================================
+
 export async function generateStatementPdf(
     accountId: number,
-    month: string // YYYY-MM format
+    from: string, // YYYY-MM-DD
+    to: string     // YYYY-MM-DD
 ): Promise<Buffer> {
-    // Parse month to get first and last day
-    const [year, monthNum] = month.split('-').map(Number);
-    const from = `${year}-${String(monthNum).padStart(2, '0')}-01`;
-    const lastDay = new Date(year, monthNum, 0).getDate();
-    const to = `${year}-${String(monthNum).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-
-    // Get all entries for the month (no pagination for PDF)
+    // Get all entries for the date range
     const { statement } = await getAccountStatement(accountId, {
         from,
         to,
         page: 1,
-        size: 10000, // Get all entries for PDF
+        size: 10000,
     });
 
-    return new Promise((resolve, reject) => {
-        const chunks: Buffer[] = [];
-        const doc = new PDFDocument({
-            size: 'A4',
-            margin: 50,
-            bufferPages: true
+    // Create a new PDFDocument
+    const pdfDoc = await PDFDocument.create();
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    const fontBold = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
+
+    let page = pdfDoc.addPage([595.28, 841.89]); // A4
+    const { width, height } = page.getSize();
+    const margin = 50;
+
+    let y = height - margin;
+
+    // Helper to add new page
+    const addNewPage = () => {
+        page = pdfDoc.addPage([595.28, 841.89]);
+        y = height - margin;
+        return page;
+    };
+
+    // Helper to draw text
+    const drawText = (text: string, x: number, currentY: number, size = 10, f = font, color = rgb(0, 0, 0)) => {
+        page.drawText(text, {
+            x,
+            y: currentY,
+            size,
+            font: f,
+            color,
         });
+    };
 
-        doc.on('data', (chunk: Buffer) => chunks.push(chunk));
-        doc.on('end', () => resolve(Buffer.concat(chunks)));
-        doc.on('error', reject);
+    // Simple Black & White Design
+    const primaryColor = rgb(0, 0, 0);
+    const secondaryColor = rgb(0.3, 0.3, 0.3);
 
-        // Header
-        doc.fontSize(20).font('Helvetica-Bold').text('BNKCORE', { align: 'center' });
-        doc.fontSize(10).font('Helvetica').text('Core Banking System', { align: 'center' });
-        doc.moveDown(0.5);
-        doc.fontSize(14).font('Helvetica-Bold').text('Account Statement', { align: 'center' });
-        doc.moveDown();
+    // Header
+    const title = 'BNKCORE';
+    const titleWidth = fontBold.widthOfTextAtSize(title, 22);
+    drawText(title, (width - titleWidth) / 2, y, 22, fontBold);
+    y -= 25;
 
-        // Account Information
-        doc.fontSize(10).font('Helvetica');
-        const infoY = doc.y;
+    const subtitle = 'Core Banking System';
+    const subtitleWidth = font.widthOfTextAtSize(subtitle, 10);
+    drawText(subtitle, (width - subtitleWidth) / 2, y, 10, font);
+    y -= 35;
 
-        doc.text(`Account Holder: ${statement.account.customerName}`, 50, infoY);
-        doc.text(`Account Number: ${maskAccountNumber(statement.account.accountNumber)}`, 50);
-        doc.text(`Account Type: ${statement.account.accountType}`, 50);
+    const reportTitle = 'Account Statement';
+    const reportTitleWidth = fontBold.widthOfTextAtSize(reportTitle, 16);
+    drawText(reportTitle, (width - reportTitleWidth) / 2, y, 16, fontBold);
+    y -= 45;
 
-        doc.text(`Statement Period: ${formatDate(new Date(from))} - ${formatDate(new Date(to))}`, 300, infoY);
-        doc.text(`Generated: ${formatDate(new Date())}`, 300);
+    // Account Information
+    const infoY = y;
+    drawText('Account Holder:', margin, y, 10, fontBold);
+    drawText(statement.account.customerName, margin + 90, y, 10, font);
+    y -= 18;
+    drawText('Account Number:', margin, y, 10, fontBold);
+    // Display full account number
+    drawText(statement.account.accountNumber, margin + 90, y, 10, font);
+    y -= 18;
+    drawText('Account Type:', margin, y, 10, fontBold);
+    drawText(statement.account.accountType, margin + 90, y, 10, font);
 
-        doc.moveDown(2);
+    drawText('Statement Period:', 320, infoY, 10, fontBold);
+    drawText(`${formatDate(new Date(from))} - ${formatDate(new Date(to))}`, 410, infoY, 10, font);
+    drawText('Generated:', 320, infoY - 18, 10, fontBold);
+    drawText(formatDate(new Date()), 410, infoY - 18, 10, font);
 
-        // Summary Box
-        const summaryY = doc.y;
-        doc.rect(50, summaryY, 495, 60).stroke();
+    y -= 50;
 
-        doc.font('Helvetica-Bold').text('Opening Balance:', 60, summaryY + 10);
-        doc.font('Helvetica').text(formatCurrency(statement.openingBalance), 180, summaryY + 10);
-
-        doc.font('Helvetica-Bold').text('Total Credits:', 300, summaryY + 10);
-        doc.font('Helvetica').text(formatCurrency(statement.totalCredits), 400, summaryY + 10);
-
-        doc.font('Helvetica-Bold').text('Closing Balance:', 60, summaryY + 35);
-        doc.font('Helvetica').text(formatCurrency(statement.closingBalance), 180, summaryY + 35);
-
-        doc.font('Helvetica-Bold').text('Total Debits:', 300, summaryY + 35);
-        doc.font('Helvetica').text(formatCurrency(statement.totalDebits), 400, summaryY + 35);
-
-        doc.y = summaryY + 80;
-
-        // Table Header
-        const tableTop = doc.y;
-        const colDate = 50;
-        const colDesc = 120;
-        const colDebit = 300;
-        const colCredit = 380;
-        const colBalance = 460;
-
-        doc.font('Helvetica-Bold').fontSize(9);
-        doc.rect(50, tableTop, 495, 20).fill('#f0f0f0');
-        doc.fillColor('#000000');
-        doc.text('Date', colDate, tableTop + 6);
-        doc.text('Description', colDesc, tableTop + 6);
-        doc.text('Debit', colDebit, tableTop + 6, { width: 70, align: 'right' });
-        doc.text('Credit', colCredit, tableTop + 6, { width: 70, align: 'right' });
-        doc.text('Balance', colBalance, tableTop + 6, { width: 80, align: 'right' });
-
-        let y = tableTop + 25;
-        doc.font('Helvetica').fontSize(8);
-
-        // Opening balance row
-        doc.text(formatDate(new Date(from)), colDate, y);
-        doc.text('Opening Balance', colDesc, y);
-        doc.text('', colDebit, y, { width: 70, align: 'right' });
-        doc.text('', colCredit, y, { width: 70, align: 'right' });
-        doc.text(formatCurrency(statement.openingBalance), colBalance, y, { width: 80, align: 'right' });
-        y += 15;
-
-        // Transaction rows
-        for (const entry of statement.entries) {
-            // Check if we need a new page
-            if (y > 750) {
-                doc.addPage();
-                y = 50;
-
-                // Repeat header on new page
-                doc.font('Helvetica-Bold').fontSize(9);
-                doc.rect(50, y, 495, 20).fill('#f0f0f0');
-                doc.fillColor('#000000');
-                doc.text('Date', colDate, y + 6);
-                doc.text('Description', colDesc, y + 6);
-                doc.text('Debit', colDebit, y + 6, { width: 70, align: 'right' });
-                doc.text('Credit', colCredit, y + 6, { width: 70, align: 'right' });
-                doc.text('Balance', colBalance, y + 6, { width: 80, align: 'right' });
-                y += 25;
-                doc.font('Helvetica').fontSize(8);
-            }
-
-            // Alternate row background
-            if (statement.entries.indexOf(entry) % 2 === 1) {
-                doc.rect(50, y - 3, 495, 15).fill('#fafafa');
-                doc.fillColor('#000000');
-            }
-
-            doc.text(formatDate(entry.date), colDate, y);
-            const desc = entry.description || entry.transactionType;
-            doc.text(desc.length > 30 ? desc.substring(0, 27) + '...' : desc, colDesc, y);
-            doc.text(entry.debit ? formatCurrency(entry.debit) : '', colDebit, y, { width: 70, align: 'right' });
-            doc.text(entry.credit ? formatCurrency(entry.credit) : '', colCredit, y, { width: 70, align: 'right' });
-            doc.text(formatCurrency(entry.runningBalance), colBalance, y, { width: 80, align: 'right' });
-
-            y += 15;
-        }
-
-        // Closing balance row
-        doc.font('Helvetica-Bold');
-        doc.text(formatDate(new Date(to)), colDate, y + 5);
-        doc.text('Closing Balance', colDesc, y + 5);
-        doc.text('', colDebit, y + 5, { width: 70, align: 'right' });
-        doc.text('', colCredit, y + 5, { width: 70, align: 'right' });
-        doc.text(formatCurrency(statement.closingBalance), colBalance, y + 5, { width: 80, align: 'right' });
-
-        // Footer
-        const pageCount = doc.bufferedPageRange().count;
-        for (let i = 0; i < pageCount; i++) {
-            doc.switchToPage(i);
-            doc.fontSize(8).font('Helvetica');
-            doc.text(
-                `Page ${i + 1} of ${pageCount} | This is a computer-generated document and does not require signature.`,
-                50,
-                doc.page.height - 50,
-                { align: 'center', width: 495 }
-            );
-        }
-
-        doc.end();
+    // Summary Box
+    page.drawRectangle({
+        x: margin,
+        y: y - 55,
+        width: width - 2 * margin,
+        height: 65,
+        borderColor: rgb(0, 0, 0),
+        borderWidth: 1,
     });
+
+    const summaryY1 = y - 20;
+    const summaryY2 = y - 45;
+
+    drawText('Opening Balance:', margin + 15, summaryY1, 10, fontBold);
+    drawText(formatCurrency(statement.openingBalance), margin + 110, summaryY1, 10, fontBold);
+
+    drawText('Total Credits:', margin + 260, summaryY1, 10, fontBold);
+    drawText(formatCurrency(statement.totalCredits), margin + 350, summaryY1, 10, fontBold);
+
+    drawText('Closing Balance:', margin + 15, summaryY2, 10, fontBold);
+    drawText(formatCurrency(statement.closingBalance), margin + 110, summaryY2, 10, fontBold);
+
+    drawText('Total Debits:', margin + 260, summaryY2, 10, fontBold);
+    drawText(formatCurrency(statement.totalDebits), margin + 350, summaryY2, 10, fontBold);
+
+    y -= 90;
+
+    // Table Column Definitions
+    const colDate = margin;
+    const colDesc = margin + 75;
+    const colDebit = margin + 250;
+    const colCredit = margin + 330;
+    const colBalance = margin + 415;
+    const colWidths = { debit: 70, credit: 70, balance: 80 };
+
+    const drawTableHeader = (currentY: number) => {
+        page.drawRectangle({
+            x: margin,
+            y: currentY - 18,
+            width: width - 2 * margin,
+            height: 25,
+            color: rgb(0.9, 0.9, 0.9),
+        });
+        const headerTextY = currentY - 3;
+        drawText('Date', colDate + 5, headerTextY, 9, fontBold);
+        drawText('Description', colDesc, headerTextY, 9, fontBold);
+
+        const drawRightText = (text: string, x: number, targetWidth: number, currentYInner: number, size = 9, f = fontBold) => {
+            const textWidth = f.widthOfTextAtSize(text, size);
+            drawText(text, x + targetWidth - textWidth - 5, currentYInner, size, f);
+        };
+
+        drawRightText('Debit', colDebit, colWidths.debit, headerTextY);
+        drawRightText('Credit', colCredit, colWidths.credit, headerTextY);
+        drawRightText('Balance', colBalance, colWidths.balance, headerTextY);
+    };
+
+    drawTableHeader(y);
+    y -= 30;
+
+    const drawRowRightText = (text: string, x: number, targetWidth: number, currentY: number, size = 8, f = font) => {
+        const textWidth = f.widthOfTextAtSize(text, size);
+        drawText(text, x + targetWidth - textWidth - 5, currentY, size, f);
+    };
+
+    // Opening Balance Row
+    drawText(formatDate(new Date(from)), colDate + 5, y, 8, fontBold);
+    drawText('Opening Balance', colDesc, y, 8, fontBold);
+    drawRowRightText(formatCurrency(statement.openingBalance), colBalance, colWidths.balance, y, 8, fontBold);
+    y -= 18;
+
+    // Transaction rows
+    for (const entry of statement.entries) {
+        if (y < margin + 60) {
+            addNewPage();
+            drawTableHeader(y);
+            y -= 30;
+        }
+
+        const index = statement.entries.indexOf(entry);
+        if (index % 2 === 1) {
+            page.drawRectangle({
+                x: margin,
+                y: y - 5,
+                width: width - 2 * margin,
+                height: 18,
+                color: rgb(0.98, 0.98, 0.98),
+            });
+        }
+
+        drawText(formatDate(entry.date), colDate + 5, y, 8, font, secondaryColor);
+        const desc = entry.description || entry.transactionType;
+        drawText(desc.length > 35 ? desc.substring(0, 32) + '...' : desc, colDesc, y, 8, font);
+
+        if (entry.debit) {
+            drawRowRightText(formatCurrency(entry.debit), colDebit, colWidths.debit, y, 8, font);
+        }
+        if (entry.credit) {
+            drawRowRightText(formatCurrency(entry.credit), colCredit, colWidths.credit, y, 8, font);
+        }
+
+        drawRowRightText(formatCurrency(entry.runningBalance), colBalance, colWidths.balance, y, 8, font);
+
+        y -= 18;
+    }
+
+    // Closing Balance Row
+    if (y < margin + 40) {
+        addNewPage();
+        drawTableHeader(y);
+        y -= 30;
+    }
+    y -= 5;
+    drawText(formatDate(new Date(to)), colDate + 5, y, 8, fontBold);
+    drawText('Closing Balance', colDesc, y, 8, fontBold);
+    drawRowRightText(formatCurrency(statement.closingBalance), colBalance, colWidths.balance, y, 8, fontBold);
+
+    // Footer
+    const pages = pdfDoc.getPages();
+    for (let i = 0; i < pages.length; i++) {
+        const p = pages[i];
+        const footerText = `Page ${i + 1} of ${pages.length} | This is a computer-generated document and does not require signature.`;
+        const footerWidth = font.widthOfTextAtSize(footerText, 8);
+        p.drawText(footerText, {
+            x: (width - footerWidth) / 2,
+            y: 30,
+            size: 8,
+            font: font,
+            color: rgb(0, 0, 0),
+        });
+    }
+
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
 }
 
 // =============================================================================

@@ -461,11 +461,13 @@ async function authenticateCustomer(email, password) {
         email
     ]);
     if (!customerRow) {
+        console.log(`[Auth] Customer not found: ${email}`);
         return {
             success: false,
             error: 'Invalid email or password'
         };
     }
+    console.log(`[Auth] Customer found: ${customerRow.id}, Status: ${customerRow.status}`);
     if (customerRow.status === 'SUSPENDED') {
         return {
             success: false,
@@ -480,6 +482,7 @@ async function authenticateCustomer(email, password) {
     }
     // Verify password
     const passwordValid = await verifyPassword(password, customerRow.password_hash);
+    console.log(`[Auth] Password valid: ${passwordValid}`);
     if (!passwordValid) {
         return {
             success: false,
@@ -1359,15 +1362,10 @@ const updateAccountStatusSchema = __TURBOPACK__imported__module__$5b$project$5d2
 const bdtAmount = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().positive('Amount must be positive').max(10000000, 'Amount exceeds maximum limit of ৳10,000,000').transform((val)=>Math.round(val * 100) / 100); // Round to 2 decimal places
 const transferSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     fromAccountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Source account is required'),
-    toAccountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Destination account is required'),
+    toAccountNumber: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1, 'Destination account number is required'),
     amount: bdtAmount,
     description: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(500).optional(),
     idempotencyKey: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().uuid().optional()
-}).refine((data)=>data.fromAccountId !== data.toAccountId, {
-    message: 'Source and destination accounts must be different',
-    path: [
-        'toAccountId'
-    ]
 });
 const depositSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     accountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Account is required'),
@@ -1884,6 +1882,8 @@ __turbopack_context__.s([
     ()=>freezeAccount,
     "getAccountById",
     ()=>getAccountById,
+    "getAccountByNumber",
+    ()=>getAccountByNumber,
     "getAccountsForCustomer",
     ()=>getAccountsForCustomer,
     "getPendingApplications",
@@ -1907,6 +1907,32 @@ async function getAccountById(accountId) {
          LEFT JOIN account_balances ab ON ab.account_id = a.id
          WHERE a.id = ?`, [
         accountId
+    ]);
+    if (!account) return null;
+    return {
+        id: account.id,
+        accountNumber: account.account_number,
+        customerId: account.customer_id,
+        accountType: account.account_type,
+        currency: account.currency,
+        status: account.status,
+        balanceLocked: false,
+        rowVersion: 1,
+        openedAt: account.created_at,
+        closedAt: null,
+        createdAt: account.created_at
+    };
+}
+async function getAccountByNumber(accountNumber) {
+    const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.account_number = ?`, [
+        accountNumber
     ]);
     if (!account) return null;
     return {
@@ -2220,13 +2246,22 @@ const POST = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$a
         if (!validation.success) {
             return validation.response;
         }
-        const { fromAccountId, toAccountId, amount, description, idempotencyKey } = validation.data;
+        const { fromAccountId, toAccountNumber, amount, description, idempotencyKey } = validation.data;
         // Check idempotency
         if (idempotencyKey) {
             const cached = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["checkIdempotency"])(idempotencyKey);
             if (cached.cached) {
                 return cached.response;
             }
+        }
+        // Look up destination account by account number
+        const destAccount = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$account$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getAccountByNumber"])(toAccountNumber);
+        if (!destAccount) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Destination account not found');
+        }
+        // Prevent self-transfer
+        if (fromAccountId === destAccount.id) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Cannot transfer to the same account');
         }
         // For customers, verify they own the source account
         if (req.tokenPayload?.type === 'customer') {
@@ -2235,25 +2270,19 @@ const POST = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$a
                 return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Source account not found');
             }
         }
-        // Verify destination account exists
-        const destAccount = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$account$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["getAccountById"])(toAccountId);
-        if (!destAccount) {
-            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])('Destination account not found');
-        }
         // Execute transfer via stored procedure
         const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$transaction$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["transfer"])({
             fromAccountId,
-            toAccountId,
+            toAccountId: destAccount.id,
             amount,
             description,
-            idempotencyKey,
-            userId: req.user?.id || req.customer?.id
+            performedBy: req.user?.id || req.customer?.id
         });
         if (!result.success) {
             return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])(result.message, 400);
         }
         return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["successResponse"])({
-            transactionId: result.transactionReference,
+            transactionId: result.transactionId,
             status: result.status,
             message: result.message
         });

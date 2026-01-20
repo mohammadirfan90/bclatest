@@ -1039,12 +1039,12 @@ var _s = __turbopack_context__.k.signature();
 ;
 function BankerDashboard() {
     _s();
-    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(20);
-    if ($[0] !== "1030fdeaafc40efac5a9722c17f3f42c4b3546a920ba863ed9c4c9d3fee66d6d") {
-        for(let $i = 0; $i < 20; $i += 1){
+    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(18);
+    if ($[0] !== "da14921495527926bdbb9b2e2180477fd775b075b0ada7b561c8c2bc4105454a") {
+        for(let $i = 0; $i < 18; $i += 1){
             $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
-        $[0] = "1030fdeaafc40efac5a9722c17f3f42c4b3546a920ba863ed9c4c9d3fee66d6d";
+        $[0] = "da14921495527926bdbb9b2e2180477fd775b075b0ada7b561c8c2bc4105454a";
     }
     const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
     let t0;
@@ -1093,22 +1093,7 @@ function BankerDashboard() {
     let t3;
     if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
         t3 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex gap-2",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-                asChild: true,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                    href: "/banker/customers/new",
-                    children: "New Customer"
-                }, void 0, false, {
-                    fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                    lineNumber: 38,
-                    columnNumber: 61
-                }, this)
-            }, void 0, false, {
-                fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                lineNumber: 38,
-                columnNumber: 38
-            }, this)
+            className: "flex gap-2"
         }, void 0, false, {
             fileName: "[project]/src/app/banker/dashboard/page.tsx",
             lineNumber: 38,
@@ -1460,97 +1445,7 @@ function BankerDashboard() {
     }
     let t13;
     if ($[15] === Symbol.for("react.memo_cache_sentinel")) {
-        t13 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-            asChild: true,
-            variant: "outline",
-            className: "h-auto py-4 flex-col gap-2",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                href: "/banker/accounts",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                        className: "h-5 w-5",
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            strokeWidth: 2,
-                            d: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                            lineNumber: 109,
-                            columnNumber: 200
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                        lineNumber: 109,
-                        columnNumber: 121
-                    }, this),
-                    "All Accounts"
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                lineNumber: 109,
-                columnNumber: 91
-            }, this)
-        }, void 0, false, {
-            fileName: "[project]/src/app/banker/dashboard/page.tsx",
-            lineNumber: 109,
-            columnNumber: 11
-        }, this);
-        $[15] = t13;
-    } else {
-        t13 = $[15];
-    }
-    let t14;
-    if ($[16] === Symbol.for("react.memo_cache_sentinel")) {
-        t14 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
-            asChild: true,
-            variant: "outline",
-            className: "h-auto py-4 flex-col gap-2",
-            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                href: "/banker/kyc",
-                children: [
-                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
-                        className: "h-5 w-5",
-                        fill: "none",
-                        stroke: "currentColor",
-                        viewBox: "0 0 24 24",
-                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                            strokeLinecap: "round",
-                            strokeLinejoin: "round",
-                            strokeWidth: 2,
-                            d: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                        }, void 0, false, {
-                            fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                            lineNumber: 116,
-                            columnNumber: 195
-                        }, this)
-                    }, void 0, false, {
-                        fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                        lineNumber: 116,
-                        columnNumber: 116
-                    }, this),
-                    "KYC Status"
-                ]
-            }, void 0, true, {
-                fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                lineNumber: 116,
-                columnNumber: 91
-            }, this)
-        }, void 0, false, {
-            fileName: "[project]/src/app/banker/dashboard/page.tsx",
-            lineNumber: 116,
-            columnNumber: 11
-        }, this);
-        $[16] = t14;
-    } else {
-        t14 = $[16];
-    }
-    let t15;
-    if ($[17] === Symbol.for("react.memo_cache_sentinel")) {
-        t15 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+        t13 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "grid gap-6 md:grid-cols-2",
             children: [
                 t10,
@@ -1561,14 +1456,12 @@ function BankerDashboard() {
                             className: "grid grid-cols-2 gap-3",
                             children: [
                                 t12,
-                                t13,
-                                t14,
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$button$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Button"], {
                                     asChild: true,
                                     variant: "outline",
                                     className: "h-auto py-4 flex-col gap-2",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                        href: "/banker/customers/new",
+                                        href: "/banker/accounts",
                                         children: [
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
                                                 className: "h-5 w-5",
@@ -1579,71 +1472,71 @@ function BankerDashboard() {
                                                     strokeLinecap: "round",
                                                     strokeLinejoin: "round",
                                                     strokeWidth: 2,
-                                                    d: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"
+                                                    d: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                                                    lineNumber: 123,
-                                                    columnNumber: 327
+                                                    lineNumber: 109,
+                                                    columnNumber: 312
                                                 }, this)
                                             }, void 0, false, {
                                                 fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                                                lineNumber: 123,
-                                                columnNumber: 248
+                                                lineNumber: 109,
+                                                columnNumber: 233
                                             }, this),
-                                            "New Customer"
+                                            "All Accounts"
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                                        lineNumber: 123,
-                                        columnNumber: 213
+                                        lineNumber: 109,
+                                        columnNumber: 203
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                                    lineNumber: 123,
-                                    columnNumber: 133
+                                    lineNumber: 109,
+                                    columnNumber: 123
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                            lineNumber: 123,
+                            lineNumber: 109,
                             columnNumber: 70
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/app/banker/dashboard/page.tsx",
-                    lineNumber: 123,
+                    lineNumber: 109,
                     columnNumber: 59
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/banker/dashboard/page.tsx",
-            lineNumber: 123,
+            lineNumber: 109,
             columnNumber: 11
         }, this);
-        $[17] = t15;
+        $[15] = t13;
     } else {
-        t15 = $[17];
+        t13 = $[15];
     }
-    let t16;
-    if ($[18] !== t4) {
-        t16 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+    let t14;
+    if ($[16] !== t4) {
+        t14 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
             className: "space-y-8",
             children: [
                 t4,
                 t5,
-                t15
+                t13
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/banker/dashboard/page.tsx",
-            lineNumber: 130,
+            lineNumber: 116,
             columnNumber: 11
         }, this);
-        $[18] = t4;
-        $[19] = t16;
+        $[16] = t4;
+        $[17] = t14;
     } else {
-        t16 = $[19];
+        t14 = $[17];
     }
-    return t16;
+    return t14;
 }
 _s(BankerDashboard, "WQN1piNkMjaOM8k1F55whTN++Jc=", false, function() {
     return [

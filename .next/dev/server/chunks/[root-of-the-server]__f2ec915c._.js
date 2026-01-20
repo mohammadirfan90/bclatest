@@ -1215,7 +1215,10 @@ __turbopack_context__.s([
     ()=>searchTransactions
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/db.ts [app-route] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdfkit$40$0$2e$17$2e$2$2f$node_modules$2f$pdfkit$2f$js$2f$pdfkit$2e$es$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdfkit@0.17.2/node_modules/pdfkit/js/pdfkit.es.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdf-lib@1.17.1/node_modules/pdf-lib/es/index.js [app-route] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdf-lib@1.17.1/node_modules/pdf-lib/es/api/index.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$StandardFonts$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdf-lib@1.17.1/node_modules/pdf-lib/es/api/StandardFonts.js [app-route] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/pdf-lib@1.17.1/node_modules/pdf-lib/es/api/colors.js [app-route] (ecmascript)");
 ;
 ;
 async function getAccountStatement(accountId, options) {
@@ -1343,7 +1346,7 @@ async function getAccountStatement(accountId, options) {
     };
 }
 // =============================================================================
-// PDF Generation
+// Helpers
 // =============================================================================
 function maskAccountNumber(accountNumber) {
     if (accountNumber.length <= 4) return accountNumber;
@@ -1363,182 +1366,193 @@ function formatDate(date) {
         year: 'numeric'
     }).format(new Date(date));
 }
-async function generateStatementPdf(accountId, month// YYYY-MM format
+async function generateStatementPdf(accountId, from, to// YYYY-MM-DD
 ) {
-    // Parse month to get first and last day
-    const [year, monthNum] = month.split('-').map(Number);
-    const from = `${year}-${String(monthNum).padStart(2, '0')}-01`;
-    const lastDay = new Date(year, monthNum, 0).getDate();
-    const to = `${year}-${String(monthNum).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
-    // Get all entries for the month (no pagination for PDF)
+    // Get all entries for the date range
     const { statement } = await getAccountStatement(accountId, {
         from,
         to,
         page: 1,
         size: 10000
     });
-    return new Promise((resolve, reject)=>{
-        const chunks = [];
-        const doc = new __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdfkit$40$0$2e$17$2e$2$2f$node_modules$2f$pdfkit$2f$js$2f$pdfkit$2e$es$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["default"]({
-            size: 'A4',
-            margin: 50,
-            bufferPages: true
+    // Create a new PDFDocument
+    const pdfDoc = await __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$index$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["PDFDocument"].create();
+    const font = await pdfDoc.embedFont(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$StandardFonts$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["StandardFonts"].Helvetica);
+    const fontBold = await pdfDoc.embedFont(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$StandardFonts$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["StandardFonts"].HelveticaBold);
+    let page = pdfDoc.addPage([
+        595.28,
+        841.89
+    ]); // A4
+    const { width, height } = page.getSize();
+    const margin = 50;
+    let y = height - margin;
+    // Helper to add new page
+    const addNewPage = ()=>{
+        page = pdfDoc.addPage([
+            595.28,
+            841.89
+        ]);
+        y = height - margin;
+        return page;
+    };
+    // Helper to draw text
+    const drawText = (text, x, currentY, size = 10, f = font, color = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0, 0, 0))=>{
+        page.drawText(text, {
+            x,
+            y: currentY,
+            size,
+            font: f,
+            color
         });
-        doc.on('data', (chunk)=>chunks.push(chunk));
-        doc.on('end', ()=>resolve(Buffer.concat(chunks)));
-        doc.on('error', reject);
-        // Header
-        doc.fontSize(20).font('Helvetica-Bold').text('BNKCORE', {
-            align: 'center'
-        });
-        doc.fontSize(10).font('Helvetica').text('Core Banking System', {
-            align: 'center'
-        });
-        doc.moveDown(0.5);
-        doc.fontSize(14).font('Helvetica-Bold').text('Account Statement', {
-            align: 'center'
-        });
-        doc.moveDown();
-        // Account Information
-        doc.fontSize(10).font('Helvetica');
-        const infoY = doc.y;
-        doc.text(`Account Holder: ${statement.account.customerName}`, 50, infoY);
-        doc.text(`Account Number: ${maskAccountNumber(statement.account.accountNumber)}`, 50);
-        doc.text(`Account Type: ${statement.account.accountType}`, 50);
-        doc.text(`Statement Period: ${formatDate(new Date(from))} - ${formatDate(new Date(to))}`, 300, infoY);
-        doc.text(`Generated: ${formatDate(new Date())}`, 300);
-        doc.moveDown(2);
-        // Summary Box
-        const summaryY = doc.y;
-        doc.rect(50, summaryY, 495, 60).stroke();
-        doc.font('Helvetica-Bold').text('Opening Balance:', 60, summaryY + 10);
-        doc.font('Helvetica').text(formatCurrency(statement.openingBalance), 180, summaryY + 10);
-        doc.font('Helvetica-Bold').text('Total Credits:', 300, summaryY + 10);
-        doc.font('Helvetica').text(formatCurrency(statement.totalCredits), 400, summaryY + 10);
-        doc.font('Helvetica-Bold').text('Closing Balance:', 60, summaryY + 35);
-        doc.font('Helvetica').text(formatCurrency(statement.closingBalance), 180, summaryY + 35);
-        doc.font('Helvetica-Bold').text('Total Debits:', 300, summaryY + 35);
-        doc.font('Helvetica').text(formatCurrency(statement.totalDebits), 400, summaryY + 35);
-        doc.y = summaryY + 80;
-        // Table Header
-        const tableTop = doc.y;
-        const colDate = 50;
-        const colDesc = 120;
-        const colDebit = 300;
-        const colCredit = 380;
-        const colBalance = 460;
-        doc.font('Helvetica-Bold').fontSize(9);
-        doc.rect(50, tableTop, 495, 20).fill('#f0f0f0');
-        doc.fillColor('#000000');
-        doc.text('Date', colDate, tableTop + 6);
-        doc.text('Description', colDesc, tableTop + 6);
-        doc.text('Debit', colDebit, tableTop + 6, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text('Credit', colCredit, tableTop + 6, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text('Balance', colBalance, tableTop + 6, {
-            width: 80,
-            align: 'right'
-        });
-        let y = tableTop + 25;
-        doc.font('Helvetica').fontSize(8);
-        // Opening balance row
-        doc.text(formatDate(new Date(from)), colDate, y);
-        doc.text('Opening Balance', colDesc, y);
-        doc.text('', colDebit, y, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text('', colCredit, y, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text(formatCurrency(statement.openingBalance), colBalance, y, {
-            width: 80,
-            align: 'right'
-        });
-        y += 15;
-        // Transaction rows
-        for (const entry of statement.entries){
-            // Check if we need a new page
-            if (y > 750) {
-                doc.addPage();
-                y = 50;
-                // Repeat header on new page
-                doc.font('Helvetica-Bold').fontSize(9);
-                doc.rect(50, y, 495, 20).fill('#f0f0f0');
-                doc.fillColor('#000000');
-                doc.text('Date', colDate, y + 6);
-                doc.text('Description', colDesc, y + 6);
-                doc.text('Debit', colDebit, y + 6, {
-                    width: 70,
-                    align: 'right'
-                });
-                doc.text('Credit', colCredit, y + 6, {
-                    width: 70,
-                    align: 'right'
-                });
-                doc.text('Balance', colBalance, y + 6, {
-                    width: 80,
-                    align: 'right'
-                });
-                y += 25;
-                doc.font('Helvetica').fontSize(8);
-            }
-            // Alternate row background
-            if (statement.entries.indexOf(entry) % 2 === 1) {
-                doc.rect(50, y - 3, 495, 15).fill('#fafafa');
-                doc.fillColor('#000000');
-            }
-            doc.text(formatDate(entry.date), colDate, y);
-            const desc = entry.description || entry.transactionType;
-            doc.text(desc.length > 30 ? desc.substring(0, 27) + '...' : desc, colDesc, y);
-            doc.text(entry.debit ? formatCurrency(entry.debit) : '', colDebit, y, {
-                width: 70,
-                align: 'right'
-            });
-            doc.text(entry.credit ? formatCurrency(entry.credit) : '', colCredit, y, {
-                width: 70,
-                align: 'right'
-            });
-            doc.text(formatCurrency(entry.runningBalance), colBalance, y, {
-                width: 80,
-                align: 'right'
-            });
-            y += 15;
-        }
-        // Closing balance row
-        doc.font('Helvetica-Bold');
-        doc.text(formatDate(new Date(to)), colDate, y + 5);
-        doc.text('Closing Balance', colDesc, y + 5);
-        doc.text('', colDebit, y + 5, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text('', colCredit, y + 5, {
-            width: 70,
-            align: 'right'
-        });
-        doc.text(formatCurrency(statement.closingBalance), colBalance, y + 5, {
-            width: 80,
-            align: 'right'
-        });
-        // Footer
-        const pageCount = doc.bufferedPageRange().count;
-        for(let i = 0; i < pageCount; i++){
-            doc.switchToPage(i);
-            doc.fontSize(8).font('Helvetica');
-            doc.text(`Page ${i + 1} of ${pageCount} | This is a computer-generated document and does not require signature.`, 50, doc.page.height - 50, {
-                align: 'center',
-                width: 495
-            });
-        }
-        doc.end();
+    };
+    // Simple Black & White Design
+    const primaryColor = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0, 0, 0);
+    const secondaryColor = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0.3, 0.3, 0.3);
+    // Header
+    const title = 'BNKCORE';
+    const titleWidth = fontBold.widthOfTextAtSize(title, 22);
+    drawText(title, (width - titleWidth) / 2, y, 22, fontBold);
+    y -= 25;
+    const subtitle = 'Core Banking System';
+    const subtitleWidth = font.widthOfTextAtSize(subtitle, 10);
+    drawText(subtitle, (width - subtitleWidth) / 2, y, 10, font);
+    y -= 35;
+    const reportTitle = 'Account Statement';
+    const reportTitleWidth = fontBold.widthOfTextAtSize(reportTitle, 16);
+    drawText(reportTitle, (width - reportTitleWidth) / 2, y, 16, fontBold);
+    y -= 45;
+    // Account Information
+    const infoY = y;
+    drawText('Account Holder:', margin, y, 10, fontBold);
+    drawText(statement.account.customerName, margin + 90, y, 10, font);
+    y -= 18;
+    drawText('Account Number:', margin, y, 10, fontBold);
+    // Display full account number
+    drawText(statement.account.accountNumber, margin + 90, y, 10, font);
+    y -= 18;
+    drawText('Account Type:', margin, y, 10, fontBold);
+    drawText(statement.account.accountType, margin + 90, y, 10, font);
+    drawText('Statement Period:', 320, infoY, 10, fontBold);
+    drawText(`${formatDate(new Date(from))} - ${formatDate(new Date(to))}`, 410, infoY, 10, font);
+    drawText('Generated:', 320, infoY - 18, 10, fontBold);
+    drawText(formatDate(new Date()), 410, infoY - 18, 10, font);
+    y -= 50;
+    // Summary Box
+    page.drawRectangle({
+        x: margin,
+        y: y - 55,
+        width: width - 2 * margin,
+        height: 65,
+        borderColor: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0, 0, 0),
+        borderWidth: 1
     });
+    const summaryY1 = y - 20;
+    const summaryY2 = y - 45;
+    drawText('Opening Balance:', margin + 15, summaryY1, 10, fontBold);
+    drawText(formatCurrency(statement.openingBalance), margin + 110, summaryY1, 10, fontBold);
+    drawText('Total Credits:', margin + 260, summaryY1, 10, fontBold);
+    drawText(formatCurrency(statement.totalCredits), margin + 350, summaryY1, 10, fontBold);
+    drawText('Closing Balance:', margin + 15, summaryY2, 10, fontBold);
+    drawText(formatCurrency(statement.closingBalance), margin + 110, summaryY2, 10, fontBold);
+    drawText('Total Debits:', margin + 260, summaryY2, 10, fontBold);
+    drawText(formatCurrency(statement.totalDebits), margin + 350, summaryY2, 10, fontBold);
+    y -= 90;
+    // Table Column Definitions
+    const colDate = margin;
+    const colDesc = margin + 75;
+    const colDebit = margin + 250;
+    const colCredit = margin + 330;
+    const colBalance = margin + 415;
+    const colWidths = {
+        debit: 70,
+        credit: 70,
+        balance: 80
+    };
+    const drawTableHeader = (currentY)=>{
+        page.drawRectangle({
+            x: margin,
+            y: currentY - 18,
+            width: width - 2 * margin,
+            height: 25,
+            color: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0.9, 0.9, 0.9)
+        });
+        const headerTextY = currentY - 3;
+        drawText('Date', colDate + 5, headerTextY, 9, fontBold);
+        drawText('Description', colDesc, headerTextY, 9, fontBold);
+        const drawRightText = (text, x, targetWidth, currentYInner, size = 9, f = fontBold)=>{
+            const textWidth = f.widthOfTextAtSize(text, size);
+            drawText(text, x + targetWidth - textWidth - 5, currentYInner, size, f);
+        };
+        drawRightText('Debit', colDebit, colWidths.debit, headerTextY);
+        drawRightText('Credit', colCredit, colWidths.credit, headerTextY);
+        drawRightText('Balance', colBalance, colWidths.balance, headerTextY);
+    };
+    drawTableHeader(y);
+    y -= 30;
+    const drawRowRightText = (text, x, targetWidth, currentY, size = 8, f = font)=>{
+        const textWidth = f.widthOfTextAtSize(text, size);
+        drawText(text, x + targetWidth - textWidth - 5, currentY, size, f);
+    };
+    // Opening Balance Row
+    drawText(formatDate(new Date(from)), colDate + 5, y, 8, fontBold);
+    drawText('Opening Balance', colDesc, y, 8, fontBold);
+    drawRowRightText(formatCurrency(statement.openingBalance), colBalance, colWidths.balance, y, 8, fontBold);
+    y -= 18;
+    // Transaction rows
+    for (const entry of statement.entries){
+        if (y < margin + 60) {
+            addNewPage();
+            drawTableHeader(y);
+            y -= 30;
+        }
+        const index = statement.entries.indexOf(entry);
+        if (index % 2 === 1) {
+            page.drawRectangle({
+                x: margin,
+                y: y - 5,
+                width: width - 2 * margin,
+                height: 18,
+                color: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0.98, 0.98, 0.98)
+            });
+        }
+        drawText(formatDate(entry.date), colDate + 5, y, 8, font, secondaryColor);
+        const desc = entry.description || entry.transactionType;
+        drawText(desc.length > 35 ? desc.substring(0, 32) + '...' : desc, colDesc, y, 8, font);
+        if (entry.debit) {
+            drawRowRightText(formatCurrency(entry.debit), colDebit, colWidths.debit, y, 8, font);
+        }
+        if (entry.credit) {
+            drawRowRightText(formatCurrency(entry.credit), colCredit, colWidths.credit, y, 8, font);
+        }
+        drawRowRightText(formatCurrency(entry.runningBalance), colBalance, colWidths.balance, y, 8, font);
+        y -= 18;
+    }
+    // Closing Balance Row
+    if (y < margin + 40) {
+        addNewPage();
+        drawTableHeader(y);
+        y -= 30;
+    }
+    y -= 5;
+    drawText(formatDate(new Date(to)), colDate + 5, y, 8, fontBold);
+    drawText('Closing Balance', colDesc, y, 8, fontBold);
+    drawRowRightText(formatCurrency(statement.closingBalance), colBalance, colWidths.balance, y, 8, fontBold);
+    // Footer
+    const pages = pdfDoc.getPages();
+    for(let i = 0; i < pages.length; i++){
+        const p = pages[i];
+        const footerText = `Page ${i + 1} of ${pages.length} | This is a computer-generated document and does not require signature.`;
+        const footerWidth = font.widthOfTextAtSize(footerText, 8);
+        p.drawText(footerText, {
+            x: (width - footerWidth) / 2,
+            y: 30,
+            size: 8,
+            font: font,
+            color: (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$pdf$2d$lib$40$1$2e$17$2e$1$2f$node_modules$2f$pdf$2d$lib$2f$es$2f$api$2f$colors$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__["rgb"])(0, 0, 0)
+        });
+    }
+    const pdfBytes = await pdfDoc.save();
+    return Buffer.from(pdfBytes);
 }
 async function searchTransactions(filters) {
     const { from, to, amountMin, amountMax, entryType, transactionType, reference, accountId, includeReversals = true, page = 1, size = 50 } = filters;
@@ -1661,22 +1675,24 @@ function generateCsvFromResults(results) {
 __turbopack_context__.s([
     "applyForAccount",
     ()=>applyForAccount,
-    "approveAccount",
-    ()=>approveAccount,
     "closeAccount",
     ()=>closeAccount,
+    "createAccount",
+    ()=>createAccount,
     "freezeAccount",
     ()=>freezeAccount,
     "getAccountById",
     ()=>getAccountById,
+    "getAccountByNumber",
+    ()=>getAccountByNumber,
     "getAccountsForCustomer",
     ()=>getAccountsForCustomer,
     "getPendingApplications",
     ()=>getPendingApplications,
+    "onboardNewCustomer",
+    ()=>onboardNewCustomer,
     "refreshAccountBalance",
     ()=>refreshAccountBalance,
-    "rejectAccount",
-    ()=>rejectAccount,
     "unfreezeAccount",
     ()=>unfreezeAccount
 ]);
@@ -1701,10 +1717,30 @@ async function getAccountById(accountId) {
         accountType: account.account_type,
         currency: account.currency,
         status: account.status,
-        balanceLocked: false,
-        rowVersion: 1,
         openedAt: account.created_at,
-        closedAt: null,
+        createdAt: account.created_at
+    };
+}
+async function getAccountByNumber(accountNumber) {
+    const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.account_number = ?`, [
+        accountNumber
+    ]);
+    if (!account) return null;
+    return {
+        id: account.id,
+        accountNumber: account.account_number,
+        customerId: account.customer_id,
+        accountType: account.account_type,
+        currency: account.currency,
+        status: account.status,
+        openedAt: account.created_at,
         createdAt: account.created_at
     };
 }
@@ -1731,256 +1767,210 @@ async function getAccountsForCustomer(customerId) {
             accountTypeName: row.account_type_name,
             currency: row.currency,
             status: row.status,
-            balanceLocked: false,
-            rowVersion: 1,
             openedAt: row.created_at,
-            closedAt: null,
             createdAt: row.created_at,
             customerName: `${row.first_name} ${row.last_name}`,
             balance: {
-                availableBalance: parseFloat(row.available_balance || '0'),
-                pendingBalance: 0,
-                holdBalance: 0
+                availableBalance: parseFloat(row.available_balance || '0')
             }
         }));
 }
-async function applyForAccount(customerId, accountType) {
-    // 1. Verify KYC Status (Must be VERIFIED)
-    const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT kyc_status FROM customers WHERE id = ?', [
-        customerId
-    ]);
-    if (!customer) return {
-        success: false,
-        error: 'Customer not found'
-    };
-    if (customer.kyc_status !== 'VERIFIED') {
-        return {
-            success: false,
-            error: `KYC verification required (Status: ${customer.kyc_status})`
-        };
-    }
-    // 2. Create Application
+async function freezeAccount(accountId, bankerId, reason) {
     try {
-        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO account_applications (customer_id, account_type, status)
-             VALUES (?, ?, 'PENDING')`, [
-            customerId,
-            accountType
-        ]);
-        return {
-            success: true,
-            applicationId: result.insertId
-        };
-    } catch (error) {
-        console.error('Error applying for account:', error);
-        return {
-            success: false,
-            error: 'Failed to submit application'
-        };
-    }
-}
-async function getPendingApplications() {
-    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT aa.*, 
-                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
-                c.email as customer_email,
-                c.kyc_status
-         FROM account_applications aa
-         JOIN customers c ON aa.customer_id = c.id
-         WHERE aa.status = 'PENDING'
-         ORDER BY aa.created_at ASC`);
-    return rows.map((row)=>({
-            id: row.id,
-            customerId: row.customer_id,
-            accountType: row.account_type,
-            status: row.status,
-            createdAt: row.created_at,
-            customerName: row.customer_name,
-            customerEmail: row.customer_email,
-            kycStatus: row.kyc_status
-        }));
-}
-async function approveAccount(applicationId, bankerId) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Application
-        const [apps] = await connection.query('SELECT * FROM account_applications WHERE id = ? FOR UPDATE', [
-            applicationId
-        ]);
-        const app = apps[0];
-        if (!app) throw new Error('Application not found');
-        if (app.status !== 'PENDING') throw new Error(`Application is ${app.status}`);
-        // 2. Generate Account Number (Strictly unique)
-        // Format: [TYPE_PREFIX][YEAR][RANDOM] -> e.g. SAV202512345678
-        const prefix = app.account_type.substring(0, 3).toUpperCase();
-        const year = new Date().getFullYear();
-        const random = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
-        const accountNumber = `${prefix}${year}${random}`;
-        // 3. Create Account
-        const [accResult] = await connection.execute(`INSERT INTO accounts (
-                account_number, customer_id, account_type, currency, 
-                status, balance_locked, row_version, opened_at, created_by
-             ) VALUES (?, ?, ?, 'BDT', 'ACTIVE', FALSE, 1, NOW(), ?)`, [
-            accountNumber,
-            app.customer_id,
-            app.account_type,
-            bankerId
-        ]);
-        const accountId = accResult.insertId;
-        // 4. Create Initial History Snapshot
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'ACTIVE', FALSE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                action: 'OPEN_ACCOUNT',
-                applicationId
-            }),
-            bankerId
-        ]);
-        // 5. Initialize Balance (Zero)
-        await connection.execute(`INSERT INTO account_balances (account_id, available_balance, currency)
-             VALUES (?, 0, 'BDT')`, [
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "SUSPENDED", updated_at = NOW() WHERE id = ?', [
             accountId
-        ]);
-        // 6. Update Application Status
-        await connection.execute(`UPDATE account_applications 
-             SET status = 'APPROVED', reviewed_by = ?, reviewed_at = NOW() 
-             WHERE id = ?`, [
-            bankerId,
-            applicationId
-        ]);
-        return {
-            success: true,
-            accountId,
-            accountNumber
-        };
-    });
-}
-async function rejectAccount(applicationId, bankerId, reason) {
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE account_applications 
-             SET status = 'REJECTED', reviewed_by = ?, reviewed_at = NOW(), review_reason = ? 
-             WHERE id = ? AND status = 'PENDING'`, [
-            bankerId,
-            reason,
-            applicationId
         ]);
         return {
             success: true
         };
     } catch (error) {
-        console.error('Error rejecting account:', error);
+        console.error('Error freezing account:', error);
         return {
             success: false,
             error: 'Failed'
         };
     }
 }
-async function freezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'SUSPENDED', true, bankerId, reason);
-}
 async function unfreezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'ACTIVE', false, bankerId, reason);
+    try {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "ACTIVE", updated_at = NOW() WHERE id = ?', [
+            accountId
+        ]);
+        return {
+            success: true
+        };
+    } catch (error) {
+        console.error('Error unfreezing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
 async function closeAccount(accountId, bankerId, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Account & Validation
-        const [accRows] = await connection.query('SELECT status, balance_locked FROM accounts WHERE id = ? FOR UPDATE', [
+    try {
+        // 1. Check Balance (Must be 0)
+        const balanceRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT available_balance FROM account_balances WHERE account_id = ?', [
             accountId
         ]);
-        if (!accRows.length) throw new Error('Account not found');
-        const account = accRows[0];
-        if (account.status === 'CLOSED') throw new Error('Account is already CLOSED');
-        // 2. Check Balance (Must be 0)
-        const [balRows] = await connection.query('SELECT available_balance, pending_balance, hold_balance FROM account_balances WHERE account_id = ? FOR UPDATE', [
-            accountId
-        ]);
-        const balance = balRows[0];
-        const totalBalance = parseFloat(balance.available_balance) + parseFloat(balance.pending_balance) + parseFloat(balance.hold_balance);
-        if (totalBalance !== 0) {
-            throw new Error(`Cannot close account. Non-zero balance: ${totalBalance}`);
+        const balance = parseFloat(balanceRow?.available_balance || '0');
+        if (balance !== 0) {
+            return {
+                success: false,
+                error: `Cannot close account. Non-zero balance: ${balance}`
+            };
         }
-        // 3. Check Pending Disputes (Optional: Add if table exists and logic required)
-        const [disputes] = await connection.query('SELECT COUNT(*) as count FROM disputes WHERE customer_id = (SELECT customer_id FROM accounts WHERE id = ?) AND status NOT IN ("RESOLVED", "REJECTED")', [
-            accountId
-        ]);
-        if (disputes[0].count > 0) {
-            throw new Error('Cannot close account. Pending disputes exist.');
-        }
-        // 4. Archive History
-        await connection.execute(`UPDATE accounts_history SET valid_to = NOW() WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 5. Insert Closing History
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'CLOSED', TRUE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                reason
-            }),
-            bankerId
-        ]);
-        // 6. Update Account Status
-        await connection.execute(`UPDATE accounts 
-             SET status = 'CLOSED', balance_locked = TRUE, closed_at = NOW(), 
-                 row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
+        // 2. Update Account Status
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "CLOSED", updated_at = NOW() WHERE id = ?', [
             accountId
         ]);
         return {
             success: true
         };
-    });
+    } catch (error) {
+        console.error('Error closing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
-async function changeAccountStatus(accountId, newStatus, balanceLocked, changedBy, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get current state and lock
-        const [rows] = await connection.query('SELECT * FROM accounts WHERE id = ? FOR UPDATE', [
-            accountId
+async function createAccount(customerId, accountTypeId, createdBy) {
+    try {
+        // 1. Verify Customer exists
+        const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM customers WHERE id = ?', [
+            customerId
         ]);
-        const current = rows[0];
-        if (!current) throw new Error('Account not found');
-        // 2. Archive current state to history (Close the previous validity period)
-        // We update the 'valid_to' of the most recent history record?
-        // Actually, strictly temporal usually means inserting a NEW record with new valid_from.
-        // And optionally updating the previous one's valid_to.
-        await connection.execute(`UPDATE accounts_history 
-             SET valid_to = NOW() 
-             WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 3. Insert new history record
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), ?, ?, ?, ?)`, [
-            accountId,
-            newStatus,
-            balanceLocked,
-            JSON.stringify({
-                reason,
-                previousStatus: current.status
-            }),
-            changedBy
-        ]);
-        // 4. Update core account
-        await connection.execute(`UPDATE accounts 
-             SET status = ?, balance_locked = ?, row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
-            newStatus,
-            balanceLocked,
-            accountId
-        ]);
+        if (!customer) {
+            return {
+                success: false,
+                error: 'Customer not found'
+            };
+        }
+        // 2. Generate Account Number (10 + 8 random digits)
+        const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
+            // 3. Insert Account record
+            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
+                accountNumber,
+                customerId,
+                accountTypeId,
+                createdBy || null
+            ]);
+            const accountId = accountResult.insertId;
+            // 4. Initialize Balance record
+            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`, [
+                accountId
+            ]);
+            return {
+                success: true,
+                accountId,
+                accountNumber
+            };
+        });
+    } catch (error) {
+        console.error('Error creating account:', error);
         return {
-            success: true
+            success: false,
+            error: 'Database error during account creation'
         };
-    });
+    }
+}
+async function applyForAccount(customerId, accountTypeCode) {
+    // Lookup Account Type ID
+    const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM account_types WHERE code = ?', [
+        accountTypeCode
+    ]);
+    if (!typeRow) {
+        return {
+            success: false,
+            error: 'Invalid account type'
+        };
+    }
+    const result = await createAccount(customerId, typeRow.id);
+    if (result.success) {
+        return {
+            success: true,
+            applicationId: result.accountId
+        };
+    }
+    return {
+        success: false,
+        error: result.error
+    };
+}
+async function getPendingApplications() {
+    // No longer applicable, returning empty array
+    return [];
+}
+async function onboardNewCustomer(data) {
+    try {
+        // 1. Generate a temporary password (they should change it later)
+        // Since we don't have an email system yet, we'll use a predictable but "safe-ish" default or random string.
+        const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
+        const { hashPassword } = await __turbopack_context__.A("[project]/src/lib/services/auth-service.ts [app-route] (ecmascript, async loader)");
+        const passwordHash = await hashPassword(tempPassword);
+        // 2. Lookup SAVINGS account type ID
+        const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])("SELECT id FROM account_types WHERE code = 'SAVINGS'");
+        if (!typeRow) {
+            return {
+                success: false,
+                error: 'Default account type (SAVINGS) not found'
+            };
+        }
+        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
+            // 3. Create Customer
+            const [customerResult] = await conn.execute(`INSERT INTO customers 
+                 (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`, [
+                data.customerNumber,
+                data.email,
+                data.firstName,
+                data.lastName,
+                data.dateOfBirth,
+                data.createdBy,
+                passwordHash
+            ]);
+            const customerId = customerResult.insertId;
+            // 4. Create Account
+            const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
+                accountNumber,
+                customerId,
+                typeRow.id,
+                data.createdBy
+            ]);
+            const accountId = accountResult.insertId;
+            // 5. Initialize Balance
+            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`, [
+                accountId
+            ]);
+            return {
+                success: true,
+                customerId,
+                accountId
+            };
+        });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return {
+                success: false,
+                error: 'Email or Customer Number already exists'
+            };
+        }
+        console.error('Error during onboarding:', error);
+        return {
+            success: false,
+            error: 'Database error during customer onboarding'
+        };
+    }
 }
 async function refreshAccountBalance(accountId) {
-    // Placeholder for balance recalculation from ledger
-    // For now, we assume account_balances is consistent.
-    // Future implementation: Sum all ledger entries and update account_balances.
+    // Placeholder - in real system would trigger reconciliation
     return;
 }
 }),

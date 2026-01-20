@@ -5,7 +5,6 @@ import { useAuth, apiClient } from '@/lib/auth-context';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DashboardCharts } from '@/components/dashboard/dashboard-charts';
 import Link from 'next/link';
 
 interface Account {
@@ -58,9 +57,6 @@ export default function CustomerDashboard() {
                 </p>
             </div>
 
-            {/* Dashboard Charts */}
-            <DashboardCharts />
-
             {/* Summary Cards */}
             <div className="grid gap-6 md:grid-cols-3">
                 <Card className="bg-gradient-to-br from-slate-900 to-slate-800 text-white">
@@ -104,6 +100,8 @@ export default function CustomerDashboard() {
                     </CardContent>
                 </Card>
             </div>
+
+
 
             {/* Pending Applications Alert */}
             {accounts.some(a => a.status === 'PENDING') && (

@@ -81,7 +81,7 @@ export default function NewCustomerPage() {
                             </Alert>
                         )}
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="firstName">First Name</Label>
                                 <Input id="firstName" {...register('firstName')} />
@@ -100,7 +100,7 @@ export default function NewCustomerPage() {
                             {errors.email && <span className="text-sm text-red-500">{errors.email.message}</span>}
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="dateOfBirth">Date of Birth</Label>
                                 <Input id="dateOfBirth" type="date" {...register('dateOfBirth')} />

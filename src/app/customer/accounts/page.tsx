@@ -89,7 +89,7 @@ export default function AccountsPage() {
                                         </p>
                                     </div>
                                     {(account.balance.pendingBalance > 0 || account.balance.holdBalance > 0) && (
-                                        <div className="grid grid-cols-2 gap-4 pt-3 border-t">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t">
                                             <div>
                                                 <p className="text-xs text-slate-500">Pending</p>
                                                 <p className="text-sm font-medium">

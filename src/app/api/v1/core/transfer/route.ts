@@ -16,7 +16,7 @@ import {
 } from '@/lib/api-utils';
 import { transferSchema } from '@/lib/validations/schemas';
 import { transfer } from '@/lib/services/transaction-service';
-import { getAccountById } from '@/lib/services/account-service';
+import { getAccountById, getAccountByNumber } from '@/lib/services/account-service';
 
 export const POST = withErrorHandler(async (request: NextRequest) => {
     return withAuth(
@@ -28,9 +28,20 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 return validation.response;
             }
 
-            const { fromAccountId, toAccountId, amount, description } = validation.data;
+            const { fromAccountId, toAccountNumber, amount, description } = validation.data;
 
-            // 2. For customers, verify they own the source account
+            // 2. Look up destination account by account number
+            const destAccount = await getAccountByNumber(toAccountNumber);
+            if (!destAccount) {
+                return errorResponse('Destination account not found', 404);
+            }
+
+            // 3. Prevent self-transfer
+            if (fromAccountId === destAccount.id) {
+                return errorResponse('Cannot transfer to the same account', 400);
+            }
+
+            // 4. For customers, verify they own the source account
             if (req.tokenPayload?.type === 'customer') {
                 const sourceAccount = await getAccountById(fromAccountId);
                 if (!sourceAccount || sourceAccount.customerId !== req.customer?.id) {
@@ -38,22 +49,16 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 }
             }
 
-            // 3. Verify destination account exists
-            const destAccount = await getAccountById(toAccountId);
-            if (!destAccount) {
-                return errorResponse('Destination account not found', 404);
-            }
-
-            // 4. Execute transfer via stored procedure
+            // 5. Execute transfer via stored procedure
             const result = await transfer({
                 fromAccountId,
-                toAccountId,
+                toAccountId: destAccount.id,
                 amount,
                 description,
                 performedBy: req.user?.id || req.customer?.id || 0,
             });
 
-            // 5. Return result
+            // 6. Return result
             if (!result.success) {
                 return errorResponse(result.message, 400);
             }

@@ -9,6 +9,8 @@ import {
 import { generateStatementPdf } from '@/lib/services/statement-service';
 import { getAccountById } from '@/lib/services/account-service';
 
+import { format } from 'date-fns';
+
 // =============================================================================
 // GET /api/v1/accounts/[id]/statement/pdf - Generate PDF statement
 // =============================================================================
@@ -35,34 +37,41 @@ export const GET = withErrorHandler(async (request: NextRequest, context) => {
 
             // Get query parameters
             const { searchParams } = new URL(request.url);
+            const fromP = searchParams.get('from');
+            const toP = searchParams.get('to');
             const month = searchParams.get('month');
 
-            // Validate required parameters
-            if (!month) {
-                return errorResponse('Missing required parameter: month (YYYY-MM format)');
-            }
-
-            // Validate month format
-            const monthRegex = /^\d{4}-\d{2}$/;
-            if (!monthRegex.test(month)) {
-                return errorResponse('Invalid month format. Use YYYY-MM');
-            }
-
             try {
-                const pdfBuffer = await generateStatementPdf(accountId, month);
+                let fromStr: string;
+                let toStr: string;
+
+                if (fromP && toP) {
+                    fromStr = fromP;
+                    toStr = toP;
+                } else if (month) {
+                    const [year, monthNum] = month.split('-').map(Number);
+                    fromStr = `${year}-${String(monthNum).padStart(2, '0')}-01`;
+                    const lastDay = new Date(year, monthNum, 0).getDate();
+                    toStr = `${year}-${String(monthNum).padStart(2, '0')}-${String(lastDay).padStart(2, '0')}`;
+                } else {
+                    // Default to current month if nothing provided
+                    const now = new Date();
+                    fromStr = format(new Date(now.getFullYear(), now.getMonth(), 1), 'yyyy-MM-dd');
+                    toStr = format(new Date(now.getFullYear(), now.getMonth() + 1, 0), 'yyyy-MM-dd');
+                }
+
+                const pdfBuffer = await generateStatementPdf(accountId, fromStr, toStr);
 
                 // Generate filename
-                const filename = `statement_${account.accountNumber}_${month}.pdf`;
+                const filename = `statement_${account.accountNumber}_${fromStr}_to_${toStr}.pdf`;
 
-                // Convert Buffer to Uint8Array for NextResponse compatibility
-                const uint8Array = new Uint8Array(pdfBuffer);
-
-                return new NextResponse(uint8Array, {
+                return new NextResponse(new Uint8Array(pdfBuffer), {
                     status: 200,
                     headers: {
                         'Content-Type': 'application/pdf',
                         'Content-Disposition': `attachment; filename="${filename}"`,
-                        'Content-Length': pdfBuffer.length.toString(),
+                        'Access-Control-Expose-Headers': 'Content-Disposition',
+                        // Remove Content-Length to let Next.js handle it
                     },
                 });
             } catch (error) {

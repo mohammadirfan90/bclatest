@@ -1343,8 +1343,11 @@ const updateKycStatusSchema = __TURBOPACK__imported__module__$5b$project$5d2f$no
 });
 const createAccountSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     customerId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive(),
-    accountTypeCode: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1, 'Account type is required'),
-    initialDeposit: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().nonnegative().optional().default(0)
+    accountType: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].enum([
+        'SAVINGS',
+        'CHECKING',
+        'FIXED'
+    ])
 });
 const updateAccountStatusSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     status: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].enum([
@@ -1362,15 +1365,10 @@ const updateAccountStatusSchema = __TURBOPACK__imported__module__$5b$project$5d2
 const bdtAmount = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().positive('Amount must be positive').max(10000000, 'Amount exceeds maximum limit of ৳10,000,000').transform((val)=>Math.round(val * 100) / 100); // Round to 2 decimal places
 const transferSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     fromAccountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Source account is required'),
-    toAccountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Destination account is required'),
+    toAccountNumber: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().min(1, 'Destination account number is required'),
     amount: bdtAmount,
     description: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().max(500).optional(),
     idempotencyKey: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].string().uuid().optional()
-}).refine((data)=>data.fromAccountId !== data.toAccountId, {
-    message: 'Source and destination accounts must be different',
-    path: [
-        'toAccountId'
-    ]
 });
 const depositSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].object({
     accountId: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$zod$40$4$2e$3$2e$5$2f$node_modules$2f$zod$2f$v4$2f$classic$2f$external$2e$js__$5b$app$2d$route$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__["z"].number().int().positive('Account is required'),
@@ -1481,22 +1479,24 @@ const systemConfigSchema = __TURBOPACK__imported__module__$5b$project$5d2f$node_
 __turbopack_context__.s([
     "applyForAccount",
     ()=>applyForAccount,
-    "approveAccount",
-    ()=>approveAccount,
     "closeAccount",
     ()=>closeAccount,
+    "createAccount",
+    ()=>createAccount,
     "freezeAccount",
     ()=>freezeAccount,
     "getAccountById",
     ()=>getAccountById,
+    "getAccountByNumber",
+    ()=>getAccountByNumber,
     "getAccountsForCustomer",
     ()=>getAccountsForCustomer,
     "getPendingApplications",
     ()=>getPendingApplications,
+    "onboardNewCustomer",
+    ()=>onboardNewCustomer,
     "refreshAccountBalance",
     ()=>refreshAccountBalance,
-    "rejectAccount",
-    ()=>rejectAccount,
     "unfreezeAccount",
     ()=>unfreezeAccount
 ]);
@@ -1521,10 +1521,30 @@ async function getAccountById(accountId) {
         accountType: account.account_type,
         currency: account.currency,
         status: account.status,
-        balanceLocked: false,
-        rowVersion: 1,
         openedAt: account.created_at,
-        closedAt: null,
+        createdAt: account.created_at
+    };
+}
+async function getAccountByNumber(accountNumber) {
+    const account = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.account_number = ?`, [
+        accountNumber
+    ]);
+    if (!account) return null;
+    return {
+        id: account.id,
+        accountNumber: account.account_number,
+        customerId: account.customer_id,
+        accountType: account.account_type,
+        currency: account.currency,
+        status: account.status,
+        openedAt: account.created_at,
         createdAt: account.created_at
     };
 }
@@ -1551,256 +1571,210 @@ async function getAccountsForCustomer(customerId) {
             accountTypeName: row.account_type_name,
             currency: row.currency,
             status: row.status,
-            balanceLocked: false,
-            rowVersion: 1,
             openedAt: row.created_at,
-            closedAt: null,
             createdAt: row.created_at,
             customerName: `${row.first_name} ${row.last_name}`,
             balance: {
-                availableBalance: parseFloat(row.available_balance || '0'),
-                pendingBalance: 0,
-                holdBalance: 0
+                availableBalance: parseFloat(row.available_balance || '0')
             }
         }));
 }
-async function applyForAccount(customerId, accountType) {
-    // 1. Verify KYC Status (Must be VERIFIED)
-    const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT kyc_status FROM customers WHERE id = ?', [
-        customerId
-    ]);
-    if (!customer) return {
-        success: false,
-        error: 'Customer not found'
-    };
-    if (customer.kyc_status !== 'VERIFIED') {
-        return {
-            success: false,
-            error: `KYC verification required (Status: ${customer.kyc_status})`
-        };
-    }
-    // 2. Create Application
+async function freezeAccount(accountId, bankerId, reason) {
     try {
-        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`INSERT INTO account_applications (customer_id, account_type, status)
-             VALUES (?, ?, 'PENDING')`, [
-            customerId,
-            accountType
-        ]);
-        return {
-            success: true,
-            applicationId: result.insertId
-        };
-    } catch (error) {
-        console.error('Error applying for account:', error);
-        return {
-            success: false,
-            error: 'Failed to submit application'
-        };
-    }
-}
-async function getPendingApplications() {
-    const rows = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT aa.*, 
-                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
-                c.email as customer_email,
-                c.kyc_status
-         FROM account_applications aa
-         JOIN customers c ON aa.customer_id = c.id
-         WHERE aa.status = 'PENDING'
-         ORDER BY aa.created_at ASC`);
-    return rows.map((row)=>({
-            id: row.id,
-            customerId: row.customer_id,
-            accountType: row.account_type,
-            status: row.status,
-            createdAt: row.created_at,
-            customerName: row.customer_name,
-            customerEmail: row.customer_email,
-            kycStatus: row.kyc_status
-        }));
-}
-async function approveAccount(applicationId, bankerId) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Application
-        const [apps] = await connection.query('SELECT * FROM account_applications WHERE id = ? FOR UPDATE', [
-            applicationId
-        ]);
-        const app = apps[0];
-        if (!app) throw new Error('Application not found');
-        if (app.status !== 'PENDING') throw new Error(`Application is ${app.status}`);
-        // 2. Generate Account Number (Strictly unique)
-        // Format: [TYPE_PREFIX][YEAR][RANDOM] -> e.g. SAV202512345678
-        const prefix = app.account_type.substring(0, 3).toUpperCase();
-        const year = new Date().getFullYear();
-        const random = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
-        const accountNumber = `${prefix}${year}${random}`;
-        // 3. Create Account
-        const [accResult] = await connection.execute(`INSERT INTO accounts (
-                account_number, customer_id, account_type, currency, 
-                status, balance_locked, row_version, opened_at, created_by
-             ) VALUES (?, ?, ?, 'BDT', 'ACTIVE', FALSE, 1, NOW(), ?)`, [
-            accountNumber,
-            app.customer_id,
-            app.account_type,
-            bankerId
-        ]);
-        const accountId = accResult.insertId;
-        // 4. Create Initial History Snapshot
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'ACTIVE', FALSE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                action: 'OPEN_ACCOUNT',
-                applicationId
-            }),
-            bankerId
-        ]);
-        // 5. Initialize Balance (Zero)
-        await connection.execute(`INSERT INTO account_balances (account_id, available_balance, currency)
-             VALUES (?, 0, 'BDT')`, [
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "SUSPENDED", updated_at = NOW() WHERE id = ?', [
             accountId
-        ]);
-        // 6. Update Application Status
-        await connection.execute(`UPDATE account_applications 
-             SET status = 'APPROVED', reviewed_by = ?, reviewed_at = NOW() 
-             WHERE id = ?`, [
-            bankerId,
-            applicationId
-        ]);
-        return {
-            success: true,
-            accountId,
-            accountNumber
-        };
-    });
-}
-async function rejectAccount(applicationId, bankerId, reason) {
-    try {
-        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["execute"])(`UPDATE account_applications 
-             SET status = 'REJECTED', reviewed_by = ?, reviewed_at = NOW(), review_reason = ? 
-             WHERE id = ? AND status = 'PENDING'`, [
-            bankerId,
-            reason,
-            applicationId
         ]);
         return {
             success: true
         };
     } catch (error) {
-        console.error('Error rejecting account:', error);
+        console.error('Error freezing account:', error);
         return {
             success: false,
             error: 'Failed'
         };
     }
 }
-async function freezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'SUSPENDED', true, bankerId, reason);
-}
 async function unfreezeAccount(accountId, bankerId, reason) {
-    return changeAccountStatus(accountId, 'ACTIVE', false, bankerId, reason);
+    try {
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "ACTIVE", updated_at = NOW() WHERE id = ?', [
+            accountId
+        ]);
+        return {
+            success: true
+        };
+    } catch (error) {
+        console.error('Error unfreezing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
 async function closeAccount(accountId, bankerId, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get Account & Validation
-        const [accRows] = await connection.query('SELECT status, balance_locked FROM accounts WHERE id = ? FOR UPDATE', [
+    try {
+        // 1. Check Balance (Must be 0)
+        const balanceRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT available_balance FROM account_balances WHERE account_id = ?', [
             accountId
         ]);
-        if (!accRows.length) throw new Error('Account not found');
-        const account = accRows[0];
-        if (account.status === 'CLOSED') throw new Error('Account is already CLOSED');
-        // 2. Check Balance (Must be 0)
-        const [balRows] = await connection.query('SELECT available_balance, pending_balance, hold_balance FROM account_balances WHERE account_id = ? FOR UPDATE', [
-            accountId
-        ]);
-        const balance = balRows[0];
-        const totalBalance = parseFloat(balance.available_balance) + parseFloat(balance.pending_balance) + parseFloat(balance.hold_balance);
-        if (totalBalance !== 0) {
-            throw new Error(`Cannot close account. Non-zero balance: ${totalBalance}`);
+        const balance = parseFloat(balanceRow?.available_balance || '0');
+        if (balance !== 0) {
+            return {
+                success: false,
+                error: `Cannot close account. Non-zero balance: ${balance}`
+            };
         }
-        // 3. Check Pending Disputes (Optional: Add if table exists and logic required)
-        const [disputes] = await connection.query('SELECT COUNT(*) as count FROM disputes WHERE customer_id = (SELECT customer_id FROM accounts WHERE id = ?) AND status NOT IN ("RESOLVED", "REJECTED")', [
-            accountId
-        ]);
-        if (disputes[0].count > 0) {
-            throw new Error('Cannot close account. Pending disputes exist.');
-        }
-        // 4. Archive History
-        await connection.execute(`UPDATE accounts_history SET valid_to = NOW() WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 5. Insert Closing History
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'CLOSED', TRUE, ?, ?)`, [
-            accountId,
-            JSON.stringify({
-                reason
-            }),
-            bankerId
-        ]);
-        // 6. Update Account Status
-        await connection.execute(`UPDATE accounts 
-             SET status = 'CLOSED', balance_locked = TRUE, closed_at = NOW(), 
-                 row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
+        // 2. Update Account Status
+        await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])('UPDATE accounts SET status = "CLOSED", updated_at = NOW() WHERE id = ?', [
             accountId
         ]);
         return {
             success: true
         };
-    });
+    } catch (error) {
+        console.error('Error closing account:', error);
+        return {
+            success: false,
+            error: 'Failed'
+        };
+    }
 }
-async function changeAccountStatus(accountId, newStatus, balanceLocked, changedBy, reason) {
-    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (connection)=>{
-        // 1. Get current state and lock
-        const [rows] = await connection.query('SELECT * FROM accounts WHERE id = ? FOR UPDATE', [
-            accountId
+async function createAccount(customerId, accountTypeId, createdBy) {
+    try {
+        // 1. Verify Customer exists
+        const customer = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM customers WHERE id = ?', [
+            customerId
         ]);
-        const current = rows[0];
-        if (!current) throw new Error('Account not found');
-        // 2. Archive current state to history (Close the previous validity period)
-        // We update the 'valid_to' of the most recent history record?
-        // Actually, strictly temporal usually means inserting a NEW record with new valid_from.
-        // And optionally updating the previous one's valid_to.
-        await connection.execute(`UPDATE accounts_history 
-             SET valid_to = NOW() 
-             WHERE account_id = ? AND valid_to IS NULL`, [
-            accountId
-        ]);
-        // 3. Insert new history record
-        await connection.execute(`INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), ?, ?, ?, ?)`, [
-            accountId,
-            newStatus,
-            balanceLocked,
-            JSON.stringify({
-                reason,
-                previousStatus: current.status
-            }),
-            changedBy
-        ]);
-        // 4. Update core account
-        await connection.execute(`UPDATE accounts 
-             SET status = ?, balance_locked = ?, row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`, [
-            newStatus,
-            balanceLocked,
-            accountId
-        ]);
+        if (!customer) {
+            return {
+                success: false,
+                error: 'Customer not found'
+            };
+        }
+        // 2. Generate Account Number (10 + 8 random digits)
+        const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
+            // 3. Insert Account record
+            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
+                accountNumber,
+                customerId,
+                accountTypeId,
+                createdBy || null
+            ]);
+            const accountId = accountResult.insertId;
+            // 4. Initialize Balance record
+            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`, [
+                accountId
+            ]);
+            return {
+                success: true,
+                accountId,
+                accountNumber
+            };
+        });
+    } catch (error) {
+        console.error('Error creating account:', error);
         return {
-            success: true
+            success: false,
+            error: 'Database error during account creation'
         };
-    });
+    }
+}
+async function applyForAccount(customerId, accountTypeCode) {
+    // Lookup Account Type ID
+    const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])('SELECT id FROM account_types WHERE code = ?', [
+        accountTypeCode
+    ]);
+    if (!typeRow) {
+        return {
+            success: false,
+            error: 'Invalid account type'
+        };
+    }
+    const result = await createAccount(customerId, typeRow.id);
+    if (result.success) {
+        return {
+            success: true,
+            applicationId: result.accountId
+        };
+    }
+    return {
+        success: false,
+        error: result.error
+    };
+}
+async function getPendingApplications() {
+    // No longer applicable, returning empty array
+    return [];
+}
+async function onboardNewCustomer(data) {
+    try {
+        // 1. Generate a temporary password (they should change it later)
+        // Since we don't have an email system yet, we'll use a predictable but "safe-ish" default or random string.
+        const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
+        const { hashPassword } = await __turbopack_context__.A("[project]/src/lib/services/auth-service.ts [app-route] (ecmascript, async loader)");
+        const passwordHash = await hashPassword(tempPassword);
+        // 2. Lookup SAVINGS account type ID
+        const typeRow = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])("SELECT id FROM account_types WHERE code = 'SAVINGS'");
+        if (!typeRow) {
+            return {
+                success: false,
+                error: 'Default account type (SAVINGS) not found'
+            };
+        }
+        return await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withTransaction"])(async (conn)=>{
+            // 3. Create Customer
+            const [customerResult] = await conn.execute(`INSERT INTO customers 
+                 (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`, [
+                data.customerNumber,
+                data.email,
+                data.firstName,
+                data.lastName,
+                data.dateOfBirth,
+                data.createdBy,
+                passwordHash
+            ]);
+            const customerId = customerResult.insertId;
+            // 4. Create Account
+            const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+            const [accountResult] = await conn.execute(`INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`, [
+                accountNumber,
+                customerId,
+                typeRow.id,
+                data.createdBy
+            ]);
+            const accountId = accountResult.insertId;
+            // 5. Initialize Balance
+            await conn.execute(`INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`, [
+                accountId
+            ]);
+            return {
+                success: true,
+                customerId,
+                accountId
+            };
+        });
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            return {
+                success: false,
+                error: 'Email or Customer Number already exists'
+            };
+        }
+        console.error('Error during onboarding:', error);
+        return {
+            success: false,
+            error: 'Database error during customer onboarding'
+        };
+    }
 }
 async function refreshAccountBalance(accountId) {
-    // Placeholder for balance recalculation from ledger
-    // For now, we assume account_balances is consistent.
-    // Future implementation: Sum all ledger entries and update account_balances.
+    // Placeholder - in real system would trigger reconciliation
     return;
 }
 }),
@@ -1809,7 +1783,9 @@ async function refreshAccountBalance(accountId) {
 
 __turbopack_context__.s([
     "GET",
-    ()=>GET
+    ()=>GET,
+    "POST",
+    ()=>POST
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/api-utils.ts [app-route] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$validations$2f$schemas$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/validations/schemas.ts [app-route] (ecmascript)");
@@ -1862,10 +1838,30 @@ const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$ap
     }, {
         requiredType: 'any'
     });
-}); // =============================================================================
- // POST /api/v1/accounts - Create account (Banker)
- // =============================================================================
- // POST method removed: Accounts must be created via Application -> Approval workflow.
+});
+const POST = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withErrorHandler"])(async (request)=>{
+    return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withAuth"])(request, async (req)=>{
+        const validation = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["validateBody"])(request, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$validations$2f$schemas$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createAccountSchema"]);
+        if (!validation.success) {
+            return validation.response;
+        }
+        const { customerId, accountType } = validation.data;
+        const result = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$services$2f$account$2d$service$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["applyForAccount"])(customerId, accountType);
+        if (!result.success) {
+            return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["errorResponse"])(result.error || 'Failed to create account');
+        }
+        return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["createdResponse"])({
+            message: 'Account created successfully',
+            accountId: result.applicationId // Service returns accountId as applicationId in legacy wrapper
+        });
+    }, {
+        requiredType: 'user',
+        requiredRoles: [
+            'BANKER',
+            'ADMIN'
+        ]
+    });
+});
 }),
 ];
 

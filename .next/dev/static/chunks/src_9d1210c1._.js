@@ -1875,11 +1875,6 @@ const bankerNavItems = [
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].customers
     },
     {
-        title: 'KYC Review',
-        href: '/banker/kyc',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].users
-    },
-    {
         title: 'Accounts',
         href: '/banker/accounts',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].accounts
@@ -1913,26 +1908,16 @@ const bankerNavItems = [
         title: 'Reports',
         href: '/banker/reports',
         icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].reconciliation
-    },
-    {
-        title: 'Reconciliation',
-        href: '/banker/reconciliation',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].reconciliation
-    },
-    {
-        title: 'Fraud Review',
-        href: '/banker/fraud',
-        icon: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$layouts$2f$Sidebar$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Icons"].fraud
     }
 ];
 function BankerLayout(t0) {
     _s();
     const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(12);
-    if ($[0] !== "f11a7fe0f8067b324fbca2144c4a0a5aeff5b7ce3c6d43edfdadd88eae969860") {
+    if ($[0] !== "83dc7cddda78820e93d4ccae69ac87c5b1c0b4001fff731486136e1c82f89c13") {
         for(let $i = 0; $i < 12; $i += 1){
             $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
-        $[0] = "f11a7fe0f8067b324fbca2144c4a0a5aeff5b7ce3c6d43edfdadd88eae969860";
+        $[0] = "83dc7cddda78820e93d4ccae69ac87c5b1c0b4001fff731486136e1c82f89c13";
     }
     const { children } = t0;
     const { isAuthenticated, isLoading, userType } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"])();
@@ -1973,12 +1958,12 @@ function BankerLayout(t0) {
                     className: "animate-spin h-8 w-8 border-4 border-slate-900 border-t-transparent rounded-full"
                 }, void 0, false, {
                     fileName: "[project]/src/app/banker/layout.tsx",
-                    lineNumber: 99,
+                    lineNumber: 87,
                     columnNumber: 71
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/banker/layout.tsx",
-                lineNumber: 99,
+                lineNumber: 87,
                 columnNumber: 12
             }, this);
             $[7] = t3;
@@ -1996,12 +1981,12 @@ function BankerLayout(t0) {
                     className: "animate-spin h-8 w-8 border-4 border-slate-900 border-t-transparent rounded-full"
                 }, void 0, false, {
                     fileName: "[project]/src/app/banker/layout.tsx",
-                    lineNumber: 109,
+                    lineNumber: 97,
                     columnNumber: 71
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/app/banker/layout.tsx",
-                lineNumber: 109,
+                lineNumber: 97,
                 columnNumber: 12
             }, this);
             $[8] = t3;
@@ -2018,7 +2003,7 @@ function BankerLayout(t0) {
             subtitle: "Banker Dashboard"
         }, void 0, false, {
             fileName: "[project]/src/app/banker/layout.tsx",
-            lineNumber: 118,
+            lineNumber: 106,
             columnNumber: 10
         }, this);
         $[9] = t3;
@@ -2038,18 +2023,18 @@ function BankerLayout(t0) {
                         children: children
                     }, void 0, false, {
                         fileName: "[project]/src/app/banker/layout.tsx",
-                        lineNumber: 125,
+                        lineNumber: 113,
                         columnNumber: 93
                     }, this)
                 }, void 0, false, {
                     fileName: "[project]/src/app/banker/layout.tsx",
-                    lineNumber: 125,
+                    lineNumber: 113,
                     columnNumber: 54
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/app/banker/layout.tsx",
-            lineNumber: 125,
+            lineNumber: 113,
             columnNumber: 10
         }, this);
         $[10] = children;

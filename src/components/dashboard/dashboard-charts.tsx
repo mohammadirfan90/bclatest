@@ -42,9 +42,9 @@ function DashboardChartsContent() {
     });
 
     if (isLoading) {
-        return <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 animate-pulse">
-            <div className="col-span-4 h-[300px] bg-muted/20 rounded-xl" />
-            <div className="col-span-3 h-[300px] bg-muted/20 rounded-xl" />
+        return <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7 animate-pulse mb-8">
+            <div className="col-span-4 h-[200px] bg-muted/20 rounded-xl" />
+            <div className="col-span-3 h-[200px] bg-muted/20 rounded-xl" />
         </div>;
     }
 

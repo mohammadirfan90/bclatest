@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ error: 'Forbidden - Admin only' }, { status: 403 });
         }
 
-        const userId = session.userId;
+        const userId = session.user!.id;
 
         // Parse request body for options
         let options = { fullRebuild: true, year: 0, month: 0 };

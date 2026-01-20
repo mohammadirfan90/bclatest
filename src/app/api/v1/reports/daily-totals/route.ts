@@ -11,9 +11,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/lib/services/auth-service';
-import { getDailyTotals, getDailySystemTotals } from '@/lib/services/analytics-service';
+import { getDailyTotals, getDailySystemTotals, getDailyTransactionSummary } from '@/lib/services/analytics-service';
 
 export async function GET(request: NextRequest) {
+    let date: string | null = null;
     try {
         // Verify authentication - bankers and admins only
         const session = await getSession();
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
         }
 
         const { searchParams } = new URL(request.url);
-        const date = searchParams.get('date');
+        date = searchParams.get('date');
         const accountId = searchParams.get('accountId');
         const page = parseInt(searchParams.get('page') || '1');
         const size = parseInt(searchParams.get('size') || '50');
@@ -46,29 +47,34 @@ export async function GET(request: NextRequest) {
             );
         }
 
-        // Get daily totals
+        // Get daily totals (still from precomputed if needed for detail, but summary MUST be from ledger)
         const { totals, total } = await getDailyTotals(date, {
             accountId: accountId ? parseInt(accountId) : undefined,
             page,
             size,
         });
 
-        // Get system totals
+        // Get system totals (precomputed)
         const systemTotals = await getDailySystemTotals(date);
+
+        // Get LIVE summary from ledger (as required)
+        const liveSummary = await getDailyTransactionSummary(date);
 
         return NextResponse.json({
             success: true,
             data: totals,
             summary: systemTotals,
+            liveSummary: liveSummary,
             meta: {
                 date,
+                serverTime: new Date().toISOString(),
                 currentPage: page,
                 itemsPerPage: size,
                 totalItems: total,
                 totalPages: Math.ceil(total / size),
             },
         });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Daily totals error:', error);
         return NextResponse.json(
             { error: 'Failed to fetch daily totals' },

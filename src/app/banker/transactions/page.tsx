@@ -35,14 +35,16 @@ import { apiClient } from '@/lib/auth-context';
 interface SearchResult {
     id: number;
     transactionReference: string;
-    transactionType: string;
-    accountId: number;
-    accountNumber: string;
-    entryType: 'DEBIT' | 'CREDIT';
+    type: string;
+    typeName: string;
+    sourceAccount: string | null;
+    destAccount: string | null;
+    sourceOwner: string | null;
+    destOwner: string | null;
+    entryType: 'DEBIT' | 'CREDIT' | null;
     amount: number;
-    balanceAfter: number;
+    status: string;
     description: string | null;
-    entryDate: string;
     createdAt: string;
     isReversal: boolean;
 }
@@ -97,7 +99,7 @@ export default function TransactionSearchPage() {
             const result = await apiClient<{
                 results: SearchResult[];
                 total: number;
-            }>(`/transactions/search?${params.toString()}`);
+            }>(`/banker/transactions?${params.toString()}`);
 
             if (result.success && result.data) {
                 setResults(result.data.results || []);
@@ -130,15 +132,16 @@ export default function TransactionSearchPage() {
     const exportToCsv = () => {
         if (!results || results.length === 0) return;
 
-        const headers = ['Date', 'Reference', 'Type', 'Account', 'Entry Type', 'Amount', 'Balance After', 'Description'];
+        const headers = ['Date', 'Reference', 'Type', 'Source Account', 'Dest Account', 'Entry Type', 'Amount', 'Status', 'Description'];
         const rows = results.map(r => [
-            format(new Date(r.entryDate), 'yyyy-MM-dd'),
+            format(new Date(r.createdAt), 'yyyy-MM-dd'),
             r.transactionReference,
-            r.transactionType,
-            r.accountNumber,
-            r.entryType,
+            r.type,
+            r.sourceAccount || 'System',
+            r.destAccount || 'System',
+            r.entryType || 'BOTH',
             r.amount,
-            r.balanceAfter,
+            r.status,
             r.description || '',
         ]);
 
@@ -235,9 +238,9 @@ export default function TransactionSearchPage() {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="ALL">All</SelectItem>
-                                        <SelectItem value="DEBIT">Debit Only</SelectItem>
-                                        <SelectItem value="CREDIT">Credit Only</SelectItem>
+                                        <SelectItem value="ALL">All Entries</SelectItem>
+                                        <SelectItem value="DEBIT">Debit (Withdrawal/Transfer Out)</SelectItem>
+                                        <SelectItem value="CREDIT">Credit (Deposit/Transfer In)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -332,33 +335,42 @@ export default function TransactionSearchPage() {
                                 results.map(result => (
                                     <TableRow key={result.id} className={result.isReversal ? 'bg-amber-50/50' : ''}>
                                         <TableCell className="text-slate-600">
-                                            {format(new Date(result.entryDate), 'MMM dd, yyyy')}
+                                            {format(new Date(result.createdAt), 'MMM dd, yyyy')}
                                         </TableCell>
                                         <TableCell className="font-mono text-xs">
                                             {result.transactionReference.substring(0, 8)}...
                                         </TableCell>
                                         <TableCell>
                                             <Badge variant={result.isReversal ? 'secondary' : 'outline'}>
-                                                {result.transactionType}
+                                                {result.type}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className="font-mono text-sm">{result.accountNumber}</TableCell>
+                                        <TableCell className="font-mono text-sm">
+                                            {result.sourceAccount || 'N/A'} → {result.destAccount || 'N/A'}
+                                            <div className="text-[10px] text-slate-400 truncate max-w-[150px]">
+                                                {result.sourceOwner || 'System'} to {result.destOwner || 'System'}
+                                            </div>
+                                        </TableCell>
                                         <TableCell className="text-center">
                                             <Badge
                                                 variant="outline"
                                                 className={result.entryType === 'CREDIT'
                                                     ? 'border-emerald-300 text-emerald-700 bg-emerald-50'
-                                                    : 'border-rose-300 text-rose-700 bg-rose-50'
+                                                    : result.entryType === 'DEBIT'
+                                                        ? 'border-rose-300 text-rose-700 bg-rose-50'
+                                                        : 'border-slate-300 text-slate-700 bg-slate-50'
                                                 }
                                             >
-                                                {result.entryType}
+                                                {result.entryType || 'BOTH'}
                                             </Badge>
                                         </TableCell>
-                                        <TableCell className={`text-right font-medium ${result.entryType === 'CREDIT' ? 'text-emerald-600' : 'text-rose-600'
+                                        <TableCell className={`text-right font-medium ${result.entryType === 'CREDIT' ? 'text-emerald-600' : result.entryType === 'DEBIT' ? 'text-rose-600' : ''
                                             }`}>
-                                            {result.entryType === 'CREDIT' ? '+' : '-'}{formatCurrency(result.amount)}
+                                            {result.entryType === 'CREDIT' ? '+' : result.entryType === 'DEBIT' ? '-' : ''}{formatCurrency(result.amount)}
                                         </TableCell>
-                                        <TableCell className="text-right">{formatCurrency(result.balanceAfter)}</TableCell>
+                                        <TableCell className="text-right">
+                                            <span className="text-slate-400 text-xs">{result.status}</span>
+                                        </TableCell>
                                     </TableRow>
                                 ))
                             )}

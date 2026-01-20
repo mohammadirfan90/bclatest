@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { apiClient } from '@/lib/auth-context';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
@@ -21,22 +22,22 @@ export default function CustomerProfilePage() {
 
     const fetchProfile = async () => {
         try {
-            const res = await fetch('/api/v1/customer/profile');
-            const data = await res.json();
-            if (data.success) {
-                setProfile(data.data.profile);
-                setPendingRequest(data.data.pendingRequest);
+            const result = await apiClient<{ profile: any; pendingRequest: any }>('/customer/profile');
+            if (result.success && result.data) {
+                setProfile(result.data.profile);
+                setPendingRequest(result.data.pendingRequest);
                 // Initialize form data with current profile
                 setFormData({
-                    firstName: data.data.profile.first_name,
-                    lastName: data.data.profile.last_name,
-                    nationalId: data.data.profile.national_id,
-                    dateOfBirth: data.data.profile.date_of_birth ? new Date(data.data.profile.date_of_birth).toISOString().split('T')[0] : '',
-                    address: data.data.profile.address_line1,
-                    phone: data.data.profile.phone
+                    firstName: result.data.profile.first_name,
+                    lastName: result.data.profile.last_name,
+                    nationalId: result.data.profile.national_id,
+                    dateOfBirth: result.data.profile.date_of_birth ? new Date(result.data.profile.date_of_birth).toISOString().split('T')[0] : '',
+                    address: result.data.profile.address_line1,
+                    phone: result.data.profile.phone,
+                    postalCode: result.data.profile.postal_code
                 });
             } else {
-                setError(data.error);
+                setError(result.error || 'Failed to load profile');
             }
         } catch (e) {
             setError('Failed to load profile');
@@ -57,17 +58,15 @@ export default function CustomerProfilePage() {
         e.preventDefault();
         setSubmitting(true);
         try {
-            const res = await fetch('/api/v1/customer/profile', {
+            const result = await apiClient('/customer/profile', {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
-            const data = await res.json();
-            if (data.success) {
+            if (result.success) {
                 setIsEditing(false);
                 fetchProfile(); // Refresh to see pending status
             } else {
-                alert(data.error);
+                alert(result.error || 'Update failed');
             }
         } catch (e) {
             alert('Update failed');
@@ -106,7 +105,7 @@ export default function CustomerProfilePage() {
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={handleSubmit} className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="firstName">First Name</Label>
                                 <Input
@@ -127,7 +126,7 @@ export default function CustomerProfilePage() {
                             </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="nationalId">National ID</Label>
                                 <Input
@@ -159,14 +158,25 @@ export default function CustomerProfilePage() {
                             />
                         </div>
 
-                        <div className="space-y-2">
-                            <Label htmlFor="phone">Phone</Label>
-                            <Input
-                                id="phone"
-                                value={isEditing ? formData.phone : profile?.phone}
-                                readOnly={!isEditing}
-                                onChange={handleChange}
-                            />
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <Label htmlFor="phone">Phone</Label>
+                                <Input
+                                    id="phone"
+                                    value={isEditing ? formData.phone : profile?.phone}
+                                    readOnly={!isEditing}
+                                    onChange={handleChange}
+                                />
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="postalCode">Postal Code</Label>
+                                <Input
+                                    id="postalCode"
+                                    value={isEditing ? formData.postalCode : profile?.postal_code}
+                                    readOnly={!isEditing}
+                                    onChange={handleChange}
+                                />
+                            </div>
                         </div>
 
                         <div className="pt-4 border-t mt-4">

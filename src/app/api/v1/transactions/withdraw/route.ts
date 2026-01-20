@@ -44,9 +44,7 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
                 accountId,
                 amount,
                 description,
-                externalReference,
-                userId: req.user!.id,
-                idempotencyKey,
+                bankerId: req.user!.id,
             });
 
             if (!result.success) {

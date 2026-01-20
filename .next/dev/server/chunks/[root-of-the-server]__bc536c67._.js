@@ -461,11 +461,13 @@ async function authenticateCustomer(email, password) {
         email
     ]);
     if (!customerRow) {
+        console.log(`[Auth] Customer not found: ${email}`);
         return {
             success: false,
             error: 'Invalid email or password'
         };
     }
+    console.log(`[Auth] Customer found: ${customerRow.id}, Status: ${customerRow.status}`);
     if (customerRow.status === 'SUSPENDED') {
         return {
             success: false,
@@ -480,6 +482,7 @@ async function authenticateCustomer(email, password) {
     }
     // Verify password
     const passwordValid = await verifyPassword(password, customerRow.password_hash);
+    console.log(`[Auth] Password valid: ${passwordValid}`);
     if (!passwordValid) {
         return {
             success: false,
@@ -1218,13 +1221,20 @@ const GET = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$ap
     return (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$api$2d$utils$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["withAuth"])(request, async (_req)=>{
         // Get total customers
         const customerCount = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count FROM customers WHERE status = 'ACTIVE'`);
-        // Get active accounts
-        const accountCount = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count FROM accounts WHERE status = 'ACTIVE'`);
+        // Get active accounts (Customers only)
+        const accountCount = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count 
+                 FROM accounts a
+                 INNER JOIN account_types at ON a.account_type_id = at.id
+                 WHERE a.status = 'ACTIVE' AND at.code != 'INTERNAL'`);
         // Get today's transactions
         const todayTransactions = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COUNT(*) as count FROM transactions 
                  WHERE DATE(created_at) = CURDATE() AND status = 'COMPLETED'`);
-        // Get total balance across all accounts
-        const totalBalance = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COALESCE(SUM(available_balance), 0) as total FROM account_balances`);
+        // Get total balance across all customer accounts
+        const totalBalance = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["queryOne"])(`SELECT COALESCE(SUM(ab.available_balance), 0) as total 
+                 FROM account_balances ab
+                 INNER JOIN accounts a ON ab.account_id = a.id
+                 INNER JOIN account_types at ON a.account_type_id = at.id
+                 WHERE at.code != 'INTERNAL'`);
         // Get transaction volume by day (last 7 days)
         const dailyVolume = await (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$db$2e$ts__$5b$app$2d$route$5d$__$28$ecmascript$29$__["query"])(`SELECT 
                     DATE(created_at) as date,

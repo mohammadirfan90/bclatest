@@ -45,6 +45,14 @@ export interface MonthlySummary {
     feesCharged: number;
 }
 
+export interface DailyTransactionSummary {
+    date: string;
+    totalDeposits: number;
+    totalWithdrawals: number;
+    transactionCount: number;
+    volume: number;
+}
+
 export interface TopAccount {
     rank: number;
     accountId: number;
@@ -146,49 +154,64 @@ export async function getDailyTotals(
     const { accountId, page = 1, size = 50 } = options;
     const offset = (page - 1) * size;
 
-    let whereClause = 'WHERE dat.date = ?';
+    let whereClause = 'WHERE le.entry_date = ?';
     const params: (string | number)[] = [date];
 
     if (accountId) {
-        whereClause += ' AND dat.account_id = ?';
+        whereClause += ' AND le.account_id = ?';
         params.push(accountId);
     }
 
-    // Get count
+    // Get count of accounts with activity
     const countResult = await queryOne<{ count: number } & RowDataPacket>(
-        `SELECT COUNT(*) as count 
-         FROM daily_account_totals dat 
+        `SELECT COUNT(DISTINCT le.account_id) as count 
+         FROM ledger_entries le 
          ${whereClause}`,
         params
     );
 
-    // Get data
-    const rows = await query<DailyTotalRow>(
-        `SELECT dat.id, dat.account_id, a.account_number,
-                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
-                dat.date, dat.opening_balance, dat.closing_balance,
-                dat.total_debits, dat.total_credits,
-                dat.debit_count, dat.credit_count
-         FROM daily_account_totals dat
-         INNER JOIN accounts a ON a.id = dat.account_id
+    // Get ledger-based daily totals per account
+    // This is computationally more expensive but adheres to the non-negotiable rule
+    const rows = await query<RowDataPacket[]>(
+        `SELECT 
+            le.account_id, 
+            a.account_number,
+            CONCAT(c.first_name, ' ', c.last_name) as customer_name,
+            SUM(CASE WHEN le.entry_type = 'CREDIT' THEN le.amount ELSE 0 END) as total_credits,
+            SUM(CASE WHEN le.entry_type = 'DEBIT' THEN le.amount ELSE 0 END) as total_debits,
+            COUNT(CASE WHEN le.entry_type = 'CREDIT' THEN 1 END) as credit_count,
+            COUNT(CASE WHEN le.entry_type = 'DEBIT' THEN 1 END) as debit_count,
+            -- Opening balance: balance_after - amount of the first entry of the day
+            (SELECT l1.balance_after - l1.amount 
+             FROM ledger_entries l1 
+             WHERE l1.account_id = le.account_id AND l1.entry_date = ? 
+             ORDER BY l1.id ASC LIMIT 1) as opening_balance,
+            -- Closing balance: balance_after of the last entry of the day
+            (SELECT l2.balance_after 
+             FROM ledger_entries l2 
+             WHERE l2.account_id = le.account_id AND l2.entry_date = ? 
+             ORDER BY l2.id DESC LIMIT 1) as closing_balance
+         FROM ledger_entries le
+         INNER JOIN accounts a ON a.id = le.account_id
          INNER JOIN customers c ON c.id = a.customer_id
          ${whereClause}
-         ORDER BY dat.closing_balance DESC
+         GROUP BY le.account_id, a.account_number, customer_name
+         ORDER BY closing_balance DESC
          LIMIT ? OFFSET ?`,
-        [...params, size, offset]
+        [date, date, ...params, size, offset]
     );
 
     return {
         totals: rows.map(row => ({
-            id: row.id,
+            id: row.account_id, // Use account_id as unique ID for the row
             accountId: row.account_id,
             accountNumber: row.account_number,
             customerName: row.customer_name,
-            date: row.date.toISOString().split('T')[0],
-            openingBalance: parseFloat(row.opening_balance),
-            closingBalance: parseFloat(row.closing_balance),
-            totalDebits: parseFloat(row.total_debits),
-            totalCredits: parseFloat(row.total_credits),
+            date: date,
+            openingBalance: parseFloat(row.opening_balance || '0'),
+            closingBalance: parseFloat(row.closing_balance || '0'),
+            totalDebits: parseFloat(row.total_debits || '0'),
+            totalCredits: parseFloat(row.total_credits || '0'),
             debitCount: row.debit_count,
             creditCount: row.credit_count,
         })),
@@ -200,30 +223,63 @@ export async function getDailyTotals(
  * Get system-wide totals for a specific date
  */
 export async function getDailySystemTotals(date: string): Promise<SystemTotals> {
-    const row = await queryOne<SystemTotalsRow>(
+    const row = await queryOne<RowDataPacket>(
         `SELECT 
-            COUNT(DISTINCT dat.account_id) as total_accounts,
-            COUNT(DISTINCT CASE WHEN a.status = 'ACTIVE' THEN a.id END) as total_active_accounts,
-            COALESCE(SUM(dat.total_debits + dat.total_credits), 0) as total_volume,
-            COALESCE(SUM(dat.total_credits), 0) as total_deposits,
-            COALESCE(SUM(dat.total_debits), 0) as total_withdrawals,
-            COALESCE(SUM(dat.debit_count + dat.credit_count), 0) as total_transactions,
-            COALESCE(AVG(dat.closing_balance), 0) as avg_account_balance
-         FROM daily_account_totals dat
-         INNER JOIN accounts a ON a.id = dat.account_id
-         WHERE dat.date = ?`,
-        [date]
+            COUNT(DISTINCT le.account_id) as total_accounts,
+            COALESCE(SUM(le.amount), 0) as total_volume,
+            COALESCE(SUM(CASE WHEN le.entry_type = 'CREDIT' THEN le.amount ELSE 0 END), 0) as total_deposits,
+            COALESCE(SUM(CASE WHEN le.entry_type = 'DEBIT' THEN le.amount ELSE 0 END), 0) as total_withdrawals,
+            COUNT(DISTINCT le.transaction_id) as total_transactions,
+            -- For lack of precomputed data, we average the closing balances of all accounts with activity today
+            COALESCE((
+                SELECT AVG(closing_balance) FROM (
+                    SELECT MAX(l2.balance_after) as closing_balance
+                    FROM ledger_entries l2
+                    WHERE l2.entry_date = ?
+                    GROUP BY l2.account_id
+                ) as daily_averages
+            ), 0) as avg_account_balance
+         FROM ledger_entries le
+         WHERE le.entry_date = ?`,
+        [date, date]
     );
 
     return {
         totalAccounts: row?.total_accounts || 0,
-        totalActiveAccounts: row?.total_active_accounts || 0,
+        totalActiveAccounts: row?.total_accounts || 0, // Simplified since we only know active ones today
         totalVolume: parseFloat(row?.total_volume || '0'),
         totalDeposits: parseFloat(row?.total_deposits || '0'),
         totalWithdrawals: parseFloat(row?.total_withdrawals || '0'),
         totalTransactions: row?.total_transactions || 0,
         avgAccountBalance: parseFloat(row?.avg_account_balance || '0'),
     };
+}
+
+/**
+ * Get daily transaction summary directly from ledger_entries
+ * ADHERES TO NON-NEGOTIABLE RULE: Compute on-the-fly from ledger_entries
+ */
+export async function getDailyTransactionSummary(date: string): Promise<DailyTransactionSummary> {
+    const row = await queryOne<RowDataPacket>(
+        `SELECT 
+            COALESCE(SUM(CASE WHEN entry_type = 'CREDIT' THEN amount ELSE 0 END), 0) as total_deposits,
+            COALESCE(SUM(CASE WHEN entry_type = 'DEBIT' THEN amount ELSE 0 END), 0) as total_withdrawals,
+            COUNT(DISTINCT transaction_id) as transaction_count,
+            COALESCE(SUM(amount), 0) as volume
+         FROM ledger_entries
+         WHERE entry_date = ?`,
+        [date]
+    );
+
+    const result = {
+        date,
+        totalDeposits: parseFloat(row?.total_deposits || '0'),
+        totalWithdrawals: parseFloat(row?.total_withdrawals || '0'),
+        transactionCount: row?.transaction_count || 0,
+        volume: parseFloat(row?.volume || '0'),
+    };
+
+    return result;
 }
 
 // =============================================================================
@@ -258,7 +314,7 @@ export async function getMonthlySummaries(
     );
 
     // Get data
-    const rows = await query<MonthlySummaryRow>(
+    const rows = await query<MonthlySummaryRow[]>(
         `SELECT mas.id, mas.account_id, a.account_number,
                 CONCAT(c.first_name, ' ', c.last_name) as customer_name,
                 mas.year, mas.month, mas.opening_balance, mas.closing_balance,
@@ -346,7 +402,7 @@ export async function getTopAccounts(
         params.push(category);
     }
 
-    const rows = await query<TopAccountRow>(
+    const rows = await query<TopAccountRow[]>(
         `SELECT tam.rank_position, tam.account_id, a.account_number,
                 CONCAT(c.first_name, ' ', c.last_name) as customer_name,
                 tam.category, tam.metric_value
@@ -440,9 +496,9 @@ export async function rebuildAnalytics(userId: number): Promise<RebuildResult> {
  * Get list of months with available analytics data
  */
 export async function getAvailablePeriods(): Promise<{ year: number; month: number }[]> {
-    const rows = await query<{ year: number; month: number } & RowDataPacket>(
-        `SELECT DISTINCT year, month 
-         FROM monthly_account_summaries 
+    const rows = await query<({ year: number; month: number } & RowDataPacket)[]>(
+        `SELECT DISTINCT YEAR(entry_date) as year, MONTH(entry_date) as month 
+         FROM ledger_entries 
          ORDER BY year DESC, month DESC 
          LIMIT 24`
     );
@@ -457,10 +513,10 @@ export async function getAvailablePeriods(): Promise<{ year: number; month: numb
  * Get list of dates with available daily analytics data
  */
 export async function getAvailableDates(limit: number = 30): Promise<string[]> {
-    const rows = await query<{ date: Date } & RowDataPacket>(
-        `SELECT DISTINCT date 
-         FROM daily_account_totals 
-         ORDER BY date DESC 
+    const rows = await query<({ date: Date } & RowDataPacket)[]>(
+        `SELECT DISTINCT entry_date as date 
+         FROM ledger_entries 
+         ORDER BY entry_date DESC 
          LIMIT ?`,
         [limit]
     );

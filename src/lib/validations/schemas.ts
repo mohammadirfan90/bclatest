@@ -89,8 +89,7 @@ export const updateKycStatusSchema = z.object({
 
 export const createAccountSchema = z.object({
     customerId: z.number().int().positive(),
-    accountTypeCode: z.string().min(1, 'Account type is required'),
-    initialDeposit: z.number().nonnegative().optional().default(0),
+    accountType: z.enum(['SAVINGS', 'CHECKING', 'FIXED']),
 });
 
 export const updateAccountStatusSchema = z.object({
@@ -110,13 +109,10 @@ const bdtAmount = z.number()
 
 export const transferSchema = z.object({
     fromAccountId: z.number().int().positive('Source account is required'),
-    toAccountId: z.number().int().positive('Destination account is required'),
+    toAccountNumber: z.string().min(1, 'Destination account number is required'),
     amount: bdtAmount,
     description: z.string().max(500).optional(),
     idempotencyKey: z.string().uuid().optional(),
-}).refine((data) => data.fromAccountId !== data.toAccountId, {
-    message: 'Source and destination accounts must be different',
-    path: ['toAccountId'],
 });
 
 export const depositSchema = z.object({

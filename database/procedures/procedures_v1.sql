@@ -33,6 +33,8 @@ BEGIN
     DECLARE v_transaction_ref VARCHAR(36);
     DECLARE v_transaction_type_id BIGINT UNSIGNED;
     DECLARE v_today DATE;
+    DECLARE v_cash_account_id INT;
+    DECLARE v_cash_balance DECIMAL(18,4);
     
     -- Error handler: rollback on any SQL exception
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -115,28 +117,27 @@ BEGIN
             
             SET p_transaction_id = LAST_INSERT_ID();
             
-            -- 7. Insert CREDIT ledger entry (money coming IN)
+            -- 7. Get System Cash Account
+            SELECT id INTO v_cash_account_id FROM accounts WHERE account_number = 'BANK-CASH-001';
+
+            -- 8. Insert CREDIT ledger entry for customer
             INSERT INTO ledger_entries (
-                transaction_id,
-                account_id,
-                entry_type,
-                amount,
-                currency,
-                balance_after,
-                description,
-                entry_date
+                transaction_id, account_id, entry_type, amount, currency, balance_after, description, entry_date
             ) VALUES (
-                p_transaction_id,
-                p_account_id,
-                'CREDIT',
-                p_amount,
-                'BDT',
-                v_new_balance,
-                CONCAT('Deposit - ', COALESCE(p_description, 'Cash')),
-                v_today
+                p_transaction_id, p_account_id, 'CREDIT', p_amount, 'BDT', v_new_balance, CONCAT('Deposit - ', COALESCE(p_description, 'Cash')), v_today
+            );
+
+            -- 9. DEBIT Bank Cash
+            UPDATE account_balances SET available_balance = available_balance + p_amount WHERE account_id = v_cash_account_id;
+            SELECT available_balance INTO v_cash_balance FROM account_balances WHERE account_id = v_cash_account_id;
+            
+            INSERT INTO ledger_entries (
+                transaction_id, account_id, entry_type, amount, currency, balance_after, description, entry_date
+            ) VALUES (
+                p_transaction_id, v_cash_account_id, 'DEBIT', p_amount, 'BDT', v_cash_balance, CONCAT('Cash Deposit from ', p_account_id), v_today
             );
             
-            -- 8. Update materialized balance
+            -- 10. Update materialized balance
             UPDATE account_balances
             SET available_balance = v_new_balance,
                 last_transaction_id = p_transaction_id,
@@ -144,7 +145,7 @@ BEGIN
                 version = version + 1
             WHERE account_id = p_account_id;
             
-            -- 9. Update account last_transaction_at
+            -- 11. Update account last_transaction_at
             UPDATE accounts
             SET last_transaction_at = NOW()
             WHERE id = p_account_id;
@@ -184,6 +185,8 @@ BEGIN
     DECLARE v_transaction_ref VARCHAR(36);
     DECLARE v_transaction_type_id BIGINT UNSIGNED;
     DECLARE v_today DATE;
+    DECLARE v_cash_account_id INT;
+    DECLARE v_cash_balance DECIMAL(18,4);
     
     -- Error handler
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -277,28 +280,27 @@ BEGIN
                 
                 SET p_transaction_id = LAST_INSERT_ID();
                 
-                -- 8. Insert DEBIT ledger entry (money going OUT)
+                -- 7. Get System Cash Account
+                SELECT id INTO v_cash_account_id FROM accounts WHERE account_number = 'BANK-CASH-001';
+
+                -- 8. Insert DEBIT ledger entry for customer
                 INSERT INTO ledger_entries (
-                    transaction_id,
-                    account_id,
-                    entry_type,
-                    amount,
-                    currency,
-                    balance_after,
-                    description,
-                    entry_date
+                    transaction_id, account_id, entry_type, amount, currency, balance_after, description, entry_date
                 ) VALUES (
-                    p_transaction_id,
-                    p_account_id,
-                    'DEBIT',
-                    p_amount,
-                    'BDT',
-                    v_new_balance,
-                    CONCAT('Withdrawal - ', COALESCE(p_description, 'Cash')),
-                    v_today
+                    p_transaction_id, p_account_id, 'DEBIT', p_amount, 'BDT', v_new_balance, CONCAT('Withdrawal - ', COALESCE(p_description, 'Cash')), v_today
+                );
+
+                -- 9. CREDIT Bank Cash
+                UPDATE account_balances SET available_balance = available_balance - p_amount WHERE account_id = v_cash_account_id;
+                SELECT available_balance INTO v_cash_balance FROM account_balances WHERE account_id = v_cash_account_id;
+
+                INSERT INTO ledger_entries (
+                    transaction_id, account_id, entry_type, amount, currency, balance_after, description, entry_date
+                ) VALUES (
+                    p_transaction_id, v_cash_account_id, 'CREDIT', p_amount, 'BDT', v_cash_balance, CONCAT('Cash Withdrawal to ', p_account_id), v_today
                 );
                 
-                -- 9. Update materialized balance
+                -- 10. Update materialized balance
                 UPDATE account_balances
                 SET available_balance = v_new_balance,
                     last_transaction_id = p_transaction_id,
@@ -306,12 +308,12 @@ BEGIN
                     version = version + 1
                 WHERE account_id = p_account_id;
                 
-                -- 10. Update account last_transaction_at
+                -- 11. Update account last_transaction_at
                 UPDATE accounts
                 SET last_transaction_at = NOW()
                 WHERE id = p_account_id;
                 
-                -- 11. Commit transaction
+                -- 12. Commit transaction
                 COMMIT;
                 
                 SET p_status = 'COMPLETED';

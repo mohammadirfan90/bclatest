@@ -14,7 +14,7 @@ import {
 import { createAccountSchema, paginationSchema } from '@/lib/validations/schemas';
 import { query } from '@/lib/db';
 import { RowDataPacket } from 'mysql2/promise';
-import { getAccountsForCustomer } from '@/lib/services/account-service';
+import { getAccountsForCustomer, applyForAccount } from '@/lib/services/account-service';
 
 // =============================================================================
 // GET /api/v1/accounts - List accounts
@@ -98,4 +98,31 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
 // POST /api/v1/accounts - Create account (Banker)
 // =============================================================================
 
-// POST method removed: Accounts must be created via Application -> Approval workflow.
+export const POST = withErrorHandler(async (request: NextRequest) => {
+    return withAuth(
+        request,
+        async (req: AuthenticatedRequest) => {
+            const validation = await validateBody(request, createAccountSchema);
+            if (!validation.success) {
+                return validation.response;
+            }
+
+            const { customerId, accountType } = validation.data;
+
+            const result = await applyForAccount(customerId, accountType as any);
+
+            if (!result.success) {
+                return errorResponse(result.error || 'Failed to create account');
+            }
+
+            return createdResponse({
+                message: 'Account created successfully',
+                accountId: result.applicationId // Service returns accountId as applicationId in legacy wrapper
+            });
+        },
+        {
+            requiredType: 'user',
+            requiredRoles: ['BANKER', 'ADMIN']
+        }
+    );
+});

@@ -1,27 +1,12 @@
 import { query, queryOne, execute, withTransaction } from '../db';
-import { RowDataPacket } from 'mysql2/promise';
+import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
 
 // =============================================================================
 // Types
 // =============================================================================
 
-export type AccountType = 'SAVINGS' | 'CURRENT' | 'BUSINESS';
-export type AccountStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED' | 'CLOSED';
-export type ApplicationStatus = 'PENDING' | 'APPROVED' | 'REJECTED';
-
-export interface AccountApplication {
-    id: number;
-    customerId: number;
-    accountType: AccountType;
-    status: ApplicationStatus;
-    reviewedBy?: number;
-    reviewReason?: string;
-    createdAt: Date;
-    reviewedAt?: Date;
-    customerName?: string;
-    customerEmail?: string;
-    kycStatus?: string;
-}
+export type AccountType = 'SAVINGS' | 'CHECKING' | 'FIXED';
+export type AccountStatus = 'ACTIVE' | 'SUSPENDED' | 'CLOSED' | 'PENDING';
 
 export interface Account {
     id: number;
@@ -30,15 +15,16 @@ export interface Account {
     accountType: AccountType;
     currency: string;
     status: AccountStatus;
-    balanceLocked: boolean;
-    rowVersion: number;
     openedAt: Date | null;
-    closedAt: Date | null;
     createdAt: Date;
+    customerName?: string;
+    balance?: {
+        availableBalance: number;
+    };
 }
 
 // =============================================================================
-// Account Applications
+// Account Queries
 // =============================================================================
 
 export async function getAccountById(accountId: number): Promise<Account | null> {
@@ -63,10 +49,34 @@ export async function getAccountById(accountId: number): Promise<Account | null>
         accountType: account.account_type,
         currency: account.currency,
         status: account.status,
-        balanceLocked: false, // Simplified
-        rowVersion: 1, // Simplified
         openedAt: account.created_at,
-        closedAt: null,
+        createdAt: account.created_at
+    };
+}
+
+export async function getAccountByNumber(accountNumber: string): Promise<Account | null> {
+    const account = await queryOne<any>(
+        `SELECT a.id, a.account_number, a.customer_id, a.account_type_id,
+                at.code as account_type, at.name as account_type_name,
+                a.status, a.created_at,
+                COALESCE(ab.currency, 'BDT') as currency
+         FROM accounts a
+         JOIN account_types at ON at.id = a.account_type_id
+         LEFT JOIN account_balances ab ON ab.account_id = a.id
+         WHERE a.account_number = ?`,
+        [accountNumber]
+    );
+
+    if (!account) return null;
+
+    return {
+        id: account.id,
+        accountNumber: account.account_number,
+        customerId: account.customer_id,
+        accountType: account.account_type,
+        currency: account.currency,
+        status: account.status,
+        openedAt: account.created_at,
         createdAt: account.created_at
     };
 }
@@ -96,155 +106,13 @@ export async function getAccountsForCustomer(customerId: number): Promise<Accoun
         accountTypeName: row.account_type_name,
         currency: row.currency,
         status: row.status,
-        balanceLocked: false, // Simplified - not tracked
-        rowVersion: 1, // Simplified
         openedAt: row.created_at,
-        closedAt: null,
         createdAt: row.created_at,
         customerName: `${row.first_name} ${row.last_name}`,
         balance: {
-            availableBalance: parseFloat(row.available_balance || '0'),
-            pendingBalance: 0,
-            holdBalance: 0
+            availableBalance: parseFloat(row.available_balance || '0')
         }
     }));
-}
-
-
-export async function applyForAccount(
-    customerId: number,
-    accountType: AccountType
-): Promise<{ success: boolean; applicationId?: number; error?: string }> {
-    // 1. Verify KYC Status (Must be VERIFIED)
-    const customer = await queryOne<{ kyc_status: string } & RowDataPacket>(
-        'SELECT kyc_status FROM customers WHERE id = ?',
-        [customerId]
-    );
-
-    if (!customer) return { success: false, error: 'Customer not found' };
-    if (customer.kyc_status !== 'VERIFIED') {
-        return { success: false, error: `KYC verification required (Status: ${customer.kyc_status})` };
-    }
-
-    // 2. Create Application
-    try {
-        const result = await execute(
-            `INSERT INTO account_applications (customer_id, account_type, status)
-             VALUES (?, ?, 'PENDING')`,
-            [customerId, accountType]
-        );
-        return { success: true, applicationId: result.insertId };
-    } catch (error: any) {
-        console.error('Error applying for account:', error);
-        return { success: false, error: 'Failed to submit application' };
-    }
-}
-
-export async function getPendingApplications(): Promise<AccountApplication[]> {
-    const rows = await query<any>(
-        `SELECT aa.*, 
-                CONCAT(c.first_name, ' ', c.last_name) as customer_name,
-                c.email as customer_email,
-                c.kyc_status
-         FROM account_applications aa
-         JOIN customers c ON aa.customer_id = c.id
-         WHERE aa.status = 'PENDING'
-         ORDER BY aa.created_at ASC`
-    );
-
-    return rows.map((row: any) => ({
-        id: row.id,
-        customerId: row.customer_id,
-        accountType: row.account_type,
-        status: row.status,
-        createdAt: row.created_at,
-        customerName: row.customer_name,
-        customerEmail: row.customer_email,
-        kycStatus: row.kyc_status
-    }));
-}
-
-// =============================================================================
-// Banker Approval Workflow
-// =============================================================================
-
-export async function approveAccount(
-    applicationId: number,
-    bankerId: number
-): Promise<{ success: boolean; accountId?: number; accountNumber?: string; error?: string }> {
-    return withTransaction(async (connection) => {
-        // 1. Get Application
-        const [apps] = await connection.query<RowDataPacket[]>(
-            'SELECT * FROM account_applications WHERE id = ? FOR UPDATE',
-            [applicationId]
-        );
-        const app = apps[0];
-
-        if (!app) throw new Error('Application not found');
-        if (app.status !== 'PENDING') throw new Error(`Application is ${app.status}`);
-
-        // 2. Generate Account Number (Strictly unique)
-        // Format: [TYPE_PREFIX][YEAR][RANDOM] -> e.g. SAV202512345678
-        const prefix = app.account_type.substring(0, 3).toUpperCase();
-        const year = new Date().getFullYear();
-        const random = Math.floor(Math.random() * 1000000000).toString().padStart(9, '0');
-        const accountNumber = `${prefix}${year}${random}`;
-
-        // 3. Create Account
-        const [accResult] = await connection.execute<any>(
-            `INSERT INTO accounts (
-                account_number, customer_id, account_type, currency, 
-                status, balance_locked, row_version, opened_at, created_by
-             ) VALUES (?, ?, ?, 'BDT', 'ACTIVE', FALSE, 1, NOW(), ?)`,
-            [accountNumber, app.customer_id, app.account_type, bankerId]
-        );
-        const accountId = accResult.insertId;
-
-        // 4. Create Initial History Snapshot
-        await connection.execute(
-            `INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'ACTIVE', FALSE, ?, ?)`,
-            [accountId, JSON.stringify({ action: 'OPEN_ACCOUNT', applicationId }), bankerId]
-        );
-
-        // 5. Initialize Balance (Zero)
-        await connection.execute(
-            `INSERT INTO account_balances (account_id, available_balance, currency)
-             VALUES (?, 0, 'BDT')`,
-            [accountId]
-        );
-
-        // 6. Update Application Status
-        await connection.execute(
-            `UPDATE account_applications 
-             SET status = 'APPROVED', reviewed_by = ?, reviewed_at = NOW() 
-             WHERE id = ?`,
-            [bankerId, applicationId]
-        );
-
-        return { success: true, accountId, accountNumber };
-    });
-}
-
-export async function rejectAccount(
-    applicationId: number,
-    bankerId: number,
-    reason: string
-): Promise<{ success: boolean; error?: string }> {
-    try {
-        await execute(
-            `UPDATE account_applications 
-             SET status = 'REJECTED', reviewed_by = ?, reviewed_at = NOW(), review_reason = ? 
-             WHERE id = ? AND status = 'PENDING'`,
-            [bankerId, reason, applicationId]
-        );
-        return { success: true };
-    } catch (error) {
-        console.error('Error rejecting account:', error);
-        return { success: false, error: 'Failed' };
-    }
 }
 
 // =============================================================================
@@ -256,7 +124,16 @@ export async function freezeAccount(
     bankerId: number,
     reason: string
 ): Promise<{ success: boolean; error?: string }> {
-    return changeAccountStatus(accountId, 'SUSPENDED', true, bankerId, reason);
+    try {
+        await query(
+            'UPDATE accounts SET status = "SUSPENDED", updated_at = NOW() WHERE id = ?',
+            [accountId]
+        );
+        return { success: true };
+    } catch (error) {
+        console.error('Error freezing account:', error);
+        return { success: false, error: 'Failed' };
+    }
 }
 
 export async function unfreezeAccount(
@@ -264,135 +141,208 @@ export async function unfreezeAccount(
     bankerId: number,
     reason: string
 ): Promise<{ success: boolean; error?: string }> {
-    return changeAccountStatus(accountId, 'ACTIVE', false, bankerId, reason);
+    try {
+        await query(
+            'UPDATE accounts SET status = "ACTIVE", updated_at = NOW() WHERE id = ?',
+            [accountId]
+        );
+        return { success: true };
+    } catch (error) {
+        console.error('Error unfreezing account:', error);
+        return { success: false, error: 'Failed' };
+    }
 }
-
 
 export async function closeAccount(
     accountId: number,
     bankerId: number,
     reason: string
 ): Promise<{ success: boolean; error?: string }> {
-    return withTransaction(async (connection) => {
-        // 1. Get Account & Validation
-        const [accRows] = await connection.query<RowDataPacket[]>(
-            'SELECT status, balance_locked FROM accounts WHERE id = ? FOR UPDATE',
+    try {
+        // 1. Check Balance (Must be 0)
+        const balanceRow = await queryOne<RowDataPacket>(
+            'SELECT available_balance FROM account_balances WHERE account_id = ?',
             [accountId]
         );
-        if (!accRows.length) throw new Error('Account not found');
-        const account = accRows[0];
 
-        if (account.status === 'CLOSED') throw new Error('Account is already CLOSED');
-
-        // 2. Check Balance (Must be 0)
-        const [balRows] = await connection.query<RowDataPacket[]>(
-            'SELECT available_balance, pending_balance, hold_balance FROM account_balances WHERE account_id = ? FOR UPDATE',
-            [accountId]
-        );
-        const balance = balRows[0];
-
-        const totalBalance = parseFloat(balance.available_balance) +
-            parseFloat(balance.pending_balance) +
-            parseFloat(balance.hold_balance);
-
-        if (totalBalance !== 0) {
-            throw new Error(`Cannot close account. Non-zero balance: ${totalBalance}`);
+        const balance = parseFloat(balanceRow?.available_balance || '0');
+        if (balance !== 0) {
+            return { success: false, error: `Cannot close account. Non-zero balance: ${balance}` };
         }
 
-        // 3. Check Pending Disputes (Optional: Add if table exists and logic required)
-        const [disputes] = await connection.query<RowDataPacket[]>(
-            'SELECT COUNT(*) as count FROM disputes WHERE customer_id = (SELECT customer_id FROM accounts WHERE id = ?) AND status NOT IN ("RESOLVED", "REJECTED")',
-            [accountId]
-        );
-        if (disputes[0].count > 0) {
-            throw new Error('Cannot close account. Pending disputes exist.');
-        }
-
-        // 4. Archive History
-        await connection.execute(
-            `UPDATE accounts_history SET valid_to = NOW() WHERE account_id = ? AND valid_to IS NULL`,
-            [accountId]
-        );
-
-        // 5. Insert Closing History
-        await connection.execute(
-            `INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), 'CLOSED', TRUE, ?, ?)`,
-            [accountId, JSON.stringify({ reason }), bankerId]
-        );
-
-        // 6. Update Account Status
-        await connection.execute(
-            `UPDATE accounts 
-             SET status = 'CLOSED', balance_locked = TRUE, closed_at = NOW(), 
-                 row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`,
+        // 2. Update Account Status
+        await query(
+            'UPDATE accounts SET status = "CLOSED", updated_at = NOW() WHERE id = ?',
             [accountId]
         );
 
         return { success: true };
-    });
+    } catch (error) {
+        console.error('Error closing account:', error);
+        return { success: false, error: 'Failed' };
+    }
 }
 
-async function changeAccountStatus(
-    accountId: number,
-    newStatus: AccountStatus,
-    balanceLocked: boolean,
-    changedBy: number,
-    reason: string
-): Promise<{ success: boolean; error?: string }> {
-    return withTransaction(async (connection) => {
-        // 1. Get current state and lock
-        const [rows] = await connection.query<RowDataPacket[]>(
-            'SELECT * FROM accounts WHERE id = ? FOR UPDATE',
-            [accountId]
-        );
-        const current = rows[0];
-        if (!current) throw new Error('Account not found');
+// =============================================================================
+// Account Creation (Direct)
+// =============================================================================
 
-        // 2. Archive current state to history (Close the previous validity period)
-        // We update the 'valid_to' of the most recent history record?
-        // Actually, strictly temporal usually means inserting a NEW record with new valid_from.
-        // And optionally updating the previous one's valid_to.
-        await connection.execute(
-            `UPDATE accounts_history 
-             SET valid_to = NOW() 
-             WHERE account_id = ? AND valid_to IS NULL`,
-            [accountId]
+export async function createAccount(
+    customerId: number,
+    accountTypeId: number,
+    createdBy?: number
+): Promise<{ success: boolean; accountId?: number; accountNumber?: string; error?: string }> {
+    try {
+        // 1. Verify Customer exists
+        const customer = await queryOne<RowDataPacket>(
+            'SELECT id FROM customers WHERE id = ?',
+            [customerId]
         );
 
-        // 3. Insert new history record
-        await connection.execute(
-            `INSERT INTO accounts_history (
-                account_id, valid_from, status, balance_locked, 
-                snapshot_payload, changed_by
-             ) VALUES (?, NOW(), ?, ?, ?, ?)`,
-            [
+        if (!customer) {
+            return { success: false, error: 'Customer not found' };
+        }
+
+        // 2. Generate Account Number (10 + 8 random digits)
+        const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+
+        return await withTransaction(async (conn) => {
+            // 3. Insert Account record
+            const [accountResult] = await conn.execute<ResultSetHeader>(
+                `INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`,
+                [accountNumber, customerId, accountTypeId, createdBy || null]
+            );
+
+            const accountId = accountResult.insertId;
+
+            // 4. Initialize Balance record
+            await conn.execute(
+                `INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`,
+                [accountId]
+            );
+
+            return {
+                success: true,
                 accountId,
-                newStatus,
-                balanceLocked,
-                JSON.stringify({ reason, previousStatus: current.status }),
-                changedBy
-            ]
+                accountNumber
+            };
+        });
+    } catch (error) {
+        console.error('Error creating account:', error);
+        return { success: false, error: 'Database error during account creation' };
+    }
+}
+
+/**
+ * Legacy wrapper for application flow.
+ * Now directly creates the account.
+ */
+export async function applyForAccount(
+    customerId: number,
+    accountTypeCode: AccountType
+): Promise<{ success: boolean; applicationId?: number; error?: string }> {
+    // Lookup Account Type ID
+    const typeRow = await queryOne<RowDataPacket>(
+        'SELECT id FROM account_types WHERE code = ?',
+        [accountTypeCode]
+    );
+
+    if (!typeRow) {
+        return { success: false, error: 'Invalid account type' };
+    }
+
+    const result = await createAccount(customerId, typeRow.id);
+
+    if (result.success) {
+        return { success: true, applicationId: result.accountId };
+    }
+
+    return { success: false, error: result.error };
+}
+
+export async function getPendingApplications(): Promise<any[]> {
+    // No longer applicable, returning empty array
+    return [];
+}
+
+/**
+ * Onboards a new customer and creates their first account.
+ * Designed to replace legacy onboarding flows.
+ */
+export async function onboardNewCustomer(
+    data: {
+        firstName: string;
+        lastName: string;
+        email: string;
+        dateOfBirth: string;
+        customerNumber: string;
+        createdBy: number;
+    }
+): Promise<{ success: boolean; customerId?: number; accountId?: number; error?: string }> {
+    try {
+        // 1. Generate a temporary password (they should change it later)
+        // Since we don't have an email system yet, we'll use a predictable but "safe-ish" default or random string.
+        const tempPassword = 'Welcome!' + Math.floor(1000 + Math.random() * 9000);
+        const { hashPassword } = await import('./auth-service');
+        const passwordHash = await hashPassword(tempPassword);
+
+        // 2. Lookup SAVINGS account type ID
+        const typeRow = await queryOne<RowDataPacket>(
+            "SELECT id FROM account_types WHERE code = 'SAVINGS'"
         );
 
-        // 4. Update core account
-        await connection.execute(
-            `UPDATE accounts 
-             SET status = ?, balance_locked = ?, row_version = row_version + 1, updated_at = NOW() 
-             WHERE id = ?`,
-            [newStatus, balanceLocked, accountId]
-        );
+        if (!typeRow) {
+            return { success: false, error: 'Default account type (SAVINGS) not found' };
+        }
 
-        return { success: true };
-    });
+        return await withTransaction(async (conn) => {
+            // 3. Create Customer
+            const [customerResult] = await conn.execute<ResultSetHeader>(
+                `INSERT INTO customers 
+                 (customer_number, email, first_name, last_name, date_of_birth, status, kyc_status, created_at, created_by, password_hash)
+                 VALUES (?, ?, ?, ?, ?, 'ACTIVE', 'VERIFIED', NOW(), ?, ?)`,
+                [data.customerNumber, data.email, data.firstName, data.lastName, data.dateOfBirth, data.createdBy, passwordHash]
+            );
+
+            const customerId = customerResult.insertId;
+
+            // 4. Create Account
+            const accountNumber = '10' + Math.floor(10000000 + Math.random() * 90000000).toString();
+            const [accountResult] = await conn.execute<ResultSetHeader>(
+                `INSERT INTO accounts (account_number, customer_id, account_type_id, status, opened_at, created_at, created_by)
+                 VALUES (?, ?, ?, 'ACTIVE', NOW(), NOW(), ?)`,
+                [accountNumber, customerId, typeRow.id, data.createdBy]
+            );
+
+            const accountId = accountResult.insertId;
+
+            // 5. Initialize Balance
+            await conn.execute(
+                `INSERT INTO account_balances (account_id, available_balance, currency, version)
+                 VALUES (?, 0.0000, 'BDT', 1)`,
+                [accountId]
+            );
+
+            return {
+                success: true,
+                customerId,
+                accountId,
+                // We'll trust the caller to handle the temp password display if needed
+                // but for now we just return success
+            };
+        });
+    } catch (error) {
+        if ((error as any).code === 'ER_DUP_ENTRY') {
+            return { success: false, error: 'Email or Customer Number already exists' };
+        }
+        console.error('Error during onboarding:', error);
+        return { success: false, error: 'Database error during customer onboarding' };
+    }
 }
 
 export async function refreshAccountBalance(accountId: number): Promise<void> {
-    // Placeholder for balance recalculation from ledger
-    // For now, we assume account_balances is consistent.
-    // Future implementation: Sum all ledger entries and update account_balances.
+    // Placeholder - in real system would trigger reconciliation
     return;
 }

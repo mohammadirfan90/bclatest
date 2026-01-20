@@ -26,14 +26,15 @@ interface SidebarProps {
     navItems: NavItem[];
     title: string;
     subtitle?: string;
+    className?: string;
 }
 
-export function Sidebar({ navItems, title, subtitle }: SidebarProps) {
+export function SidebarContent({ navItems, title, subtitle }: SidebarProps) {
     const pathname = usePathname();
     const { user, logout } = useAuth();
 
     return (
-        <div className="flex h-screen w-64 flex-col border-r bg-slate-50">
+        <div className="flex flex-col h-full">
             {/* Header */}
             <div className="flex h-16 items-center gap-3 border-b px-6">
                 <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-slate-900">
@@ -123,6 +124,14 @@ export function Sidebar({ navItems, title, subtitle }: SidebarProps) {
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>
+        </div>
+    );
+}
+
+export function Sidebar({ navItems, title, subtitle, className }: SidebarProps) {
+    return (
+        <div className={cn("hidden lg:flex h-screen w-64 flex-col border-r bg-slate-50", className)}>
+            <SidebarContent navItems={navItems} title={title} subtitle={subtitle} />
         </div>
     );
 }

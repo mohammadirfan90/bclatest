@@ -24,7 +24,7 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
         const validation = validateQuery(request, customerSearchSchema);
         if (!validation.success) return validation.response;
 
-        const { search, status, kycStatus, page, limit } = validation.data;
+        const { search, page, limit } = validation.data;
         const offset = getOffset(page, limit);
 
         // 2. Build Query
@@ -37,16 +37,6 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
             params.push(searchParam, searchParam, searchParam, searchParam);
         }
 
-        if (status) {
-            whereClause += ' AND c.status = ?';
-            params.push(status);
-        }
-
-        if (kycStatus) {
-            whereClause += ' AND c.kyc_status = ?';
-            params.push(kycStatus);
-        }
-
         // 3. Execute Count Query
         const [countResult] = await query<RowDataPacket[]>(
             `SELECT COUNT(*) as total FROM customers c ${whereClause}`,
@@ -55,10 +45,15 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
         const total = countResult[0]?.total || 0;
 
         // 4. Execute Data Query
+        // Derive status based on account existence: HAS_ACCOUNT / NO_ACCOUNT
         const rows = await query<RowDataPacket[]>(
             `SELECT c.id, c.customer_number, c.email, c.first_name, c.last_name, 
-                    c.status, c.kyc_status, c.onboarding_status, c.created_at,
-                    (SELECT id FROM accounts WHERE customer_id = c.id LIMIT 1) as primary_account_id
+                    c.status, c.kyc_status, c.created_at,
+                    (SELECT id FROM accounts WHERE customer_id = c.id LIMIT 1) as primary_account_id,
+                    CASE 
+                        WHEN (SELECT COUNT(*) FROM accounts WHERE customer_id = c.id) > 0 THEN 'HAS_ACCOUNT'
+                        ELSE 'NO_ACCOUNT'
+                    END as account_existence_status
              FROM customers c
              ${whereClause}
              ORDER BY c.created_at DESC
@@ -66,7 +61,14 @@ export const GET = withErrorHandler(async (request: NextRequest) => {
             [...params, limit, offset]
         );
 
-        return successResponse(rows, getPaginationMeta(page, limit, total));
+        // Map for legacy UI compatibility if needed, but we'll update the UI too
+        const enrichedRows = rows.map(row => ({
+            ...row,
+            onboarding_status: row.account_existence_status, // Map to existing UI field for minimal disruption
+            kyc_status: row.kyc_status || 'N/A'
+        }));
+
+        return successResponse(enrichedRows, getPaginationMeta(page, limit, total));
     }, { requiredRoles: ['BANKER', 'ADMIN'], hideFailure: true });
 });
 

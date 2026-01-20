@@ -537,7 +537,7 @@ function TransfersPage() {
             method: 'POST',
             body: JSON.stringify({
                 fromAccountId: parseInt(fromAccountId),
-                toAccountId: parseInt(toAccountNumber),
+                toAccountNumber: toAccountNumber,
                 amount: parseFloat(amount),
                 description: description || 'Transfer',
                 idempotencyKey: crypto.randomUUID()

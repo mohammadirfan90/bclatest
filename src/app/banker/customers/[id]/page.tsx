@@ -10,8 +10,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { Loader2, AlertCircle, Play, Pause, XCircle, ArrowLeft } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 
 interface Account {
     id: number;
@@ -52,6 +53,10 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
     const [action, setAction] = useState<'FREEZE' | 'UNFREEZE' | 'CLOSE' | null>(null);
     const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
     const [reason, setReason] = useState('');
+
+    // New Account State
+    const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+    const [newAccountType, setNewAccountType] = useState<string>('');
 
     useEffect(() => {
         loadCustomer();
@@ -111,6 +116,34 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
         setReason('');
     };
 
+    const handleCreateAccount = async () => {
+        if (!newAccountType) return;
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const result = await apiClient('/accounts', {
+                method: 'POST',
+                body: JSON.stringify({
+                    customerId,
+                    accountType: newAccountType
+                })
+            });
+
+            if (result.success) {
+                setIsCreateModalOpen(false);
+                setNewAccountType('');
+                loadCustomer(); // Refresh data
+            } else {
+                setError(result.error || 'Failed to create account');
+            }
+        } catch (err) {
+            setError('Failed to create account');
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (isLoading) return <div className="p-8 flex justify-center"><Loader2 className="animate-spin h-8 w-8 text-slate-400" /></div>;
     if (!customer) return <div className="p-8 text-center text-red-500">Customer not found</div>;
 
@@ -156,9 +189,14 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
 
                 {/* Accounts List */}
                 <Card className="md:col-span-2">
-                    <CardHeader>
-                        <CardTitle>Accounts</CardTitle>
-                        <CardDescription>Manage customer's banking accounts</CardDescription>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <div>
+                            <CardTitle>Accounts</CardTitle>
+                            <CardDescription>Manage customer's banking accounts</CardDescription>
+                        </div>
+                        <Button size="sm" onClick={() => setIsCreateModalOpen(true)}>
+                            Open New Account
+                        </Button>
                     </CardHeader>
                     <CardContent>
                         <Table>
@@ -254,6 +292,43 @@ export default function CustomerDetailsPage({ params }: { params: Promise<{ id: 
                                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                             ) : null}
                             Confirm {action ? (action.charAt(0) + action.slice(1).toLowerCase()) : 'Action'}
+                        </Button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
+
+            {/* Create Account Dialog */}
+            <Dialog open={isCreateModalOpen} onOpenChange={setIsCreateModalOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Open New Account</DialogTitle>
+                        <DialogDescription>
+                            Select the type of account to create for this customer.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <div className="py-4 space-y-4">
+                        <div className="space-y-2">
+                            <Label>Account Type</Label>
+                            <Select value={newAccountType} onValueChange={setNewAccountType}>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select type..." />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="SAVINGS">Savings Account</SelectItem>
+                                    <SelectItem value="CHECKING">Checking Account</SelectItem>
+                                    <SelectItem value="FIXED">Fixed Deposit</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+                    <DialogFooter>
+                        <Button variant="outline" onClick={() => setIsCreateModalOpen(false)}>Cancel</Button>
+                        <Button
+                            onClick={handleCreateAccount}
+                            disabled={!newAccountType || isLoading}
+                        >
+                            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                            Create Account
                         </Button>
                     </DialogFooter>
                 </DialogContent>

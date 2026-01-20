@@ -1157,7 +1157,9 @@ __turbopack_context__.s([
     "Icons",
     ()=>Icons,
     "Sidebar",
-    ()=>Sidebar
+    ()=>Sidebar,
+    "SidebarContent",
+    ()=>SidebarContent
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/.pnpm/next@16.1.1_@babel+core@7.2_cd686fafa065e16de73e229f5879b04d/node_modules/next/dist/compiled/react/compiler-runtime.js [app-client] (ecmascript)");
@@ -1179,14 +1181,14 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
-function Sidebar(t0) {
+function SidebarContent(t0) {
     _s();
     const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(42);
-    if ($[0] !== "4a9980f906d110e06db7add19e080d5f4c68fdf85e9165e0f854d59114f5a5c1") {
+    if ($[0] !== "7e63dd193e7f8148a85c21545ef5804cbfcbf4754367aa28d6ce6a3e2617c696") {
         for(let $i = 0; $i < 42; $i += 1){
             $[$i] = Symbol.for("react.memo_cache_sentinel");
         }
-        $[0] = "4a9980f906d110e06db7add19e080d5f4c68fdf85e9165e0f854d59114f5a5c1";
+        $[0] = "7e63dd193e7f8148a85c21545ef5804cbfcbf4754367aa28d6ce6a3e2617c696";
     }
     const { navItems, title, subtitle } = t0;
     const pathname = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"])();
@@ -1207,17 +1209,17 @@ function Sidebar(t0) {
                     d: "M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 }, void 0, false, {
                     fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                    lineNumber: 42,
+                    lineNumber: 43,
                     columnNumber: 182
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 42,
+                lineNumber: 43,
                 columnNumber: 92
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 42,
+            lineNumber: 43,
             columnNumber: 10
         }, this);
         $[1] = t1;
@@ -1231,7 +1233,7 @@ function Sidebar(t0) {
             children: title
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 49,
+            lineNumber: 50,
             columnNumber: 10
         }, this);
         $[2] = title;
@@ -1246,7 +1248,7 @@ function Sidebar(t0) {
             children: subtitle
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 57,
+            lineNumber: 58,
             columnNumber: 22
         }, this);
         $[4] = subtitle;
@@ -1267,13 +1269,13 @@ function Sidebar(t0) {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                    lineNumber: 65,
+                    lineNumber: 66,
                     columnNumber: 74
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 65,
+            lineNumber: 66,
             columnNumber: 10
         }, this);
         $[6] = t2;
@@ -1287,7 +1289,7 @@ function Sidebar(t0) {
         let t6;
         if ($[12] !== pathname) {
             t6 = ({
-                "Sidebar[navItems.map()]": (item)=>{
+                "SidebarContent[navItems.map()]": (item)=>{
                     const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
                     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                         href: item.href,
@@ -1298,18 +1300,18 @@ function Sidebar(t0) {
                                 children: item.icon
                             }, void 0, false, {
                                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                                lineNumber: 79,
+                                lineNumber: 80,
                                 columnNumber: 257
                             }, this),
                             item.title
                         ]
                     }, item.href, true, {
                         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                        lineNumber: 79,
+                        lineNumber: 80,
                         columnNumber: 18
                     }, this);
                 }
-            })["Sidebar[navItems.map()]"];
+            })["SidebarContent[navItems.map()]"];
             $[12] = pathname;
             $[13] = t6;
         } else {
@@ -1331,12 +1333,12 @@ function Sidebar(t0) {
                 children: t5
             }, void 0, false, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 96,
+                lineNumber: 97,
                 columnNumber: 51
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 96,
+            lineNumber: 97,
             columnNumber: 10
         }, this);
         $[14] = t5;
@@ -1356,7 +1358,7 @@ function Sidebar(t0) {
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 106,
+            lineNumber: 107,
             columnNumber: 10
         }, this);
         $[16] = t7;
@@ -1378,7 +1380,7 @@ function Sidebar(t0) {
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 117,
+            lineNumber: 118,
             columnNumber: 11
         }, this);
         $[19] = t10;
@@ -1395,7 +1397,7 @@ function Sidebar(t0) {
             children: t13
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 127,
+            lineNumber: 128,
             columnNumber: 11
         }, this);
         $[22] = t13;
@@ -1413,7 +1415,7 @@ function Sidebar(t0) {
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 135,
+            lineNumber: 136,
             columnNumber: 11
         }, this);
         $[24] = t12;
@@ -1435,12 +1437,12 @@ function Sidebar(t0) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 144,
+                lineNumber: 145,
                 columnNumber: 47
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 144,
+            lineNumber: 145,
             columnNumber: 11
         }, this);
         $[27] = t15;
@@ -1456,12 +1458,12 @@ function Sidebar(t0) {
             children: "My Account"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 154,
+            lineNumber: 155,
             columnNumber: 11
         }, this);
         t18 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$dropdown$2d$menu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["DropdownMenuSeparator"], {}, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 155,
+            lineNumber: 156,
             columnNumber: 11
         }, this);
         $[30] = t17;
@@ -1484,12 +1486,12 @@ function Sidebar(t0) {
                 d: "M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
             }, void 0, false, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 164,
+                lineNumber: 165,
                 columnNumber: 95
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 164,
+            lineNumber: 165,
             columnNumber: 11
         }, this);
         $[32] = t19;
@@ -1513,13 +1515,13 @@ function Sidebar(t0) {
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                    lineNumber: 171,
+                    lineNumber: 172,
                     columnNumber: 71
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 171,
+            lineNumber: 172,
             columnNumber: 11
         }, this);
         $[33] = logout;
@@ -1538,12 +1540,12 @@ function Sidebar(t0) {
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 179,
+                lineNumber: 180,
                 columnNumber: 41
             }, this)
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 179,
+            lineNumber: 180,
             columnNumber: 11
         }, this);
         $[35] = t16;
@@ -1555,7 +1557,7 @@ function Sidebar(t0) {
     let t22;
     if ($[38] !== t21 || $[39] !== t4 || $[40] !== t6) {
         t22 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-            className: "flex h-screen w-64 flex-col border-r bg-slate-50",
+            className: "flex flex-col h-full",
             children: [
                 t4,
                 t6,
@@ -1563,7 +1565,7 @@ function Sidebar(t0) {
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 188,
+            lineNumber: 189,
             columnNumber: 11
         }, this);
         $[38] = t21;
@@ -1575,13 +1577,67 @@ function Sidebar(t0) {
     }
     return t22;
 }
-_s(Sidebar, "lV6IKhZ0lvUbbj4pEMcEQZjQkJQ=", false, function() {
+_s(SidebarContent, "lV6IKhZ0lvUbbj4pEMcEQZjQkJQ=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$navigation$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["usePathname"],
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$auth$2d$context$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useAuth"]
     ];
 });
-_c = Sidebar;
+_c = SidebarContent;
+function Sidebar(t0) {
+    const $ = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$compiler$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["c"])(10);
+    if ($[0] !== "7e63dd193e7f8148a85c21545ef5804cbfcbf4754367aa28d6ce6a3e2617c696") {
+        for(let $i = 0; $i < 10; $i += 1){
+            $[$i] = Symbol.for("react.memo_cache_sentinel");
+        }
+        $[0] = "7e63dd193e7f8148a85c21545ef5804cbfcbf4754367aa28d6ce6a3e2617c696";
+    }
+    const { navItems, title, subtitle, className } = t0;
+    let t1;
+    if ($[1] !== className) {
+        t1 = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("hidden lg:flex h-screen w-64 flex-col border-r bg-slate-50", className);
+        $[1] = className;
+        $[2] = t1;
+    } else {
+        t1 = $[2];
+    }
+    let t2;
+    if ($[3] !== navItems || $[4] !== subtitle || $[5] !== title) {
+        t2 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(SidebarContent, {
+            navItems: navItems,
+            title: title,
+            subtitle: subtitle
+        }, void 0, false, {
+            fileName: "[project]/src/components/layouts/Sidebar.tsx",
+            lineNumber: 223,
+            columnNumber: 10
+        }, this);
+        $[3] = navItems;
+        $[4] = subtitle;
+        $[5] = title;
+        $[6] = t2;
+    } else {
+        t2 = $[6];
+    }
+    let t3;
+    if ($[7] !== t1 || $[8] !== t2) {
+        t3 = /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            className: t1,
+            children: t2
+        }, void 0, false, {
+            fileName: "[project]/src/components/layouts/Sidebar.tsx",
+            lineNumber: 233,
+            columnNumber: 10
+        }, this);
+        $[7] = t1;
+        $[8] = t2;
+        $[9] = t3;
+    } else {
+        t3 = $[9];
+    }
+    return t3;
+}
+_c1 = Sidebar;
 const Icons = {
     dashboard: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
         fill: "none",
@@ -1595,12 +1651,12 @@ const Icons = {
             d: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 202,
+            lineNumber: 246,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 201,
+        lineNumber: 245,
         columnNumber: 14
     }, ("TURBOPACK compile-time value", void 0)),
     accounts: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1615,12 +1671,12 @@ const Icons = {
             d: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 205,
+            lineNumber: 249,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 204,
+        lineNumber: 248,
         columnNumber: 13
     }, ("TURBOPACK compile-time value", void 0)),
     transfers: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1635,12 +1691,12 @@ const Icons = {
             d: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 208,
+            lineNumber: 252,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 207,
+        lineNumber: 251,
         columnNumber: 14
     }, ("TURBOPACK compile-time value", void 0)),
     customers: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1655,12 +1711,12 @@ const Icons = {
             d: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 211,
+            lineNumber: 255,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 210,
+        lineNumber: 254,
         columnNumber: 14
     }, ("TURBOPACK compile-time value", void 0)),
     transactions: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1675,12 +1731,12 @@ const Icons = {
             d: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 214,
+            lineNumber: 258,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 213,
+        lineNumber: 257,
         columnNumber: 17
     }, ("TURBOPACK compile-time value", void 0)),
     fraud: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1695,12 +1751,12 @@ const Icons = {
             d: "M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 217,
+            lineNumber: 261,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 216,
+        lineNumber: 260,
         columnNumber: 10
     }, ("TURBOPACK compile-time value", void 0)),
     reconciliation: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1715,12 +1771,12 @@ const Icons = {
             d: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 220,
+            lineNumber: 264,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 219,
+        lineNumber: 263,
         columnNumber: 19
     }, ("TURBOPACK compile-time value", void 0)),
     users: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1735,12 +1791,12 @@ const Icons = {
             d: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 223,
+            lineNumber: 267,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 222,
+        lineNumber: 266,
         columnNumber: 10
     }, ("TURBOPACK compile-time value", void 0)),
     settings: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1756,7 +1812,7 @@ const Icons = {
                 d: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
             }, void 0, false, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 226,
+                lineNumber: 270,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0)),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
@@ -1766,13 +1822,13 @@ const Icons = {
                 d: "M15 12a3 3 0 11-6 0 3 3 0 016 0z"
             }, void 0, false, {
                 fileName: "[project]/src/components/layouts/Sidebar.tsx",
-                lineNumber: 227,
+                lineNumber: 271,
                 columnNumber: 13
             }, ("TURBOPACK compile-time value", void 0))
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 225,
+        lineNumber: 269,
         columnNumber: 13
     }, ("TURBOPACK compile-time value", void 0)),
     reports: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1787,12 +1843,12 @@ const Icons = {
             d: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 230,
+            lineNumber: 274,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 229,
+        lineNumber: 273,
         columnNumber: 12
     }, ("TURBOPACK compile-time value", void 0)),
     deposit: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1807,12 +1863,12 @@ const Icons = {
             d: "M12 4v16m8-8H4"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 233,
+            lineNumber: 277,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 232,
+        lineNumber: 276,
         columnNumber: 12
     }, ("TURBOPACK compile-time value", void 0)),
     withdraw: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f2e$pnpm$2f$next$40$16$2e$1$2e$1_$40$babel$2b$core$40$7$2e$2_cd686fafa065e16de73e229f5879b04d$2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
@@ -1827,17 +1883,18 @@ const Icons = {
             d: "M20 12H4"
         }, void 0, false, {
             fileName: "[project]/src/components/layouts/Sidebar.tsx",
-            lineNumber: 236,
+            lineNumber: 280,
             columnNumber: 13
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/layouts/Sidebar.tsx",
-        lineNumber: 235,
+        lineNumber: 279,
         columnNumber: 13
     }, ("TURBOPACK compile-time value", void 0))
 };
-var _c;
-__turbopack_context__.k.register(_c, "Sidebar");
+var _c, _c1;
+__turbopack_context__.k.register(_c, "SidebarContent");
+__turbopack_context__.k.register(_c1, "Sidebar");
 if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
