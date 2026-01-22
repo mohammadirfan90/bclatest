@@ -11,6 +11,7 @@
 
 import { callProcedure, query, queryOne } from '../db';
 import { RowDataPacket } from 'mysql2/promise';
+import crypto from 'crypto';
 
 // =============================================================================
 // Types
@@ -21,6 +22,7 @@ export interface TransferRequest {
     toAccountId: number;
     amount: number;
     description?: string;
+    idempotencyKey?: string;
     performedBy: number;
 }
 
@@ -102,6 +104,7 @@ export async function transfer(request: TransferRequest): Promise<TransactionRes
             request.toAccountId,
             request.amount,
             request.description || 'Fund Transfer',
+            request.idempotencyKey || crypto.randomUUID(),
             request.performedBy,
         ],
         ['p_transaction_id', 'p_status', 'p_message']

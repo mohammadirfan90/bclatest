@@ -1,11 +1,9 @@
-[00:00:01.989] Server  LOG     ✓ Ready in 1543ms
-[00:00:16.303] Server  LOG     ○ Compiling /customer/dashboard ...
-[00:00:19.526] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:00:25.090] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:07:51.348] Browser ERROR   Cannot update a component (`%s`) while rendering a different component (`%s`). To locate the bad setState() call inside `%s`, follow the stack trace as described in https://react.dev/link/setstate-in-render Router CustomerLayout CustomerLayout
-[00:08:03.893] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:08:32.894] Server  LOG     [Login Attempt] Email: johndoe@example.com, Type: customer
-[00:08:32.907] Browser LOG     AuthContext Login calling API: {"email":"johndoe@example.com","type":"customer"}
-[00:13:51.256] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
-[00:14:00.923] Server  LOG     [Login Attempt] Email: irfan@example.com, Type: customer
-[00:14:00.928] Browser LOG     AuthContext Login calling API: {"email":"irfan@example.com","type":"customer"}
+[00:00:04.742] Server  LOG     ✓ Ready in 3.8s
+[00:00:21.832] Server  LOG     ○ Compiling / ...
+[00:00:28.402] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:01:40.916] Browser LOG     AuthContext Login calling API: {"email":"johndoe@example.com","type":"customer"}
+[00:01:41.592] Server  LOG     [Login Attempt] Email: johndoe@example.com, Type: customer
+[00:01:42.246] Server  LOG     [Auth] Customer found: 6, Status: ACTIVE
+[00:01:43.131] Server  LOG     [Auth] Password valid: true
+[00:01:43.139] Server  LOG     [Login Success] User: johndoe@example.com
+[00:03:52.038] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold

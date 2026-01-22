@@ -20,58 +20,73 @@ export const POST = withErrorHandler(async (request: NextRequest) => {
     return withAuth(
         request,
         async (req: AuthenticatedRequest) => {
-            const validation = await validateBody(request, transferSchema);
-            if (!validation.success) {
-                return validation.response;
-            }
-
-            const { fromAccountId, toAccountNumber, amount, description, idempotencyKey } = validation.data;
-
-            // Check idempotency
-            if (idempotencyKey) {
-                const cached = await checkIdempotency(idempotencyKey);
-                if (cached.cached) {
-                    return cached.response;
+            try {
+                console.log('[Transfer] Starting transfer request...');
+                const validation = await validateBody(request, transferSchema);
+                if (!validation.success) {
+                    console.log('[Transfer] Validation failed:', validation.response);
+                    return validation.response;
                 }
-            }
 
-            // Look up destination account by account number
-            const destAccount = await getAccountByNumber(toAccountNumber);
-            if (!destAccount) {
-                return errorResponse('Destination account not found');
-            }
+                const { fromAccountId, toAccountNumber, amount, description, idempotencyKey } = validation.data;
+                console.log('[Transfer] Data:', { fromAccountId, toAccountNumber, amount, description, idempotencyKey });
 
-            // Prevent self-transfer
-            if (fromAccountId === destAccount.id) {
-                return errorResponse('Cannot transfer to the same account');
-            }
-
-            // For customers, verify they own the source account
-            if (req.tokenPayload?.type === 'customer') {
-                const sourceAccount = await getAccountById(fromAccountId);
-                if (!sourceAccount || sourceAccount.customerId !== req.customer?.id) {
-                    return errorResponse('Source account not found');
+                // Check idempotency
+                if (idempotencyKey) {
+                    const cached = await checkIdempotency(idempotencyKey);
+                    if (cached.cached) {
+                        return cached.response;
+                    }
                 }
+
+                // Look up destination account by account number
+                const destAccount = await getAccountByNumber(toAccountNumber);
+                if (!destAccount) {
+                    console.log('[Transfer] Destination account not found');
+                    return errorResponse('Destination account not found');
+                }
+
+                // Prevent self-transfer
+                if (fromAccountId === destAccount.id) {
+                    return errorResponse('Cannot transfer to the same account');
+                }
+
+                // For customers, verify they own the source account
+                if (req.tokenPayload?.type === 'customer') {
+                    const sourceAccount = await getAccountById(fromAccountId);
+                    if (!sourceAccount || sourceAccount.customerId !== req.customer?.id) {
+                         console.log('[Transfer] Source account mismatch:', { sourceAccount, customerId: req.customer?.id });
+                        return errorResponse('Source account not found');
+                    }
+                }
+
+                const performedBy = (req.user?.id || req.customer?.id) as number;
+                console.log('[Transfer] Performed By:', performedBy);
+
+                // Execute transfer via stored procedure
+                const result = await transfer({
+                    fromAccountId,
+                    toAccountId: destAccount.id,
+                    amount,
+                    description,
+                    idempotencyKey,
+                    performedBy,
+                });
+
+                if (!result.success) {
+                    console.log('[Transfer] Procedure failed:', result.message);
+                    return errorResponse(result.message, 400);
+                }
+
+                return successResponse({
+                    transactionId: result.transactionId,
+                    status: result.status,
+                    message: result.message,
+                });
+            } catch (err: any) {
+                console.error('[Transfer] CRITICAL ERROR:', err);
+                return errorResponse(`CRITICAL TRANSFER ERROR: ${err.message}`, 500);
             }
-
-            // Execute transfer via stored procedure
-            const result = await transfer({
-                fromAccountId,
-                toAccountId: destAccount.id,
-                amount,
-                description,
-                performedBy: (req.user?.id || req.customer?.id) as number,
-            });
-
-            if (!result.success) {
-                return errorResponse(result.message, 400);
-            }
-
-            return successResponse({
-                transactionId: result.transactionId,
-                status: result.status,
-                message: result.message,
-            });
         },
         {
             requiredType: 'any',

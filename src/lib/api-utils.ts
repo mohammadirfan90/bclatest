@@ -328,10 +328,8 @@ export function withErrorHandler<T = { id?: string }>(
             console.error('API Error:', error);
 
             if (error instanceof Error) {
-                // Don't expose internal error messages in production
-                const message = process.env.NODE_ENV === 'development'
-                    ? error.message
-                    : 'An unexpected error occurred';
+                // TEMP: Expose error for debugging
+                const message = error.message;
                 return serverErrorResponse(message);
             }
 

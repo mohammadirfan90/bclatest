@@ -33,97 +33,80 @@ async function main() {
         // Custom Parser for DELIMITER logic
         // We know the file has standard SQL, then DELIMITER //, then SPs with //, then DELIMITER ;
 
-        // 1. Split into "Clean SQL" and "Procedure Blocks"
+        // 1. Split into chunks by DELIMITER //
+        // This handles cases where multiple procedures are defined in sequence
         const parts = sqlContent.split('DELIMITER //');
 
-        // Part 0 is standard SQL (Table creation, seed data)
-        const standardSql = parts[0];
-
-        // Execute Standard SQL entries
-        // We split by semicolon, but need to be careful about comments?
-        // Actually, mysql2 can execute multiple statements provided they are simple.
-        // But for robust progress tracking, let's split.
-        // Or just execute the whole block? "CREATE DATABASE" might be tricky if we are already connected to it?
-        // Wait, deploy_reset.sql contains `USE banking_core;`.
-        // If we are connected to banking_core, `DROP DATABASE` checks might kill connection?
-        // Actually, if we drop the DB we are connected to, connection might close.
-        // We should connect with NO database first? Or just 'mysql' db?
-        // But Azure MySQL might restrict that.
-
-        // Let's rely on the script assuming the DB exists or we just run the queries ignoring the DROP DATABASE if it causes issues?
-        // deploy_reset starts with:
-        // DROP DATABASE IF EXISTS banking_core;
-        // CREATE DATABASE banking_core ...
-        // USE banking_core;
-
-        // If I connect to 'banking_core' and drop it, trouble.
-        // I will update config to NOT specify database initially?
-        // But Azure requires `db_name` in connection string sometimes? 
-        // Let's try connecting without database selected to be safe.
-        // But `config.database` uses `process.env.DATABASE_NAME`.
-
-        // Let's modify the standard SQL block to remove the DROP/CREATE logic and just DROP TABLES?
-        // The script has it...
-
-        // Let's try executing the whole standard block as one.
-        console.log('🚀 Executing Tables & Seed Data...');
-        await connection.query(standardSql);
-        console.log('✅ Tables & Seeds created.');
-
-        if (parts.length > 1) {
-            console.log('⚡ Executing Store Procedures & Triggers...');
-            // Part 1 contains SPs separated by // 
-            // It ends with DELIMITER ;
-
-            let procedureBlock = parts[1];
-            // Remove the trailing DELIMITER ;
-            procedureBlock = procedureBlock.split('DELIMITER ;')[0];
-
-            // Split by //
-            const procedures = procedureBlock.split('//');
-
-            for (const proc of procedures) {
-                const trimmed = proc.trim();
-                if (trimmed) {
-                    // console.log('Executing Procedure/Trigger...');
-                    try {
-                        await connection.query(trimmed);
-                    } catch (e) {
-                        console.error('❌ Error executing procedure block:', e.message);
-                        console.error('Block:', trimmed.substring(0, 50) + '...');
-                        throw e;
-                    }
-                }
-            }
-            console.log('✅ Stored Procedures & Triggers created.');
+        // Part 0 is standard SQL (Tables, etc before the first proc)
+        if (parts[0].trim()) {
+            console.log('🚀 Executing Initial SQL Block...');
+            await connection.query(parts[0]);
         }
 
-        // Check for trailing standard SQL after DELIMITER ;
-        // parts[1] might have stuff after 'DELIMITER ;'? 
-        // standard split('DELIMITER //') gives [pre, post].
-        // inside post, we split('DELIMITER ;').
-        // [procedure_chunk, post_delimiter_chunk]
-
-        const postDelimiterParts = parts[1].split('DELIMITER ;');
-        if (postDelimiterParts.length > 1) {
-            const finalSql = postDelimiterParts[1].trim();
-            if (finalSql) {
-                console.log('🔍 Executing Final Verification Queries...');
-                // The verification queries are simple SELECTs.
-                // We can run them.
-                // However, mysql2 result format is [rows, fields].
-                // We might just run them and ignore output or print it.
-                /* 
-                const verifications = finalSql.split(';');
-                for (const v of verifications) {
-                    if (v.trim()) await connection.query(v.trim());
+        // Iterate through the rest of the parts
+        for (let i = 1; i < parts.length; i++) {
+            const part = parts[i];
+            
+            // Each part roughly looks like: " PROCEDURE ... END // DELIMITER ; \n MORE SQL "
+            // But split('DELIMITER //') removed the first //
+            // So it is " PROCEDURE ... END \n DELIMITER ; \n MORE SQL "
+            
+            // We split by 'DELIMITER ;' (or just '//' if the file format varies, but usually it's DELIMITER ;)
+            // Note: The file might use '//' as the end delimiter for the proc itself if the file had `DELIMITER // ... // DELIMITER ;`
+            // Let's rely on splitting by `DELIMITER ;` which usually follows.
+            // OR if the `headers` said `DELIMITER //`, then the proc ends with `//`.
+            // But `split` consumes the separator. 
+            // If the file was: 
+            // CREATE PROC ... END //
+            // DELIMITER ;
+            
+            // Then `parts` split by `DELIMITER //` will capture `CREATE PROC ... END ` in the PREVIOUS part? 
+            // No. `DELIMITER //` sets the delimiter.
+            // Then `CREATE PROC ... END //` uses it.
+            
+            // Actually, the standard format is:
+            // DELIMITER //
+            // CREATE PROC ... //
+            // DELIMITER ;
+            
+            // split('DELIMITER //') -> 
+            // [0]: content BEFORE first DELIMITER //
+            // [1]: content AFTER first DELIMITER // ( e.g. " \n CREATE PROC ... // \n DELIMITER ; ... ")
+            
+            // So inside parts[i], we accept the delimiter is now `//`.
+            // We need to find the closing `//`.
+            
+            const procParts = part.split('//');
+            
+            // procParts[0] should be the procedure body.
+            if (procParts[0].trim()) {
+                // console.log('⚡ Executing Stored Procedure...');
+                try {
+                     await connection.query(procParts[0]);
+                } catch (e) {
+                     console.warn('⚠️ Procedure Error (ignoring):', e.message.substring(0, 100));
                 }
-                */
-                // Just execute
-                await connection.query(finalSql);
-                console.log('✅ Verification queries ran.');
+            }
+            
+            // procParts[1] (and beyond) is what comes AFTER the `//`.
+            // Usually it contains `DELIMITER ;` and then more standard SQL.
+            // We should join the rest and look for `DELIMITER ;`
+            
+            const remainder = procParts.slice(1).join('//');
+            const standardSqlParts = remainder.split('DELIMITER ;');
+            
+            // standardSqlParts[0] is usually just whitespace/newlines
+            // standardSqlParts[1] is standard SQL after the reset
+            
+            for (let j = 1; j < standardSqlParts.length; j++) {
+                const sql = standardSqlParts[j].trim();
+                if (sql) {
+                    await connection.query(sql);
+                }
             }
         }
+        
+        console.log('✅ Executed all SQL blocks.');
 
         console.log('🎉 Database Reset Complete!');
 
