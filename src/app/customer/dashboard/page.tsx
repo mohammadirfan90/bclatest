@@ -91,9 +91,7 @@ export default function CustomerDashboard() {
                         <Button asChild size="sm">
                             <Link href="/customer/transfers">New Transfer</Link>
                         </Button>
-                        <Button asChild variant="outline" size="sm">
-                            <Link href="/customer/accounts/apply">Open Account</Link>
-                        </Button>
+
                         <Button asChild variant="ghost" size="sm">
                             <Link href="/customer/statements">Statements</Link>
                         </Button>

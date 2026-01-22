@@ -1,3 +1,11 @@
-[00:00:12.459] Server  LOG     ✓ Ready in 10.8s
-[00:00:15.488] Server  LOG     ○ Compiling / ...
-[00:00:24.414] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:01.989] Server  LOG     ✓ Ready in 1543ms
+[00:00:16.303] Server  LOG     ○ Compiling /customer/dashboard ...
+[00:00:19.526] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:25.090] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:07:51.348] Browser ERROR   Cannot update a component (`%s`) while rendering a different component (`%s`). To locate the bad setState() call inside `%s`, follow the stack trace as described in https://react.dev/link/setstate-in-render Router CustomerLayout CustomerLayout
+[00:08:03.893] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:08:32.894] Server  LOG     [Login Attempt] Email: johndoe@example.com, Type: customer
+[00:08:32.907] Browser LOG     AuthContext Login calling API: {"email":"johndoe@example.com","type":"customer"}
+[00:13:51.256] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:14:00.923] Server  LOG     [Login Attempt] Email: irfan@example.com, Type: customer
+[00:14:00.928] Browser LOG     AuthContext Login calling API: {"email":"irfan@example.com","type":"customer"}
