@@ -98,6 +98,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 const roleCode = data.data.user.roleCode;
                 if (roleCode === 'ADMIN') {
                     router.push('/admin/dashboard');
+                } else if (roleCode === 'AUDITOR') {
+                    router.push('/auditor/dashboard');
                 } else {
                     router.push('/banker/dashboard');
                 }

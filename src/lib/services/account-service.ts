@@ -1,5 +1,6 @@
 import { query, queryOne, execute, withTransaction } from '../db';
 import { RowDataPacket, ResultSetHeader } from 'mysql2/promise';
+import { logAuditEventAsync } from './audit-service';
 
 // =============================================================================
 // Types
@@ -129,6 +130,19 @@ export async function freezeAccount(
             'UPDATE accounts SET status = "SUSPENDED", updated_at = NOW() WHERE id = ?',
             [accountId]
         );
+
+        // Audit log
+        logAuditEventAsync({
+            actorId: bankerId,
+            actorType: 'user',
+            actorRole: 'BANKER',
+            actionType: 'ACCOUNT_FROZEN',
+            entityType: 'ACCOUNT',
+            entityId: accountId,
+            beforeState: { status: 'ACTIVE' },
+            afterState: { status: 'SUSPENDED', reason },
+        });
+
         return { success: true };
     } catch (error) {
         console.error('Error freezing account:', error);
@@ -146,6 +160,19 @@ export async function unfreezeAccount(
             'UPDATE accounts SET status = "ACTIVE", updated_at = NOW() WHERE id = ?',
             [accountId]
         );
+
+        // Audit log
+        logAuditEventAsync({
+            actorId: bankerId,
+            actorType: 'user',
+            actorRole: 'BANKER',
+            actionType: 'ACCOUNT_UNFROZEN',
+            entityType: 'ACCOUNT',
+            entityId: accountId,
+            beforeState: { status: 'SUSPENDED' },
+            afterState: { status: 'ACTIVE', reason },
+        });
+
         return { success: true };
     } catch (error) {
         console.error('Error unfreezing account:', error);
@@ -175,6 +202,18 @@ export async function closeAccount(
             'UPDATE accounts SET status = "CLOSED", updated_at = NOW() WHERE id = ?',
             [accountId]
         );
+
+        // Audit log
+        logAuditEventAsync({
+            actorId: bankerId,
+            actorType: 'user',
+            actorRole: 'BANKER',
+            actionType: 'ACCOUNT_CLOSED',
+            entityType: 'ACCOUNT',
+            entityId: accountId,
+            beforeState: { status: 'ACTIVE', balance: 0 },
+            afterState: { status: 'CLOSED', reason },
+        });
 
         return { success: true };
     } catch (error) {
@@ -225,6 +264,17 @@ export async function createAccount(
                  VALUES (?, 0.0000, 'BDT', 1)`,
                 [accountId]
             );
+
+            // Audit log (fire-and-forget, outside transaction)
+            logAuditEventAsync({
+                actorId: createdBy || null,
+                actorType: 'user',
+                actorRole: 'BANKER',
+                actionType: 'ACCOUNT_CREATED',
+                entityType: 'ACCOUNT',
+                entityId: accountId,
+                afterState: { accountNumber, customerId, accountTypeId, status: 'ACTIVE' },
+            });
 
             return {
                 success: true,

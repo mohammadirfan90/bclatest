@@ -52,10 +52,12 @@ Visit [http://localhost:3000](http://localhost:3000)
 
 ## 🔐 Demo Credentials
 
-| Role | Email | Password |
-|------|-------|----------|
-| Banker | banker1@bnkcore.com | Banker@123 |
-| Customer | (Created by Banker) | (Generated at Creation) |
+| Role | Email | Password | Login URL |
+|------|-------|----------|-----------|
+| Banker | banker1@bnkcore.com | Banker@123 | /internal/login |
+| Auditor | auditor@bnkcore.com | password123 | /internal/login |
+| Admin | admin@bnkcore.com | password123 | /internal/login |
+| Customer | (Created by Banker) | (Generated at Creation) | /login |
 
 ## 📁 Project Structure
 
@@ -69,6 +71,8 @@ bnkcore/
 │   ├── app/
 │   │   ├── (auth)/       # Login & Auth logic
 │   │   ├── banker/       # Banker dashboard
+│   │   ├── auditor/      # Auditor portal (read-only)
+│   │   ├── admin/        # Admin dashboard
 │   │   ├── customer/     # Customer portal
 │   │   └── api/v1/       # REST API endpoints
 │   ├── components/       # UI Components (shadcn)
@@ -83,9 +87,10 @@ bnkcore/
 
 | Category | Tables |
 |----------|--------|
-| Identity & Access | `users`, `customers` |
+| Identity & Access | `users`, `customers`, `roles` |
 | Customers & Accounts | `accounts`, `account_types` |
 | Financial Core | `transactions`, `ledger_entries`, `account_balances`, `transaction_audit` |
+| Audit & Compliance | `audit_logs` |
 
 ### Key Constraints
 
@@ -115,6 +120,16 @@ All money movement happens through atomic stored procedures:
 - `POST /api/v1/banker/customers/create` — Onboard new customer
 - `POST /api/v1/banker/accounts` — Open new account for customer
 - `POST /api/v1/banker/deposits` — Process cash deposit
+
+### Auditor Operations (Read-Only)
+- `GET /api/v1/auditor/transactions` — View all system transactions
+- `GET /api/v1/auditor/ledger` — View ledger entries
+- `GET /api/v1/auditor/audit-logs` — View system audit logs
+- `GET /api/v1/auditor/export-pdf/transactions` — Export transactions PDF
+- `GET /api/v1/auditor/export-pdf/ledger` — Export ledger PDF
+- `GET /api/v1/auditor/export-pdf/audit-logs` — Export audit logs PDF
+- `GET /api/v1/auditor/export-pdf/daily-totals` — Export daily totals PDF
+- `GET /api/v1/auditor/export-pdf/monthly-summary` — Export monthly summary PDF
 
 ### Customer Operations
 - `GET /api/v1/accounts` — My accounts

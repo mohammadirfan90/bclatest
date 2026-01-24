@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { query, queryOne, execute, withTransaction } from '../db';
 import { RowDataPacket } from 'mysql2/promise';
+import { logAuditEventAsync } from './audit-service';
 
 // =============================================================================
 // Types
@@ -178,6 +179,17 @@ export async function authenticateUser(email: string, password: string): Promise
         tokenVersion: 1,
     });
 
+    // Audit log for user login
+    logAuditEventAsync({
+        actorId: userRow.id,
+        actorType: 'user',
+        actorRole: userRow.role_code,
+        actionType: 'USER_LOGIN',
+        entityType: 'SESSION',
+        entityId: userRow.id,
+        afterState: { email: userRow.email, role: userRow.role_code },
+    });
+
     return { success: true, user, token, refreshToken };
 }
 
@@ -249,6 +261,16 @@ export async function authenticateCustomer(email: string, password: string): Pro
         type: 'customer',
         email: customerRow.email,
         tokenVersion: 1,
+    });
+
+    // Audit log for customer login
+    logAuditEventAsync({
+        actorId: customerRow.id,
+        actorType: 'customer',
+        actionType: 'CUSTOMER_LOGIN',
+        entityType: 'SESSION',
+        entityId: customerRow.id,
+        afterState: { email: customerRow.email, customerNumber: customerRow.customer_number },
     });
 
     return { success: true, user: customer, token, refreshToken };
@@ -427,6 +449,15 @@ export async function logout(userId: number, type: 'user' | 'customer'): Promise
     if (type === 'user') {
         await execute('DELETE FROM user_sessions WHERE user_id = ?', [userId]);
     }
+
+    // Audit log for logout
+    logAuditEventAsync({
+        actorId: userId,
+        actorType: type,
+        actionType: type === 'user' ? 'USER_LOGOUT' : 'CUSTOMER_LOGOUT',
+        entityType: 'SESSION',
+        entityId: userId,
+    });
 }
 
 // =============================================================================
